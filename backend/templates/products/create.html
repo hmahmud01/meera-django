@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-12">
+        <h2>Add A Product</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.html">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Create Product</strong>
+            </li>
+        </ol>
+    </div>
+    <!-- <div class="col-sm-8">
+        <div class="title-action">
+            <a href="" class="btn btn-primary">This is action area</a>
+        </div>
+    </div> -->
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Product Add Form <small>Fill Up the form with proper Information.</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="get">
+                        <h3>Product Information</h3>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Name</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Product Name" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Category</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Product Category" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Product Category <br/>
+                                <small class="text-navy"> <a data-toggle="modal" data-target="#category-adder">Add a category if not available</a> </small>
+                            </label>
+
+
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="category">
+                                    <option>option 1</option>
+                                    <option>option 2</option>
+                                    <option>option 3</option>
+                                    <option>option 4</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Price</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Product Price (৳)" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Discount Price</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Product Discount Discount Price (৳) in %" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Initial Product Inventory Stock</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Initial Product Inventory Stock" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Zone Available</label>    
+                            <div class="col-sm-10"><input type="text" placeholder="Product Zone Available" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Product Zone Available <br/>
+                                <small class="text-navy"> <a data-toggle="modal" data-target="#zone-adder">Add a zone if not available</a> </small>
+                            </label>
+
+                            <div class="col-sm-10">
+                                <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Zone one </label></div>
+                                <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Zone 2 </label></div>
+                                <div class="i-checks"><label> <input type="checkbox" value=""> <i></i> Zone 3 </label></div>
+                            </div>
+                        </div>
+                        
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white btn-sm" type="submit">Cancel</button>
+                                <button class="btn btn-primary btn-sm" type="submit">Save Product</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="zone-adder" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add A Zone for Product</h4>                                
+                </div>
+                <form action="">
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Zone Name</label>    
+                            <div class="col-sm-10"><input type="text" name="zone" placeholder="Zone Name" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save Zone</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="category-adder" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add A Category for Product</h4>                                
+                </div>
+                <form action="">
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Category Name</label>    
+                            <div class="col-sm-10"><input type="text" name="category" placeholder="Category Name" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
