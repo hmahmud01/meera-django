@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-12">
+        <h2>Add A Product</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Create Product</strong>
+            </li>
+        </ol>
+    </div>
+    <!-- <div class="col-sm-8">
+        <div class="title-action">
+            <a href="" class="btn btn-primary">This is action area</a>
+        </div>
+    </div> -->
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Product Add Form <small>Fill Up the form with proper Information.</small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" action="{% url 'saveproduct' %}" enctype="multipart/form-data">{% csrf_token %}
+                        <h3>Product Information</h3>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Name</label>    
+                            <div class="col-sm-10"><input type="text" name="name" placeholder="Product Name" class="form-control" required></div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Product Category <br/>
+                                <small class="text-navy"> <a data-toggle="modal" data-target="#category-adder">Add a category if not available</a> </small>
+                            </label>
+
+
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="category">
+                                    {% for cat in categories %}             
+                                    <option value="{{ cat.id }}"> {{ cat.title }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Price</label>    
+                            <div class="col-sm-10"><input type="number" name="price" placeholder="Product Price (৳)" class="form-control" required></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Discount Price</label>    
+                            <div class="col-sm-10"><input type="number" name="disc_price" placeholder="Product Discount Discount Price (৳) in %" class="form-control" required></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Discount Price</label>    
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Initial Product Inventory Stock</label>    
+                            <div class="col-sm-10"><input type="number" name="inv_stock" placeholder="Initial Product Inventory Stock" class="form-control" required></div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Product Zone Available <br/>
+                                <small class="text-navy"> <a data-toggle="modal" data-target="#zone-adder">Add a zone if not available</a> </small>
+                            </label>
+
+                            <div class="col-sm-10">
+                                {% for zone in zones %}
+                                <div class="i-checks"><label> <input type="checkbox" name="zone" value="{{ zone.id }}"> <i></i> {{ zone.name }} </label></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <h3>Product Images</h3>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Thumbnail</label>
+                            <div class="col-sm-10">
+                                <input class="form-control m-b" type="file" name="thumb_image" id="formFile">
+                            </div>                        
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Product Images</label>
+
+                            <div class="col-sm-10">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <span class="btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="photos" multiple></span>
+                                    <span class="fileinput-filename"></span>
+                                    <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="hr-line-dashed"></div>
+
+                        
+
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button class="btn btn-white btn-sm" type="button">Cancel</button>
+                                <button class="btn btn-primary btn-sm" type="submit">Save Product</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="zone-adder" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add A Zone for Product</h4>                                
+                </div>
+                <form method="post" action="{% url 'savezone' %}">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Zone Name</label>    
+                            <div class="col-sm-10"><input type="text" name="name" placeholder="Zone Name" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Zone</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="category-adder" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add A Category for Product</h4>                                
+                </div>
+                <form method="post" action="{% url 'savecategory' %}" >{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Category Name</label>    
+                            <div class="col-sm-10"><input type="text" name="title" placeholder="Category Name" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

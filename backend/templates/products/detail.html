@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block styles %}
+<link href="/static/css/plugins/slick/slick.css" rel="stylesheet">
+<link href="/static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
-        <h2>Blank Page</h2>
+        <h2>{{ product.name }}</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="index.html">Dashboard</a>
+                <a href="/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'productlist' %}">Product list</a>
             </li>
             <li class="breadcrumb-item active">
-                <strong>Blank</strong>
+                <strong>Product Detail</strong>
             </li>
         </ol>
     </div>
     <!-- <div class="col-sm-8">
-        <div class="title-action">
-            <a href="" class="btn btn-primary">This is action area</a>
-        </div>
+
     </div> -->
 </div>
 
@@ -33,86 +39,116 @@
 
 
                             <div class="product-images">
-
+                                {% for image in images %}
                                 <div>
                                     <div class="image-imitation">
-                                        [IMAGE 1]
+                                        <img class="product-img-carousel" src="/media/{{ image.photo }}" />
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="image-imitation">
-                                        [IMAGE 2]
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="image-imitation">
-                                        [IMAGE 3]
-                                    </div>
-                                </div>
-
-
+                                {% endfor %}
                             </div>
 
                         </div>
                         <div class="col-md-7">
 
                             <h2 class="font-bold m-b-xs">
-                                Product
+                                {{ product.name }}
                             </h2>
-                            <small>Many desktop publishing packages and web page editors now.</small>
+                            <small>Category: {{ product.category.title }}</small>
                             <div class="m-t-md">
-                                <h2 class="product-main-price">৳406,602 <small class="text-muted">Exclude Tax</small> </h2>
+                                <h2 class="product-main-price">৳ {{ product.price }} <small class="text-muted"></small> </h2>
                             </div>
                             <hr>
 
                             <h4>Product description</h4>
 
                             <div class="small text-muted">
-                                It is a long established fact that a reader will be distracted by the readable
-                                content of a page when looking at its layout. The point of using Lorem Ipsum is
-
-                                <br/>
-                                <br/>
-                                There are many variations of passages of Lorem Ipsum available, but the majority
-                                have suffered alteration in some form, by injected humour, or randomised words
-                                which don't look even slightly believable.
+                                {{ product.description }}
                             </div>
+
                             <dl class="small m-t-md">
-                                <dt>Description lists</dt>
-                                <dd>A description list is perfect for defining terms.</dd>
-                                <dt>Euismod</dt>
-                                <dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-                                <dd>Donec id elit non mi porta gravida at eget metus.</dd>
-                                <dt>Malesuada porta</dt>
-                                <dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+                                <dt>Zones Available in</dt>
+                                {% for zone in zones %}
+                                <dd>* {{ zone.zone.name }}</dd>
+                                {% endfor %}                                
+                                <dt>Stock Available</dt>
+                                <dd>{{ product.inv_stock }}</dd>                                
+                                <dt>Product Status</dt>
+                                {% if product.status is True %}
+                                <dd>Active</dd>                                
+                                {% else %}
+                                <dd>Inactive</dd>                                
+                                {% endif %}
                             </dl>
                             <hr>
-
                             <div>
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Update Stock</button>
-                                    <button class="btn btn-warning btn-sm"><i class="fa fa-star"></i> Edit </button>
-                                    <button class="btn btn-danger btn-sm"><i class="fa fa-envelope"></i> Disable </button>
+                                    <a data-toggle="modal" class="btn btn-primary btn-sm text-white" data-target="#update-stock"><i class="fa fa-sort-numeric-asc"></i> Update Stock</a>                                    
+                                    <button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit </button> 
+                                    {% if product.status is True %}
+                                    <a href="{% url 'statusupdate' False product.id %}" class="btn btn-danger btn-sm text-white"><i class="fa fa-times"></i> Disable</a>                                    
+                                    {% else %}
+                                    <a href="{% url 'statusupdate' True product.id %}" class="btn btn-info btn-sm text-white"><i class="fa fa-check"></i> Enable</a>                                    
+                                    {% endif %}
+                                    
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
-
                 </div>
                 <div class="ibox-footer">
                     <span class="float-right">
-                        Full stock - <i class="fa fa-clock-o"></i> 14.04.2016 10:04 pm
-                    </span>
-                    The generated Lorem Ipsum is therefore always free
+                        Created At - <i class="fa fa-clock-o"></i> {{ product.created_at }}
+                    </span>                    
+                    Product Created from Dashboard App
                 </div>
             </div>
+
+            
+            <div class="modal inmodal fade" id="update-stock" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Update Stock for {{ product.name }}</h4>                                
+                        </div>
+                        <form method="post" action="{% url 'stockupdate' product.id %}">{% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group row"><label class="col-sm-2 col-form-label">Stock Qty</label>    
+                                    <div class="col-sm-10"><input type="number" name="stock" placeholder="Stock Qty" class="form-control"></div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update Stock</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>       
 
         </div>
     </div>
 
 
 </div>
+{% endblock %}
+
+{% block scripts %}
+
+    <!-- slick carousel-->
+    <script src="/static/js/plugins/slick/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+
+            $('.product-images').slick({
+                dots: true
+            });
+
+        });
+
+    </script>
 {% endblock %}

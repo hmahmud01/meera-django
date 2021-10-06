@@ -1,0 +1,16 @@
+.image-imitation{
+    padding: 0;    
+}
+
+.product-imitation{
+    padding: 0;
+}
+
+
+.product-img-carousel {
+    overflow: hidden;
+    height: 640px;
+    width: 100%; /* or any custom size */
+    height: 100%; 
+    object-fit: contain;
+}
