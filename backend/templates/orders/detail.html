@@ -48,12 +48,6 @@
                                         <dd>Category: {{ item.product.category.title }}</dd>
                                         <dd>Pack Size: {{ item.product.pack_size.size }}</dd>
                                     </dl>
-
-                                    <div class="m-t-sm">
-                                        <!-- <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove item</a> -->
-                                        <button data-product="{{ item.product.id }}" data-action="add" class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
-                                        <button data-product="{{ item.product.id }}" data-action="remove" class="btn btn-xs btn-outline btn-danger update-cart">Remove <i class="fa fa-trash"></i></button>
-                                    </div>
                                 </td>
 
                                 <td>
