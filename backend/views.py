@@ -1,8 +1,13 @@
+from django.db.models.fields import CommaSeparatedIntegerField, PositiveBigIntegerField, json
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 
-from backend.models import Category, Product, ProductImage, ProductZone, Zone
+import json
+
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone
+from backend.utils import cartData
 
 # Create your views here.
 
@@ -44,17 +49,24 @@ def userLogout(request):
 def productCreate(request):
     categories = Category.objects.all()
     zones = Zone.objects.all()
-    return render(request, "products/create.html", {"categories": categories, "zones": zones})
+    packs = PackSize.objects.all()
+    return render(request, "products/create.html", {"categories": categories, "zones": zones, "packs": packs})
 
 
 def saveCategory(request):
-    print(request)
-    print(request.POST)
     data = request.POST
     category = Category(
         title = data['title']
     )
     category.save()
+    return redirect('productcreate')
+
+def savePackSize(request):
+    data = request.POST
+    pack = PackSize(
+        size = data['size']
+    )
+    pack.save()
     return redirect('productcreate')
 
 def saveZone(request):
@@ -75,10 +87,12 @@ def saveProduct(request):
     post_data = request.POST
     file_data = request.FILES
     category = Category.objects.get(id=post_data['category'])
+    size = PackSize.objects.get(id=post_data['packsize'])
     
     product = Product(
         name=post_data['name'],
         category=category,
+        pack_size=size,
         price=post_data['price'],
         disc_price=post_data['disc_price'],
         description=post_data['description'],
@@ -138,7 +152,13 @@ def stockupdate(request, pid):
     return redirect('productdetail', pid)
 
 def orderList(request):
-    return render(request, "orders/index.html")
+    orders = Order.objects.all()    
+    return render(request, "orders/index.html", {"orders": orders})
+
+def orderDetail(request, oid):
+    order = Order.objects.get(id=oid)
+    items = OrderItems.objects.filter(order_id=oid)
+    return render(request, "orders/detail.html", {"order": order, "items": items})
 
 def userIndex(request):
     return render(request, "users/index.html")
@@ -147,4 +167,54 @@ def userProfile(request):
     return render(request, "users/profile.html")
 
 def inventory(request):
-    return render(request, "inventory/index.html")
+    products = Product.objects.all()
+    return render(request, "inventory/index.html", {"products": products})
+
+def simulator(request):
+    products = Product.objects.all()
+    return render(request, "simulator.html", {"products": products})
+
+
+# CART FUNCTIONS
+def updateItem(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+
+    customer = "Some Customer"
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+
+    orderItem, created = OrderItems.objects.get_or_create(order=order, product=product)
+
+    if action == 'add':
+        orderItem.quantity = (orderItem.quantity + 1)
+    elif action == 'remove':
+        orderItem.quantity = (orderItem.quantity - 1)
+    
+    orderItem.save()
+
+    if orderItem.quantity <= 0:
+        orderItem.delete()
+
+    return JsonResponse('Item was Added', safe=False)
+
+def cart(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    context = {'items':items, 'order':order, 'cartItems':cartItems}
+    return render(request, 'cart.html', context)
+
+
+def processOrder(request):
+    post_data = request.POST
+    print(post_data['order'])
+    order_id = post_data['order']
+    order = Order.objects.get(id=order_id)
+    order.complete = True
+    order.trx_id = "meera-"+str(order.id)
+    order.save()
+
+    return redirect('cart')

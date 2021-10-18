@@ -14,11 +14,6 @@
             </li>
         </ol>
     </div>
-    <!-- <div class="col-sm-8">
-        <div class="title-action">
-            <a href="" class="btn btn-primary">This is action area</a>
-        </div>
-    </div> -->
 </div>
 
 <div class="wrapper wrapper-content">
@@ -53,6 +48,21 @@
                                 <select class="form-control m-b" name="category">
                                     {% for cat in categories %}             
                                     <option value="{{ cat.id }}"> {{ cat.title }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Product Pack Size <br/>
+                                <small class="text-navy"> <a data-toggle="modal" data-target="#packsize-adder">Add a Pack Size if not available</a> </small>
+                            </label>
+
+
+                            <div class="col-sm-10">
+                                <select class="form-control m-b" name="packsize">
+                                    {% for pack in packs %}             
+                                    <option value="{{ pack.id }}"> {{ pack.size }} </option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -157,6 +167,29 @@
                     <div class="modal-body">
                         <div class="form-group row"><label class="col-sm-2 col-form-label">Category Name</label>    
                             <div class="col-sm-10"><input type="text" name="title" placeholder="Category Name" class="form-control"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="packsize-adder" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Add A Pack Size for Product</h4>                                
+                </div>
+                <form method="post" action="{% url 'savepacksize' %}" >{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Pack Size</label>    
+                            <div class="col-sm-10"><input type="text" name="size" placeholder="Pack Size" class="form-control"></div>
                         </div>
                     </div>
 

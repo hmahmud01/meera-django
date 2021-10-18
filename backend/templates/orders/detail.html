@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-4">
+        <h2>Order Detail of {{ order.trx_id }}</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Dashboard</a>
+            </li>
+
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content">
+    
+    <div class="row">
+        <div class="col-md-9">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <span class="float-right">(<strong>{{ order.get_cart_items }}</strong>) products</span>
+                    <h5>Products in your Order</h5>
+                </div>
+                {% for item in items %}
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table shoping-cart-table">
+                            <tbody>                            
+                            <tr>
+                                <td width="90">
+                                    <div class="cart-product-imitation">
+                                    </div>
+                                </td>
+                                <td class="desc">
+                                    <h3>
+                                    <a href="#" class="text-navy">
+                                       {{ item.product.name }}
+                                    </a>
+                                    </h3>
+                                    <p class="small">
+                                        {{ item.product.description }}
+                                    </p>
+                                    <dl class="small m-b-none">
+                                        <dt>Description lists</dt>
+                                        <dd>Category: {{ item.product.category.title }}</dd>
+                                        <dd>Pack Size: {{ item.product.pack_size.size }}</dd>
+                                    </dl>
+
+                                    <div class="m-t-sm">
+                                        <!-- <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove item</a> -->
+                                        <button data-product="{{ item.product.id }}" data-action="add" class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+                                        <button data-product="{{ item.product.id }}" data-action="remove" class="btn btn-xs btn-outline btn-danger update-cart">Remove <i class="fa fa-trash"></i></button>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    ৳{{ item.product.price }}
+                                    <!-- <s class="small text-muted">$230,00</s> -->
+                                </td>
+                                <td width="65">                                    
+                                    * {{ item.quantity }} =
+                                </td>
+                                <td>
+                                    <h4>
+                                        ৳ {{ item.get_total }}
+                                    </h4>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <div class="col-md-3">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="ibox-content">
+                    <span>
+                        Total
+                    </span>
+                    <h2 class="font-bold">
+                        ৳{{ order.get_cart_total|floatformat:2 }}
+                    </h2>
+
+                    <hr/>
+                </div>
+            </div>
+
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Support</h5>
+                </div>
+                <div class="ibox-content text-center">
+
+
+
+                    <h3><i class="fa fa-phone"></i> +43 100 783 001</h3>
+                    <span class="small">
+                        Please contact with us if you have any questions. We are avalible 24h.
+                    </span>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
