@@ -6,6 +6,7 @@ from django.urls import path
 from django.urls.resolvers import URLPattern
 
 from backend import views
+from api import api_views
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -30,7 +31,12 @@ urlpatterns = [
     path('simulator/', views.simulator, name="simulator"),
     path('update_item/', views.updateItem, name='update_item'),
     path('cart/', views.cart, name='cart'),
-    path('process_order/', views.processOrder, name='process_order')
+    path('process_order/', views.processOrder, name='process_order'),
+    # api lists
+    path('api/productlist/',api_views.ListProductAPIView.as_view(), name="productlist"),
+    path('api/createproduct/', api_views.CreateProductAPIView.as_view(), name="createproduct"),
+    path('api/update/<int:pk>/', api_views.UpdateProductAPIView.as_view(), name="updateproduct"),
+    path('api/delete/<int:pk>/', api_views.DeleteProductAPIView.as_view(), name="deleteproduct")
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
