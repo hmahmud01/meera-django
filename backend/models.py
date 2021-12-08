@@ -1,12 +1,16 @@
 from os import stat_result
 from django.db import models
+from django.contrib.auth.models import User
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
+from django.db.models.fields.related import OneToOneField
 
 # Create your models here.
 
 class Category(models.Model):
     title = models.CharField(max_length=128, null=True, blank=True)
+    def __str__(self):
+        return self.title
 
     def __str__(self):
         return self.title
@@ -38,6 +42,39 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+
+class Favourite(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    isFavourite = models.BooleanField(default=False)
+    def __str__(self):
+        return f"productID = {self.product.id} | user = {self.user.username} | ISFavourite = {self.isFavourite}"
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total = models.FloatField(null=True, blank=True)
+    isComplete = models.BooleanField(default=False)
+    date = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f"User={self.user.username}|ISComplete={self.isComplete}"
+
+class CartProduct(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+    price = models.FloatField()
+    quantity = models.PositiveBigIntegerField()
+    subtotal = models.FloatField()
+    def __str__(self):
+        return f"Cart={self.cart.id}"
+
+
+# NEW ORDER CLASS FOR APP
+class OrderApp(models.Model):
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    email = models.CharField(max_length=150, null=True, blank=True)
+    phone = models.CharField(max_length=13)
+    address = models.CharField(max_length=200)
+
 
 class ProductZone(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product")

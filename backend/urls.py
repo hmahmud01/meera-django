@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path
 from django.urls.resolvers import URLPattern
+from rest_framework.authtoken.views import obtain_auth_token
 
 from backend import views
 from api import api_views
@@ -33,7 +34,12 @@ urlpatterns = [
     path('cart/', views.cart, name='cart'),
     path('process_order/', views.processOrder, name='process_order'),
     # api lists
-    path('api/productlist/',api_views.ListProductAPIView.as_view(), name="productlist"),
+    path('api/login/', obtain_auth_token),
+    path('api/register/', api_views.RegisterView.as_view()),
+    path('api/products/', api_views.ProductView.as_view(), name="products"),
+    path('api/favourite/', api_views.FavouriteView.as_view(), name="favourite"),
+    path('api/cart/', api_views.CartView.as_view()),
+    path('api/productlist/',api_views.ListProductAPIView.as_view(), name="apiproductlist"),
     path('api/createproduct/', api_views.CreateProductAPIView.as_view(), name="createproduct"),
     path('api/update/<int:pk>/', api_views.UpdateProductAPIView.as_view(), name="updateproduct"),
     path('api/delete/<int:pk>/', api_views.DeleteProductAPIView.as_view(), name="deleteproduct")
