@@ -1,5 +1,6 @@
 from django.db.models import manager, query
 from django.shortcuts import render
+import api
 from backend.views import cart
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import CreateAPIView
@@ -104,3 +105,146 @@ class CartView(APIView):
         except:
             response_msg = {"error": True, "data": "No Data"}
         return Response(response_msg)        
+
+
+class OrderView(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def get(self, request):
+        try:
+            query = OrderApp.objects.filter(cart__user=request.user)
+            serializers = OrderSerializer(query, many=True)
+            print(serializers.data)
+            response_msg = {"error": False, "data": serializers.data}
+        except:
+            response_msg = {"error": True, "data": "no data"}
+        return Response(response_msg)
+
+class AddToCart(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def post(self, request):
+        product_id = request.data['id']
+        product_obj = Product.objects.get(id=product_id)
+        # print(product_obj, "product_obj")
+        cart_cart = Cart.objects.filter(
+            user=request.user).filter(isComplete=False).first()
+        cart_product_obj = CartProduct.objects.filter(
+            product__id=product_id).first()
+
+        try:
+            if cart_cart:
+                print(cart_cart)
+                print("OLD CART")
+                this_product_in_cart = cart_cart.cartproduct_set.filter(
+                    product=product_obj)
+                if this_product_in_cart.exists():
+                    cartprod_uct = CartProduct.objects.filter(
+                        product=product_obj).filter(cart__isComplete=False).first()
+                    cartprod_uct.quantity += 1
+                    cartprod_uct.subtotal += product_obj.price
+                    cartprod_uct.save()
+                    cart_cart.total += product_obj.price
+                    cart_cart.save()
+                else:
+                    print("NEW CART PRODUCT CREATED--OLD CART")
+                    cart_product_new = CartProduct.objects.create(
+                        cart=cart_cart,
+                        price=product_obj.price,
+                        quantity=1,
+                        subtotal=product_obj.price
+                    )
+                    cart_product_new.product.add(product_obj)
+                    cart_cart.total += product_obj.price
+                    cart_cart.save()
+            else:
+                Cart.objects.create(user=request.user,
+                                    total=0.0, isComplete=False)
+                new_cart = Cart.objects.filter(
+                    user=request.user).filter(isComplete=False).first()
+                cart_product_new = CartProduct.objects.create(
+                    cart=new_cart,
+                    price=product_obj.price,
+                    quantity=1,
+                    subtotal=product_obj.price
+                )
+                cart_product_new.product.add(product_obj)
+                new_cart.total += product_obj.price
+                new_cart.save()
+            response_mesage = {
+                'error': False, 'message': "Product add to card successfully", "productid": product_id}
+        except:
+            response_mesage = {'error': True,
+                               'message': "Product Not add!Somthing is Wromg"}
+        return Response(response_mesage)
+
+
+class DeleteCartProduct(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def post(self, request):
+        cart_product_id = request.data['id']
+        try:
+            cart_product_obj = CartProduct.objects.get(id=cart_product_id)
+            cart_cart = Cart.objects.filter(
+                user=request.user).filter(isComplete=False).first()
+            cart_cart.total -= cart_product_obj.subtotal
+            cart_product_obj.delete()
+            cart_cart.save()
+            response_msg = {'error': False}
+        except:
+            response_msg = {'error': True}
+        return Response(response_msg)
+
+
+class DeleteCart(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def post(self, request):
+        cart_id = request.data['id']
+        try:
+            cart_obj = Cart.objects.get(id=cart_id)
+            cart_obj.delete()
+            response_msg = {'error': False}
+        except:
+            response_msg = {'error': True}
+        return Response(response_msg)
+
+class Order(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def post(relf, request):
+        try:
+            data = request.data
+            print(data)
+            cart_id = data['cartid']
+            address = data['address']
+            email = data['email']
+            phone = data['phone']
+            cart_obj = Cart.objects.get(id=cart_id)
+            cart_obj.isComplete = True
+            cart_obj.save()
+            OrderApp.objects.create(
+                cart=cart_obj,
+                email=email,
+                address=address,
+                phone=phone,
+            )
+            response_msg = {"error": False, "message": "Your Order is Completed"}
+        except:
+            response_msg = {"error": True, "message": "Somthing is Wrong !"}
+        return Response(response_msg)
+
+class CategoryView(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [TokenAuthentication, ]
+
+    def get(self, request):
+        query = Category.objects.all()
+        serializer = CategorySerializer(query, many=True)
+        return Response(serializer.data)
