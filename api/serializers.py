@@ -9,6 +9,11 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+
 class ZoneSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductZone
@@ -40,3 +45,8 @@ class CartProductSerializers(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
 
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderApp
+        fields = "__all__"
+        depth = 1

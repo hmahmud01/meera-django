@@ -9,8 +9,6 @@ from django.db.models.fields.related import OneToOneField
 
 class Category(models.Model):
     title = models.CharField(max_length=128, null=True, blank=True)
-    def __str__(self):
-        return self.title
 
     def __str__(self):
         return self.title
@@ -65,7 +63,8 @@ class CartProduct(models.Model):
     quantity = models.PositiveBigIntegerField()
     subtotal = models.FloatField()
     def __str__(self):
-        return f"Cart={self.cart.id}"
+        # return f"Cart={self.cart.id}"
+        return f"Cart=={self.cart.id}<==>CartProduct:{self.id}==Qualtity=={self.quantity}"
 
 
 # NEW ORDER CLASS FOR APP
