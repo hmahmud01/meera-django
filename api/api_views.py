@@ -79,6 +79,10 @@ class FavouriteView(APIView):
 
 class RegisterView(APIView):
     def post(self, request):
+        post_data = request.data
+        # {'username': '111', 'password': '1111', 'name': 'user', 'phone': '111', 'jela': 'jela', 'upojela': 'upojela'}
+        print(post_data)
+        print(post_data['username'])
         serializers = Userserializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
