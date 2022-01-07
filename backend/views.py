@@ -55,8 +55,10 @@ def productCreate(request):
 
 def saveCategory(request):
     data = request.POST
+    file_data = request.FILES
     category = Category(
-        title = data['title']
+        title = data['title'],
+        thumb_image=file_data['thumb_image'],
     )
     category.save()
     return redirect('productcreate')

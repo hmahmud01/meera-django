@@ -9,6 +9,7 @@ from django.db.models.fields.related import OneToOneField
 
 class Category(models.Model):
     title = models.CharField(max_length=128, null=True, blank=True)
+    thumb_image = models.FileField('product_thumbnail', upload_to='thumbs', blank=True, null=True)
 
     def __str__(self):
         return self.title
