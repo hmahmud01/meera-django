@@ -66,7 +66,9 @@ def saveCategory(request):
 def savePackSize(request):
     data = request.POST
     pack = PackSize(
-        size = data['size']
+        size = data['size'],
+        qty = data['qty'],
+        measure = data['measure']
     )
     pack.save()
     return redirect('productcreate')

@@ -23,6 +23,8 @@ class Zone(models.Model):
 
 class PackSize(models.Model):
     size = models.CharField(max_length=128, null=True, blank=True)
+    qty = models.FloatField(null=True, blank=True)
+    measure = models.CharField(max_length=12, null=True, blank=True)
 
     def __str__(self) :
         return self.size

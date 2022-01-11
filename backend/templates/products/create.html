@@ -196,7 +196,15 @@
                 <form method="post" action="{% url 'savepacksize' %}" >{% csrf_token %}
                     <div class="modal-body">
                         <div class="form-group row"><label class="col-sm-2 col-form-label">Pack Size</label>    
-                            <div class="col-sm-10"><input type="text" name="size" placeholder="Pack Size" class="form-control"></div>
+                            <div class="col-sm-10"><input type="text" name="size" placeholder="Full Pack Size Name (e.g.: 50 gm)" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Qty</label>    
+                            <div class="col-sm-10"><input type="number" name="qty" placeholder="Only Size Number (e.g.: 50, 60)" class="form-control"></div>
+                        </div>
+
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">Pack Size</label>    
+                            <div class="col-sm-10"><input type="text" name="measure" placeholder="Measure (e.g. : gm, kg)" class="form-control"></div>
                         </div>
                     </div>
 
