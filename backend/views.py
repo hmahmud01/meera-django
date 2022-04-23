@@ -3,10 +3,11 @@ from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct
 from backend.utils import cartData
 
 # Create your views here.
@@ -156,16 +157,32 @@ def stockupdate(request, pid):
     return redirect('productdetail', pid)
 
 def orderList(request):
-    orders = Order.objects.all()    
+    orders = OrderApp.objects.all()    
     return render(request, "orders/index.html", {"orders": orders})
 
 def orderDetail(request, oid):
-    order = Order.objects.get(id=oid)
-    items = OrderItems.objects.filter(order_id=oid)
-    return render(request, "orders/detail.html", {"order": order, "items": items})
+    # order = Order.objects.get(id=oid)
+    # items = OrderItems.objects.filter(order_id=oid)
+    
+    order = OrderApp.objects.get(id=oid)
+    
+    items = CartProduct.objects.filter(cart__id=order.cart.id)
+    products = []
+    total = 0
+    for item in items:
+        total += item.subtotal
+        data = {
+            "product": item.product.all(),
+            "qty": item.quantity,
+            "subtotal": item.subtotal
+        }
+        products.append(data)
+
+    return render(request, "orders/detail.html", {"order": order, "items": products, "total": total})
 
 def userIndex(request):
-    return render(request, "users/index.html")
+    users = User.objects.all().exclude(is_superuser=True)
+    return render(request, "users/index.html", {"users": users})
 
 def userProfile(request):
     return render(request, "users/profile.html")

@@ -13,7 +13,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
-    
 
 class Zone(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)

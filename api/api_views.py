@@ -35,7 +35,7 @@ class ProductView(APIView):
     authentication_classes = [TokenAuthentication, ]
 
     def get(self, request):
-        query = Product.objects.all()
+        query = Product.objects.filter(status=True)
         serializer = ProductSerializer(query, many=True)
         data = []
         for product in serializer.data:
@@ -65,7 +65,6 @@ class FavouriteView(APIView):
             product = Product.objects.get(id=product_id)
             single_favourite_product = Favourite.objects.filter(user=user).filter(product=product).first()
             if single_favourite_product:
-                print("Single Product favourite once")
                 fav_status = single_favourite_product.isFavourite
                 single_favourite_product.isFavourite = not fav_status
                 single_favourite_product.save()
@@ -233,12 +232,23 @@ class Order(APIView):
             cart_obj = Cart.objects.get(id=cart_id)
             cart_obj.isComplete = True
             cart_obj.save()
+
             OrderApp.objects.create(
                 cart=cart_obj,
                 email=email,
                 address=address,
                 phone=phone,
             )
+            
+            cart_products = CartProduct.objects.filter(cart__id=cart_id)
+            for cart_product in cart_products:
+                qty = cart_product.quantity                
+                items = cart_product.product.all()
+                for item in items:                    
+                    p = Product.objects.get(id=item.id)
+                    p.inv_stock = p.inv_stock - qty                    
+                    p.save()
+            
             response_msg = {"error": False, "message": "Your Order is Completed"}
         except:
             response_msg = {"error": True, "message": "Somthing is Wrong !"}
