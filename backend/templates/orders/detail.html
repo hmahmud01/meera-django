@@ -21,44 +21,47 @@
 
             <div class="ibox">
                 <div class="ibox-title">
-                    <span class="float-right">(<strong>{{ order.get_cart_items }}</strong>) products</span>
+                    <span class="float-right">(<strong>{{ items.count }}</strong>) products</span>
                     <h5>Products in your Order</h5>
                 </div>
-                {% for item in items %}
+                {% for item in items %}                
                 <div class="ibox-content">
                     <div class="table-responsive">
                         <table class="table shoping-cart-table">
                             <tbody>                            
                             <tr>
+                                
+                                {% for p in item.product %}
                                 <td width="90">
-                                    <div class="cart-product-imitation">
-                                    </div>
+                                    <img style="width: 90px;" src="/media/{{ p.thumb_image }}" alt="">
                                 </td>
                                 <td class="desc">
                                     <h3>
-                                    <a href="#" class="text-navy">
-                                       {{ item.product.name }}
+                                    <a href="{% url 'productdetail' p.id %}" class="text-navy">
+                                       {{ p }}
                                     </a>
                                     </h3>
                                     <p class="small">
-                                        {{ item.product.description }}
+                                        {{ p.description }}
                                     </p>
                                     <dl class="small m-b-none">
                                         <dt>Description lists</dt>
-                                        <dd>Category: {{ item.product.category.title }}</dd>
-                                        <dd>Pack Size: {{ item.product.pack_size.size }}</dd>
+                                        <dd>Category: {{ p.category.title }}</dd>
+                                        <dd>Pack Size: {{ p.pack_size.size }}</dd>
                                     </dl>
                                 </td>
 
                                 <td>
-                                    ৳{{ item.product.price }}
+                                    ৳{{ p.price }}
                                 </td>
+                                {% endfor %}
+                                
                                 <td width="65">                                    
-                                    * {{ item.quantity }} =
+                                    * {{ item.qty }} =
                                 </td>
                                 <td>
                                     <h4>
-                                        ৳ {{ item.get_total }}
+                                        ৳ {{ item.subtotal }}
                                     </h4>
                                 </td>
                             </tr>
@@ -76,13 +79,10 @@
                     <h5>Order Summary</h5>
                 </div>
                 <div class="ibox-content">
-                    <span>
-                        Total
-                    </span>
-                    <h2 class="font-bold">
-                        ৳{{ order.get_cart_total|floatformat:2 }}
-                    </h2>
-
+                    <span> Total : </span> <Strong> ৳ {{ total }}  </Strong> <br>
+                    <span> Contact Phone : </span> <Strong> {{ order.phone }}  </Strong> <br>
+                    <span> Client Address : </span> <Strong> {{ order.address }}  </Strong> <br>
+                    <span> Payment Status : </span> <span class="label label-success">Complete</span>
                     <hr/>
                 </div>
             </div>
