@@ -132,6 +132,7 @@ class AddToCart(APIView):
         product_id = request.data['id']
         product_obj = Product.objects.get(id=product_id)
         # print(product_obj, "product_obj")
+
         cart_cart = Cart.objects.filter(
             user=request.user).filter(isComplete=False).first()
         cart_product_obj = CartProduct.objects.filter(
@@ -148,6 +149,19 @@ class AddToCart(APIView):
                         product=product_obj).filter(cart__isComplete=False).first()
                     cartprod_uct.quantity += 1
                     cartprod_uct.subtotal += product_obj.price
+                    total_qty = cartprod_uct.quantity * product_obj.pack_size.qty
+                    print("total qty")
+                    print(total_qty)
+                    print(product_obj.disc_price)
+                    discount_price = 0
+                    if total_qty >= 500.0:
+                        print("if")
+                        discount_price = cartprod_uct.subtotal * product_obj.disc_price / 100
+                        print(discount_price)                    
+                    else:
+                        print("else")                                       
+                    cartprod_uct.subtotal = cartprod_uct.subtotal - discount_price
+                    cartprod_uct.subtotal = round(cartprod_uct.subtotal, 2)
                     cartprod_uct.save()
                     cart_cart.total += product_obj.price
                     cart_cart.save()
