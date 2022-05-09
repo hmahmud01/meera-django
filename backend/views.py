@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus
 from backend.utils import cartData
 
 # Create your views here.
@@ -179,6 +179,16 @@ def orderDetail(request, oid):
         products.append(data)
 
     return render(request, "orders/detail.html", {"order": order, "items": products, "total": total})
+
+def updateStatus(request, oid):
+    post_data = request.POST
+    
+    order = OrderApp.objects.get(id=oid)
+    status = order.orderstatus
+    status.status = post_data['status']
+    status.save()
+
+    return redirect('orderdetail', oid)
 
 def userIndex(request):
     users = User.objects.all().exclude(is_superuser=True)

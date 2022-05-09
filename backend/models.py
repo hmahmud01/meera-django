@@ -76,6 +76,12 @@ class OrderApp(models.Model):
     phone = models.CharField(max_length=13)
     address = models.CharField(max_length=200)
 
+class Orderstatus(models.Model):
+    order = models.OneToOneField(OrderApp, on_delete=models.CASCADE)
+    status = models.CharField(max_length=128, null=True, blank=True)
+
+    def __str__(self):
+        return self.status
 
 class ProductZone(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product")

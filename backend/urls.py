@@ -26,6 +26,7 @@ urlpatterns = [
     path('stockupdate/<int:pid>', views.stockupdate, name="stockupdate"),
     path('orderlist/', views.orderList, name="orderlist"),
     path('orderdetail/<int:oid>/', views.orderDetail, name="orderdetail"),
+    path('updatestatus/<int:oid>/', views.updateStatus, name="updatestatus"),
     path('userindex/', views.userIndex, name="userindex"),
     path('userprofile/', views.userProfile, name="userprofile"),
     path('inventory/', views.inventory, name="inventory"),

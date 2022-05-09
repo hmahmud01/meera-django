@@ -129,7 +129,9 @@ class AddToCart(APIView):
     authentication_classes = [TokenAuthentication, ]
 
     def post(self, request):
+        
         product_id = request.data['id']
+        product_qty = request.data['qty']
         product_obj = Product.objects.get(id=product_id)
         # print(product_obj, "product_obj")
 
@@ -147,8 +149,8 @@ class AddToCart(APIView):
                 if this_product_in_cart.exists():
                     cartprod_uct = CartProduct.objects.filter(
                         product=product_obj).filter(cart__isComplete=False).first()
-                    cartprod_uct.quantity += 1
-                    cartprod_uct.subtotal += product_obj.price
+                    cartprod_uct.quantity = product_qty
+                    cartprod_uct.subtotal += product_obj.price * product_qty
                     total_qty = cartprod_uct.quantity * product_obj.pack_size.qty
                     print("total qty")
                     print(total_qty)
@@ -163,18 +165,22 @@ class AddToCart(APIView):
                     cartprod_uct.subtotal = cartprod_uct.subtotal - discount_price
                     cartprod_uct.subtotal = round(cartprod_uct.subtotal, 2)
                     cartprod_uct.save()
-                    cart_cart.total += product_obj.price
+                    cart_total_price = product_obj.price * product_qty
+                    cart_cart.total += cartprod_uct.subtotal
                     cart_cart.save()
                 else:
                     print("NEW CART PRODUCT CREATED--OLD CART")
                     cart_product_new = CartProduct.objects.create(
                         cart=cart_cart,
                         price=product_obj.price,
-                        quantity=1,
-                        subtotal=product_obj.price
+                        quantity=product_qty,
+                        subtotal=product_obj.price * product_qty
                     )
                     cart_product_new.product.add(product_obj)
-                    cart_cart.total += product_obj.price
+                    cart_total_price = product_obj.price * product_qty
+                    print(cart_total_price)
+                    cart_cart.total += cart_total_price
+                    # cart_cart.total += product_obj.price
                     cart_cart.save()
             else:
                 Cart.objects.create(user=request.user,
@@ -184,11 +190,13 @@ class AddToCart(APIView):
                 cart_product_new = CartProduct.objects.create(
                     cart=new_cart,
                     price=product_obj.price,
-                    quantity=1,
-                    subtotal=product_obj.price
+                    quantity=product_qty,
+                    subtotal=product_obj.price * product_qty
                 )
                 cart_product_new.product.add(product_obj)
-                new_cart.total += product_obj.price
+                cart_total_price = product_obj.price * product_qty
+                print(cart_total_price)
+                new_cart.total += cart_total_price
                 new_cart.save()
             response_mesage = {
                 'error': False, 'message': "Product add to card successfully", "productid": product_id}
@@ -247,11 +255,16 @@ class Order(APIView):
             cart_obj.isComplete = True
             cart_obj.save()
 
-            OrderApp.objects.create(
+            order = OrderApp.objects.create(
                 cart=cart_obj,
                 email=email,
                 address=address,
                 phone=phone,
+            )
+
+            Orderstatus.objects.create(
+                order=order,
+                status="Ordered Now"
             )
             
             cart_products = CartProduct.objects.filter(cart__id=cart_id)
