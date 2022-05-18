@@ -117,6 +117,7 @@
                 <div class="ibox-content">
                     <span> Total : </span> <Strong> ৳ {{ total }}  </Strong> <br>
                     <span> Contact Phone : </span> <Strong> {{ order.phone }}  </Strong> <br>
+                    <span> Contact Person : </span> <Strong> {{ order.name }}  </Strong> <br>
                     <span> Client Address : </span> <Strong> {{ order.address }}  </Strong> <br>
                     {% if order.cart.isComplete is False %}
                         <span> Payment Status : </span> <span class="label label-danger">InComplete</span> <br>
