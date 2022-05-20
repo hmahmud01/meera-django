@@ -75,10 +75,12 @@ class OrderApp(models.Model):
     email = models.CharField(max_length=150, null=True, blank=True)
     phone = models.CharField(max_length=13)
     address = models.CharField(max_length=200)
+    name= models.CharField(max_length=200, null=True, blank=True)
 
 class Orderstatus(models.Model):
     order = models.OneToOneField(OrderApp, on_delete=models.CASCADE)
     status = models.CharField(max_length=128, null=True, blank=True)
+    remark = models.CharField(max_length=258, null=True, blank=True)
 
     def __str__(self):
         return self.status

@@ -39,7 +39,7 @@ class ProductView(APIView):
         serializer = ProductSerializer(query, many=True)
         data = []
         for product in serializer.data:
-            print(product)
+            # print(product)
             fav_query = Favourite.objects.filter(user=request.user).filter(product_id=product['id'])
             if fav_query:
                 product['favourite'] = fav_query[0].isFavourite
@@ -104,6 +104,7 @@ class CartView(APIView):
                     cart_product_obj, many=True)
                 cart['cartproducts'] = cart_product_obj_serializer.data
                 data.append(cart)
+
             response_msg = {"error": False, "data": data}
         except:
             response_msg = {"error": True, "data": "No Data"}
@@ -115,13 +116,57 @@ class OrderView(APIView):
     authentication_classes = [TokenAuthentication, ]
 
     def get(self, request):
+        
         try:
-            query = OrderApp.objects.filter(cart__user=request.user)
+            data = []
+            query = OrderApp.objects.filter(cart__user=request.user)            
             serializers = OrderSerializer(query, many=True)
-            print(serializers.data)
-            response_msg = {"error": False, "data": serializers.data}
+
+            # print(serializers.data)
+            for order in serializers.data:
+                order_remark = ""
+                orderapp = OrderApp.objects.get(id=order['id'])
+                # print(orderapp.phone)
+                orderstatus = Orderstatus.objects.filter(order_id=order['id'])                
+                if orderstatus is not []:
+                    for status in orderstatus:                    
+                        if status.remark is not None:
+                            order_remark += status.remark
+                        else:
+                            order_remark = "Under Process"
+                else:
+                    order_remark = "Under Process"
+                
+                cart_products = CartProduct.objects.filter(cart=order['cart']['id'])
+                cart_product_obj_serializer = CartProductSerializers(
+                    cart_products, many=True)                
+                order['cart']['cartproducts'] = cart_product_obj_serializer.data
+                # print(cart_product_obj_serializer.data)
+                # print("check")
+                # print("custom data")
+                cart_data = cart_product_obj_serializer.data
+                cartproducts = []
+                # for data in cart_data:
+                #     products = []
+                #     for product in data['product']:
+                #         item_product = Product.objects.get(id=product['id'])
+                #         item_serializer = ProductSerializer(item_product)
+                #         products.append(item_serializer.data)                        
+                #     data['product'] = products
+                #     print(data)
+                #     cartproducts.append(data)
+                # print(cartproducts)
+                # order['cart']['cartproducts'] = cartproducts
+                order['cart']['cartproducts'] = cart_product_obj_serializer.data
+                order['remark'] = order_remark
+                data.append(order)
+            print("printing order view")
+
+            # print(data)
+            response_msg = {"error": False, "data": data}
         except:
-            response_msg = {"error": True, "data": "no data"}
+            data = []
+            response_msg = {"error": True, "data": data}
         return Response(response_msg)
 
 class AddToCart(APIView):
@@ -246,11 +291,12 @@ class Order(APIView):
     def post(relf, request):
         try:
             data = request.data
-            print(data)
+            # print(data)
             cart_id = data['cartid']
             address = data['address']
             email = data['email']
             phone = data['phone']
+            name = data['name']
             cart_obj = Cart.objects.get(id=cart_id)
             cart_obj.isComplete = True
             cart_obj.save()
@@ -260,11 +306,13 @@ class Order(APIView):
                 email=email,
                 address=address,
                 phone=phone,
+                name=name
             )
 
             Orderstatus.objects.create(
                 order=order,
-                status="Ordered Now"
+                status="Ordered Now",
+                remark="Your Order Is In Progress"
             )
             
             cart_products = CartProduct.objects.filter(cart__id=cart_id)
