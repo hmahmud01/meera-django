@@ -129,7 +129,8 @@
                     {% else %}
                         <span> Payment Status : </span> <span class="label label-success">Complete</span> <br>
                     {% endif %}
-                    <span> Order Status : </span> <span class="label label-info">{{ order.orderstatus.status }}</span>
+                    <span> Order Status : </span> <span class="label label-info">{{ order.orderstatus.status }}</span> <br>
+                    <span> Order Customer Remark : </span> <span class="label label-success">{{ order.orderstatus.remark }}</span>
                     <hr/>
                 </div>
             </div>
