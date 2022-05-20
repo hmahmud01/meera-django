@@ -49,4 +49,5 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderApp
         fields = "__all__"
+        # fields = ['id', 'email', 'phone', 'address', 'name', 'orderstatus']
         depth = 1

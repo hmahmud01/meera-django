@@ -186,6 +186,7 @@ def updateStatus(request, oid):
     order = OrderApp.objects.get(id=oid)
     status = order.orderstatus
     status.status = post_data['status']
+    status.remark = post_data['remark']
     status.save()
 
     return redirect('orderdetail', oid)

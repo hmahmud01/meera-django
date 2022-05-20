@@ -121,7 +121,22 @@ class OrderView(APIView):
             data = []
             query = OrderApp.objects.filter(cart__user=request.user)            
             serializers = OrderSerializer(query, many=True)
+
+            # print(serializers.data)
             for order in serializers.data:
+                order_remark = ""
+                orderapp = OrderApp.objects.get(id=order['id'])
+                # print(orderapp.phone)
+                orderstatus = Orderstatus.objects.filter(order_id=order['id'])                
+                if orderstatus is not []:
+                    for status in orderstatus:                    
+                        if status.remark is not None:
+                            order_remark += status.remark
+                        else:
+                            order_remark = "Under Process"
+                else:
+                    order_remark = "Under Process"
+                
                 cart_products = CartProduct.objects.filter(cart=order['cart']['id'])
                 cart_product_obj_serializer = CartProductSerializers(
                     cart_products, many=True)                
@@ -143,6 +158,7 @@ class OrderView(APIView):
                 # print(cartproducts)
                 # order['cart']['cartproducts'] = cartproducts
                 order['cart']['cartproducts'] = cart_product_obj_serializer.data
+                order['remark'] = order_remark
                 data.append(order)
             print("printing order view")
 
@@ -295,7 +311,8 @@ class Order(APIView):
 
             Orderstatus.objects.create(
                 order=order,
-                status="Ordered Now"
+                status="Ordered Now",
+                remark="Your Order Is In Progress"
             )
             
             cart_products = CartProduct.objects.filter(cart__id=cart_id)

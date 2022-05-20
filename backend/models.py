@@ -80,6 +80,7 @@ class OrderApp(models.Model):
 class Orderstatus(models.Model):
     order = models.OneToOneField(OrderApp, on_delete=models.CASCADE)
     status = models.CharField(max_length=128, null=True, blank=True)
+    remark = models.CharField(max_length=258, null=True, blank=True)
 
     def __str__(self):
         return self.status
