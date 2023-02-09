@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/register/', api_views.RegisterView.as_view()),
     path('api/products/', api_views.ProductView.as_view(), name="products"),
     path('api/categorys/', api_views.CategoryView.as_view(), name="categorys"),
+    path('api/zone/', api_views.ZoneView.as_view(), name="zones"),
     path('api/favourite/', api_views.FavouriteView.as_view(), name="favourite"),
     path('api/cart/', api_views.CartView.as_view()),
     path('api/order/', api_views.OrderView.as_view()),
