@@ -16,6 +16,7 @@ urlpatterns = [
     path('verifylogin', views.verifyLogin, name="verifylogin"),
     path('userlogout/', views.userLogout, name="userlogout"),
     path('productcreate/', views.productCreate, name="productcreate"),
+    # path('productcreate/', views.productCreate, name="productcreate"),
     path('savecategory/', views.saveCategory, name="savecategory"),
     path('savepacksize/', views.savePackSize, name="savepacksize"),
     path('savezone/', views.saveZone, name="savezone"),
