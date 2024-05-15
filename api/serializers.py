@@ -20,6 +20,11 @@ class ZoneSerializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
 
+class UserZoneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Zone
+        fields = "__all__"
+
 User = get_user_model()
 
 class Userserializer(serializers.ModelSerializer):

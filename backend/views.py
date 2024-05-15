@@ -128,6 +128,14 @@ def saveProduct(request):
 
     return redirect('productlist')    
 
+def productUpdate(request, pid):
+    categories = Category.objects.all()
+    zones = Zone.objects.all()
+    packs = PackSize.objects.all()
+    product = Product.objects.get(id=pid)
+    images = ProductImage.objects.filter(product_id=pid)
+    return render(request, "products/create.html", {"categories": categories, "zones": zones, "packs": packs, "product": product, "images": images})
+
 
 def productList(request):
     products = Product.objects.all()
@@ -205,6 +213,10 @@ def inventory(request):
 def simulator(request):
     products = Product.objects.all()
     return render(request, "simulator.html", {"products": products})
+
+def apphome(request):
+    products = Product.objects.all()
+    return render(request, "home.html", {"products": products})
 
 
 # CART FUNCTIONS

@@ -337,3 +337,21 @@ class CategoryView(APIView):
         query = Category.objects.all()
         serializer = CategorySerializer(query, many=True)
         return Response(serializer.data)
+
+class ZoneView(APIView):
+    def get(self, request):
+        query = Zone.objects.all()
+        serializer = UserZoneSerializer(query, many=True)
+        return Response(serializer.data)
+
+
+# [
+#     {
+#         "id": 1,
+#         "name": "Manikganz"
+#     },
+#     {
+#         "id": 2,
+#         "name": "Munshiganz"
+#     }
+# ]
