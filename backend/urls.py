@@ -32,6 +32,7 @@ urlpatterns = [
     path('userprofile/', views.userProfile, name="userprofile"),
     path('inventory/', views.inventory, name="inventory"),
     path('simulator/', views.simulator, name="simulator"),
+    path('apphome/',  views.apphome, name="apphome"),
     path('update_item/', views.updateItem, name='update_item'),
     path('cart/', views.cart, name='cart'),
     path('process_order/', views.processOrder, name='process_order'),

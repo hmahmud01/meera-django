@@ -9,8 +9,8 @@
 
 .product-img-carousel {
     overflow: hidden;
-    height: 640px;
-    width: 100%; /* or any custom size */
-    height: 100%; 
+    /* height: 640px; */
+    max-width: 100%; /* or any custom size */
+    max-height: 100%; 
     object-fit: contain;
 }
