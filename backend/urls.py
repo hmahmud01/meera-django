@@ -33,9 +33,11 @@ urlpatterns = [
     path('inventory/', views.inventory, name="inventory"),
     path('simulator/', views.simulator, name="simulator"),
     path('apphome/',  views.apphome, name="apphome"),
+    path('appcart/', views.appcart, name="appcart"),
     path('update_item/', views.updateItem, name='update_item'),
     path('cart/', views.cart, name='cart'),
     path('process_order/', views.processOrder, name='process_order'),
+    path('payment/', views.payment, name='payment'),
     # api lists
     path('api/login/', obtain_auth_token),
     path('api/register/', api_views.RegisterView.as_view()),

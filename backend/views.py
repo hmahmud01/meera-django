@@ -10,6 +10,8 @@ import json
 from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus
 from backend.utils import cartData
 
+from sslcommerz_lib import SSLCOMMERZ 
+
 # Create your views here.
 
 @login_required(login_url="/login/")
@@ -165,26 +167,34 @@ def stockupdate(request, pid):
     return redirect('productdetail', pid)
 
 def orderList(request):
-    orders = OrderApp.objects.all()    
+    orders = Order.objects.all()    
     return render(request, "orders/index.html", {"orders": orders})
 
 def orderDetail(request, oid):
-    # order = Order.objects.get(id=oid)
-    # items = OrderItems.objects.filter(order_id=oid)
+    order = Order.objects.get(id=oid)
+    items = OrderItems.objects.filter(order_id=oid)
     
-    order = OrderApp.objects.get(id=oid)
+    # order = OrderApp.objects.get(id=oid)
     
-    items = CartProduct.objects.filter(cart__id=order.cart.id)
+    # items = CartProduct.objects.filter(cart__id=order.cart.id)
+    # TODO
+    # make the product item working 
+    print(order)
+    print(items)
     products = []
     total = 0
     for item in items:
-        total += item.subtotal
+        print(item)
+        print(item.product)
+        total += item.get_total
         data = {
-            "product": item.product.all(),
+            "product": item.product.name,
             "qty": item.quantity,
-            "subtotal": item.subtotal
+            "subtotal": item.get_total
         }
         products.append(data)
+
+    print(products)
 
     return render(request, "orders/detail.html", {"order": order, "items": products, "total": total})
 
@@ -218,6 +228,43 @@ def apphome(request):
     products = Product.objects.all()
     return render(request, "home.html", {"products": products})
 
+def appcart(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    context = {'items':items, 'order':order, 'cartItems':cartItems}
+    return render(request, 'homecart.html', context)
+
+def payment(request):
+    settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
+    sslcz = SSLCOMMERZ(settings)
+    post_body = {}
+    post_body['total_amount'] = 100.26
+    post_body['currency'] = "BDT"
+    post_body['tran_id'] = "12345"
+    post_body['success_url'] = "your success url"
+    post_body['fail_url'] = "your fail url"
+    post_body['cancel_url'] = "your cancel url"
+    post_body['emi_option'] = 0
+    post_body['cus_name'] = "test"
+    post_body['cus_email'] = "test@test.com"
+    post_body['cus_phone'] = "01700000000"
+    post_body['cus_add1'] = "customer address"
+    post_body['cus_city'] = "Dhaka"
+    post_body['cus_country'] = "Bangladesh"
+    post_body['shipping_method'] = "NO"
+    post_body['multi_card_name'] = ""
+    post_body['num_of_item'] = 1
+    post_body['product_name'] = "Test"
+    post_body['product_category'] = "Test Category"
+    post_body['product_profile'] = "general"
+
+
+    response = sslcz.createSession(post_body) # API response
+    print(response)
+    # Need to redirect user to response['GatewayPageURL']
+
 
 # CART FUNCTIONS
 def updateItem(request):
@@ -225,7 +272,10 @@ def updateItem(request):
     productId = data['productId']
     action = data['action']
 
-    customer = "Some Customer"
+    print(data)
+
+    # customer = "Some Customer"
+    customer = request.user.username
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
@@ -253,12 +303,16 @@ def cart(request):
 
 
 def processOrder(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['qxaCFgXfhz7kpoMgEECXqCQ3gNCNiWfXpNq6cVC0TeDouU4AdDFexEF8jalqDhsq'], 'order': ['40']}>
     post_data = request.POST
-    print(post_data['order'])
     order_id = post_data['order']
     order = Order.objects.get(id=order_id)
     order.complete = True
     order.trx_id = "meera-"+str(order.id)
-    order.save()
+    # order.save()
 
+    print(f"order stat: {order.complete} {order.trx_id}")
+    print(order)
+    # print(order_comp)
+    order.save()
     return redirect('cart')

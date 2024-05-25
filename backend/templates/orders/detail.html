@@ -72,15 +72,15 @@
                             <tbody>                            
                             <tr>
                                 
-                                {% for p in item.product %}
+                                {% comment %} {% for p in item.product %} {% endcomment %}
                                 <td width="90">
                                     <img style="width: 90px;" src="/media/{{ p.thumb_image }}" alt="">
                                 </td>
                                 <td class="desc">
                                     <h3>
-                                    <a href="{% url 'productdetail' p.id %}" class="text-navy">
+                                    {% comment %} <a href="{% url 'productdetail' p.id %}" class="text-navy"> {% endcomment %}
                                        {{ p }}
-                                    </a>
+                                    {% comment %} </a> {% endcomment %}
                                     </h3>
                                     <p class="small">
                                         {{ p.description }}
@@ -95,7 +95,7 @@
                                 <td>
                                     ৳{{ p.price }}
                                 </td>
-                                {% endfor %}
+                                {% comment %} {% endfor %} {% endcomment %}
                                 
                                 <td width="65">                                    
                                     * {{ item.qty }} =

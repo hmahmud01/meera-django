@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meera Store</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/css/animate.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+    </script>
+
+</head>
+
+<body class="top-navigation">
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+        <div class="page-header bg-dark w-100">
+            <div class="text-white m-1 p-1">
+                <p class="m-0 p-0 text-center">Page  Header</p>
+            </div>
+        </div>
+        <nav class="navbar navbar-expand-lg navbar-static-top" role="navigation">
+            
+            <a href="#" class="navbar-brand">Meera</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-reorder"></i>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navbar">
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="active">
+                        <a aria-expanded="false" role="button" href="layouts.html"> Back to main Layout page</a>
+                    </li>
+                    <li class="dropdown">
+                        <a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu item</a>
+                        <ul role="menu" class="dropdown-menu">
+                            <li><a href="">Menu item</a></li>
+                            <li><a href="">Menu item</a></li>
+                            <li><a href="">Menu item</a></li>
+                            <li><a href="">Menu item</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <a href="{% url 'cart' %}">
+                            <i class="fa fa-shopping-cart"></i> Cart
+                        </a>
+                    </li>
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-sm-4">
+                <h2>Meera Seed Online Store</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">
+                        <strong>Home</strong>
+                    </li>
+                </ol>
+            </div>
+            <!-- <div class="col-sm-8">
+                <div class="title-action">
+                    <a href="{% url 'cart' %}" class="btn btn-primary">Cart</a>
+                </div>
+            </div> -->
+        </div>  
+
+        <div class="row wrapper border-bottom bg-info page-heading d-flex justify-content-center align-items-center">
+            <h1 class="text-white">Seeds Online | Buy Best Quality Agricultural Seeds Online</h1>
+        </div>
+        <div class="wrapper wrapper-content">
+        
+            <div class="row">
+                <div class="col-md-9">
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <span class="float-right">(<strong>{{ order.get_cart_items }}</strong>) items</span>
+                            <h5>Items in your cart</h5>
+                        </div>
+                        {% for item in items %}
+                        <div class="ibox-content">
+                            <div class="table-responsive">
+                                <table class="table shoping-cart-table">
+                                    <tbody>                            
+                                    <tr>
+                                        <td width="90">
+                                            <div class="cart-product-imitation">
+                                            </div>
+                                        </td>
+                                        <td class="desc">
+                                            <h3>
+                                            <a href="#" class="text-navy">
+                                            {{ item.product.name }}
+                                            </a>
+                                            </h3>
+                                            <p class="small">
+                                                {{ item.product.description }}
+                                            </p>
+                                            <dl class="small m-b-none">
+                                                <dt>Description lists</dt>
+                                                <dd>Category: {{ item.product.category.title }}</dd>
+                                                <dd>Pack Size: {{ item.product.pack_size.size }}</dd>
+                                            </dl>
+
+                                            <div class="m-t-sm">
+                                                <!-- <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove item</a> -->
+                                                <button data-product="{{ item.product.id }}" data-action="add" class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+                                                <button data-product="{{ item.product.id }}" data-action="remove" class="btn btn-xs btn-outline btn-danger update-cart">Remove <i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            ৳{{ item.product.price }}
+                                            <!-- <s class="small text-muted">$230,00</s> -->
+                                        </td>
+                                        <td width="65">
+                                            <input type="text" class="form-control" placeholder="{{ item.quantity }}">
+                                        </td>
+                                        <td>
+                                            <h4>
+                                                ৳ {{ item.get_total }}
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="ibox-content">
+
+                            <button class="btn btn-primary float-right"><i class="fa fa fa-shopping-cart"></i> Checkout</button>
+                            <button class="btn btn-white"><i class="fa fa-arrow-left"></i> Continue shopping</button>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-3">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Cart Summary</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <span>
+                                Total
+                            </span>
+                            <h2 class="font-bold">
+                                ৳{{ order.get_cart_total|floatformat:2 }}
+                            </h2>
+
+                            <hr/>
+                            <div class="m-t-sm">
+                                <form action="{% url 'process_order' %}" method="POST">{% csrf_token %}
+                                    <input type="hidden" name="order" value="{{ order.id }}">
+                                    <div class="btn-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</button>
+                                        <a href="{% url 'payment' %}">Test PAYMENT</href>
+                                        <button class="btn btn-white btn-sm" >Cancel</button>
+                                        <!-- <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</a>
+                                        <a href="#" class="btn btn-white btn-sm"> Cancel</a> -->
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <h5>Support</h5>
+                        </div>
+                        <div class="ibox-content text-center">
+
+
+
+                            <h3><i class="fa fa-phone"></i> +43 100 783 001</h3>
+                            <span class="small">
+                                Please contact with us if you have any questions. We are avalible 24h.
+                            </span>
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="footer">
+            <div class="float-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2018
+            </div>
+        </div>
+
+        </div>
+        </div>
+
+    <script src="/static/js/cart.js"></script>
+
+
+    <!-- Mainly scripts -->
+    <script src="/static/js/jquery-3.1.1.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/static/js/inspinia.js"></script>
+    <script src="/static/js/plugins/pace/pace.min.js"></script>
+</body>
+
+</html>
