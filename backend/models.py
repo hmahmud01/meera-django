@@ -139,4 +139,15 @@ class OrderItems(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+    
 
+
+class OrderWeb(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    email = models.CharField(max_length=150, null=True, blank=True)
+    phone = models.CharField(max_length=13)
+    address = models.CharField(max_length=200)
+    name= models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.order} - {self.phone} - {self.id}"

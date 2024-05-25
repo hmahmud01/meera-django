@@ -33,7 +33,12 @@ urlpatterns = [
     path('inventory/', views.inventory, name="inventory"),
     path('simulator/', views.simulator, name="simulator"),
     path('apphome/',  views.apphome, name="apphome"),
+    path('appproductdetail/<int:pid>', views.homeproductDetail, name="appproductdetail"),
     path('appcart/', views.appcart, name="appcart"),
+    path('appcheckout/', views.appcheckout, name="appcheckout"),
+    path('makepayment/', views.makepayment, name="makepayment"),
+    path('success/', views.successpage, name="successpage"),
+    path('failed/', views.failedpage, name="failedpage"),
     path('update_item/', views.updateItem, name='update_item'),
     path('cart/', views.cart, name='cart'),
     path('process_order/', views.processOrder, name='process_order'),
@@ -58,3 +63,4 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
