@@ -138,7 +138,6 @@ def productUpdate(request, pid):
     images = ProductImage.objects.filter(product_id=pid)
     return render(request, "products/create.html", {"categories": categories, "zones": zones, "packs": packs, "product": product, "images": images})
 
-
 def productList(request):
     products = Product.objects.all()
     return render(request, "products/list.html", {"products": products})
@@ -174,7 +173,8 @@ def stockupdate(request, pid):
 
 def orderList(request):
     orders = Order.objects.all()    
-    return render(request, "orders/index.html", {"orders": orders})
+    orderweb = OrderWeb.objects.all()
+    return render(request, "orders/index.html", {"orders": orders, "weborders": orderweb})
 
 def orderDetail(request, oid):
     order = Order.objects.get(id=oid)
