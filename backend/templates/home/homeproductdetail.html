@@ -71,7 +71,10 @@
                                 <dt>Zones Available in</dt>
                                 {% for zone in zones %}
                                 <dd>* {{ zone.zone.name }}</dd>
-                                {% endfor %}                                
+                                {% endfor %}     
+                                {% for pack in packs %}      
+                                 <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
+                                {% endfor %}                    
                                 <dt>Stock Available</dt>
                                 <dd>{{ product.inv_stock }}</dd>                                
                                 <dt>Product Status</dt>

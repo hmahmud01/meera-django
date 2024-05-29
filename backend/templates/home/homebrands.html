@@ -1,0 +1,27 @@
+{% extends 'base_app.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrapper wrapper-content">
+    <div class="container">
+        <h1>Payment Success</h1>    
+        <div class="row">
+            {% for brand in brands %}
+            <div class="col-md-3">
+                <div class="ibox">
+                    <div class="ibox-content product-box">
+                        <div class="product-imitation">
+                            <img class="product-img-carousel" src="/media/{{ brand.image }}" />
+                        </div>
+                        <div class="product-desc">
+                            <a href="{% url 'seeds' brand.id %}" class="product-name"> {{ brand.name }}</a>   
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

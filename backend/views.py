@@ -5,9 +5,11 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+import itertools
+
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice
 from backend.utils import cartData
 
 from sslcommerz_lib import SSLCOMMERZ 
@@ -53,7 +55,8 @@ def productCreate(request):
     categories = Category.objects.all()
     zones = Zone.objects.all()
     packs = PackSize.objects.all()
-    return render(request, "products/create.html", {"categories": categories, "zones": zones, "packs": packs})
+    brands = ProductBrand.objects.all()
+    return render(request, "products/create.html", {"categories": categories, "zones": zones, "packs": packs, "brands": brands})
 
 
 def saveCategory(request):
@@ -64,6 +67,17 @@ def saveCategory(request):
         thumb_image=file_data['thumb_image'],
     )
     category.save()
+    return redirect('productcreate')
+
+def saveBrand(request):
+    data = request.POST
+    file_data = request.FILES
+    brand = ProductBrand(
+        name = data['name'],
+        image=file_data['image']
+    )
+
+    brand.save()
     return redirect('productcreate')
 
 def savePackSize(request):
@@ -93,14 +107,29 @@ def saveZone(request):
 def saveProduct(request):
     post_data = request.POST
     file_data = request.FILES
+    print("PRINTING POST DATA")
+    print(post_data)
+    # <QueryDict: {'csrfmiddlewaretoken': ['EY0yam9HhBhX0LNGHRrawofSW78hMQIcDeg2H1OsTgN15h50gQurDq4XZuRU7bVF'], 
+    # 'name': ['asfe'], 'category': ['3'], 'packsize': ['2'], 'packs': ['1', '2'], 
+    # 'packprice': ['100', '2323'], 'brand': ['1'], 'price': ['10'], 'distributor_slab': ['10'], 
+    # 'disc_price': ['2'], 'description': [''], 'inv_stock': ['10']}>
+    print("PRINTING FILE DATA")
+    print(file_data)
     category = Category.objects.get(id=post_data['category'])
     size = PackSize.objects.get(id=post_data['packsize'])
+    brand = ProductBrand.objects.get(id=post_data['brand'])
+
+    packs = post_data.getlist('packs')
+    packprice = post_data.getlist('packprice')
+
     
     product = Product(
         name=post_data['name'],
         category=category,
         pack_size=size,
+        brand= brand,
         price=post_data['price'],
+        distributor_slab=post_data['distributor_slab'],
         disc_price=post_data['disc_price'],
         description=post_data['description'],
         inv_stock=post_data['inv_stock'],
@@ -108,6 +137,16 @@ def saveProduct(request):
     )
     
     product.save()
+
+    for pack, price in itertools.zip_longest(packs, packprice):
+        if pack is not None:
+            packsize = PackSize.objects.get(id=pack)
+            productpackprice = ProductPackPrice(
+                product = product,
+                packsize = packsize,
+                price = price
+            )
+            productpackprice.save()
 
     zones = post_data.getlist("zone")
     for zone_id in zones:
@@ -152,7 +191,8 @@ def homeproductDetail(request, pid):
     product = Product.objects.get(id=pid)
     zones = ProductZone.objects.filter(product_id=pid)
     images = ProductImage.objects.filter(product_id=pid)
-    return render(request, "homeproductdetail.html", {"product": product, "zones": zones, "images": images})
+    packs = ProductPackPrice.objects.filter(product_id=pid)
+    return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -232,7 +272,18 @@ def simulator(request):
 
 def apphome(request):
     products = Product.objects.all()
-    return render(request, "home.html", {"products": products})
+    return render(request, "home/home.html", {"products": products})
+
+def retailer(request):
+    return render(request, "home/homeretailer.html")
+
+def brands(request):
+    brands = ProductBrand.objects.all()
+    return render(request, "home/homebrands.html", {"brands": brands})
+
+def brandProducts(request, bid):
+    products = Product.objects.filter(brand_id=bid)
+    return render(request, "home/home.html", {"products": products})
 
 def appcart(request):
     data = cartData(request)
@@ -240,7 +291,7 @@ def appcart(request):
     order = data['order']
     items = data['items']
     context = {'items':items, 'order':order, 'cartItems':cartItems}
-    return render(request, 'homecart.html', context)
+    return render(request, 'home/homecart.html', context)
 
 def appcheckout(request):
     post_data = request.POST
@@ -256,7 +307,7 @@ def appcheckout(request):
     # print(order_comp)
     order.save()
     context = {'total': order.get_cart_total, 'order_id': order_id}
-    return render(request, 'homecheckout.html', context)
+    return render(request, 'home/homecheckout.html', context)
 
 def makepayment(request):
     post_data = request.POST
@@ -318,10 +369,10 @@ def makepayment(request):
         return redirect('failedpage')
 
 def successpage(request):
-    return render(request, 'homesuccess.html')
+    return render(request, 'home/homesuccess.html')
 
 def failedpage(request):
-    return render(request, 'homefailed.html')
+    return render(request, 'home/homefailed.html')
 
 def payment(request):
     settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
