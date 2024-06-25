@@ -1,24 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base_app.html' %}
 {% load static %}
 
 {% block content %}
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Cart Simulator</h2>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="/">Dashboard</a>
-            </li>
-
-        </ol>
-    </div>
-    <div class="col-sm-8">
-        <div class="title-action">
-            <a href="" class="btn btn-primary">This is action area</a>
-        </div>
-    </div>
-</div>
-
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-md-9">
@@ -41,7 +24,7 @@
                                 <td class="desc">
                                     <h3>
                                     <a href="#" class="text-navy">
-                                       {{ item.product.name }}
+                                    {{ item.product.name }}
                                     </a>
                                     </h3>
                                     <p class="small">
@@ -102,10 +85,11 @@
 
                     <hr/>
                     <div class="m-t-sm">
-                        <form action="{% url 'process_order' %}" method="POST">{% csrf_token %}
+                        <form action="{% url 'appcheckout' %}" method="POST">{% csrf_token %}
                             <input type="hidden" name="order" value="{{ order.id }}">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</button>
+                                <!-- <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</button> -->
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout </button>
                                 <button class="btn btn-white btn-sm" >Cancel</button>
                                 <!-- <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</a>
                                 <a href="#" class="btn btn-white btn-sm"> Cancel</a> -->
@@ -139,8 +123,6 @@
 
 
 </div>
-{% endblock %}
 
-{% block scripts %}
-<script src="/static/js/cart.js"></script>
+
 {% endblock %}

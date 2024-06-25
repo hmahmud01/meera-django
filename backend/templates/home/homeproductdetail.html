@@ -1,0 +1,162 @@
+{% extends 'base_app.html' %}
+{% load static %}
+
+{% block styles %}
+<link href="/static/css/plugins/slick/slick.css" rel="stylesheet">
+<link href="/static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-sm-12">
+        <h2>{{ product.name }}</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="/">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'productlist' %}">Product list</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>Product Detail</strong>
+            </li>
+        </ol>
+    </div>
+    <!-- <div class="col-sm-8">
+
+    </div> -->
+</div>
+
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="ibox product-detail">
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-md-5">
+
+
+                            <div class="product-images">
+                                {% for image in images %}
+                                <div>
+                                    <div class="image-imitation">
+                                        <img class="product-img-carousel" src="/media/{{ image.photo }}" />
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                        <div class="col-md-7">
+
+                            <h2 class="font-bold m-b-xs">
+                                {{ product.name }}
+                            </h2>
+                            <small><strong>Category</strong>: {{ product.category.title }}</small><br>
+                            <small><strong>Brand</strong>: {{ product.brand.name }}</small><br>
+                            <small><strong>Pack Size</strong>: {{ product.pack_size.size }}</small>
+                            <div class="m-t-md">
+                                <h2 class="product-main-price">৳ {{ product.price }} <small class="text-muted"></small> </h2>
+                            </div>
+                            <hr>
+
+                            <h4>Product description</h4>
+
+                            <div class="small text-muted">
+                                {{ product.description }}
+                            </div>
+
+                            <dl class="small m-t-md">
+                                <dt>Zones Available in</dt>
+                                {% for zone in zones %}
+                                <dd>* {{ zone.zone.name }}</dd>
+                                {% endfor %}     
+                                {% for pack in packs %}      
+                                 <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
+                                {% endfor %}                    
+                                <dt>Stock Available</dt>
+                                <dd>{{ product.inv_stock }}</dd>                                
+                                <dt>Product Status</dt>
+                                {% if product.status is True %}
+                                <dd>Active</dd>                                
+                                {% else %}
+                                <dd>Inactive</dd>                                
+                                {% endif %}
+                                <dt>Brand</dt>
+                            </dl>
+                            <hr>
+                            <div>
+                                <div class="btn-group">
+                                    <!-- <a data-toggle="modal" class="btn btn-primary btn-sm text-white" data-target="#update-stock"><i class="fa fa-sort-numeric-asc"></i> Update Stock</a>                                     -->
+                                    <!-- <button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit </button>  -->
+                                    <!-- {% if product.status is True %}
+                                    <a href="{% url 'statusupdate' False product.id %}" class="btn btn-danger btn-sm text-white"><i class="fa fa-times"></i> Disable</a>                                    
+                                    {% else %}
+                                    <a href="{% url 'statusupdate' True product.id %}" class="btn btn-info btn-sm text-white"><i class="fa fa-check"></i> Enable</a>                                    
+                                    {% endif %} -->
+                                    <button data-product="{{ product.id }}" data-action="add" class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+                                    <a href="{% url 'apphome' %}" class="btn btn-danger btn-sm text-white">Back</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-footer">
+                    <span class="float-right">
+                        Created At - <i class="fa fa-clock-o"></i> {{ product.created_at }}
+                    </span>                    
+                    Product Created from Dashboard App
+                </div>
+            </div>
+
+            
+            <div class="modal inmodal fade" id="update-stock" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Update Stock for {{ product.name }}</h4>                                
+                        </div>
+                        <form method="post" action="{% url 'stockupdate' product.id %}">{% csrf_token %}
+                            <div class="modal-body">
+                                <div class="form-group row"><label class="col-sm-2 col-form-label">Stock Qty</label>    
+                                    <div class="col-sm-10"><input type="number" name="stock" placeholder="Stock Qty" class="form-control"></div>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update Stock</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>       
+
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+    <!-- slick carousel-->
+    <script src="/static/js/plugins/slick/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+
+
+            $('.product-images').slick({
+                dots: true
+            });
+
+        });
+
+    </script>
+{% endblock %}

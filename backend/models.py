@@ -28,11 +28,21 @@ class PackSize(models.Model):
     def __str__(self) :
         return self.size
 
+class ProductBrand(models.Model):
+    name = models.CharField(max_length=128, null=True, blank=True)
+    image = models.FileField('brand_thumbnail', upload_to='brands', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="product_category")
+    brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, related_name="product_brand")
     pack_size = models.ForeignKey(PackSize, on_delete=models.CASCADE, related_name="product_pack_size", blank=True, null=True)
     price = models.FloatField(null=True, blank=True)
+    distributor_slab = models.IntegerField(null=True, blank=True)
     disc_price = models.FloatField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     inv_stock = models.IntegerField(null=True, blank=True)    
@@ -42,6 +52,14 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+
+class ProductPackPrice(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_name")
+    packsize = models.ForeignKey(PackSize, on_delete=models.CASCADE, related_name="product_pack")
+    price = models.FloatField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.product.name} - {self.packsize.size} - {self.price}"
 
 class Favourite(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -139,4 +157,15 @@ class OrderItems(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+    
 
+
+class OrderWeb(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    email = models.CharField(max_length=150, null=True, blank=True)
+    phone = models.CharField(max_length=13)
+    address = models.CharField(max_length=200)
+    name= models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.order} - {self.phone} - {self.id}"

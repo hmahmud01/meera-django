@@ -4,6 +4,7 @@
 
 .product-imitation{
     padding: 0;
+    height: 250px !important;
 }
 
 
@@ -14,3 +15,12 @@
     max-height: 100%; 
     object-fit: contain;
 }
+
+.footer {
+    /* position: relative !important; */
+    /* bottom: auto; */
+}
+
+.top-navigation .wrapper.wrapper-content {
+    min-height: 100vh;
+  }
