@@ -153,6 +153,38 @@
                                      </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                {% comment %} <div class="float-right">
+                                    <i class="fa fa-cc-amex text-success"></i>
+                                    <i class="fa fa-cc-mastercard text-warning"></i>
+                                    <i class="fa fa-cc-discover text-danger"></i>
+                                </div> {% endcomment %}
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Order Now</a>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <h2>Summary</h2>
+                                            <strong>Product:</strong>: Name of product <br/>
+                                            <strong>Price:</strong>: <span class="text-navy">৳{{ total|floatformat:2 }}</span>
+
+                                            <p class="m-t">
+                                                Order Now. Pay Later.
+                                                <a class="btn btn-primary">Order</a>
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+
+                                     </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
