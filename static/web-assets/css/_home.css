@@ -1,0 +1,131 @@
+/*
+---------------------
+  breadcrumb-wrap
+---------------------
+*/
+.breadcrumb-sec-wrap{
+	padding: 50px 0;
+}
+.breadcrumb-wrap ul li{
+	float: left;
+	padding: 0 10px;
+}
+.breadcrumb-wrap ul li a{
+	display: inline-block;
+	vertical-align: baseline;
+	text-decoration: none;
+	font-size: 14px;
+	line-height: 1;
+	color: #000;
+	position: relative;
+}
+.breadcrumb-wrap ul li a:after{
+	content: '';
+	position: absolute;
+	right: -15px;
+	top: 50%;
+	transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	width: 10px;
+	height: 1px;
+	background: #000;
+}
+.breadcrumb-wrap ul li:last-of-type a:after{
+	content: none;
+}
+.breadcrumb-wrap ul li a:hover{
+	color: #125e2c;
+}
+/*
+--------------------
+ Product Css
+--------------------
+*/
+.hm-product-lft{
+	width:25%;
+	float: left;
+}
+/*.sidebar-menu ul {
+  display: none;
+}*/
+.sidebar-menu{
+	border-right: 10px solid#fbb81b;
+	height: 800px;
+	margin-right: 40px;
+}
+.sidebar-menu ul li{
+	padding: 5px 0;
+}
+.sidebar-menu > ul > li > ul > li > ul,
+.sidebar-menu > ul > li > ul{
+	padding-left: 40px;
+}
+.sidebar-menu > ul > li > ul > li > ul,
+.sidebar-menu > ul > li > ul{
+	padding-top: 10px;
+}
+.sidebar-menu ul li a{
+	display: inline-block;
+	vertical-align: baseline;
+	text-decoration: none;
+	color: #000;
+	font-size: 16px;
+	line-height: 1;
+}
+.sidebar-menu ul li a:hover{
+	color: #94c120;
+}
+.sidebar-menu ul li ul li ul{
+	display: none;
+}
+.sidebar-menu ul.active {
+  display: block;
+}
+.hm-product-rgt{
+	width: 75%;
+	float: right;
+}
+.hm-product-rgt ul li{
+	width: 33.3333%;
+	float: left;
+	padding: 0 20px 20px;
+}
+.hm-product-grid-img{
+	height: 200px !important;
+	object-fit: cover;
+}
+.hm-product-grid-btm{
+	padding: 20px 0;
+}
+.hm-product-grid-tp-dsc h3{
+	font-size: 22px;
+	line-height: 1;
+	color: #000;
+	font-weight: 700;
+	text-transform: uppercase;
+	margin-bottom: 15px;
+}
+.hm-product-grid-tp-dsc span{
+	display: block;
+	font-size: 14px;
+	line-height: 1;
+	color: #000;
+	padding-bottom: 10px;
+}
+.hm-product-grid-bt-dsc{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.hm-product-grid-bt-dsc img{
+	max-width: 80px;
+	width: 100%;
+}
+.hm-product-grid-bt-dsc h5 {
+    font-size: 18px;
+    line-height: 1.3;
+    color: #94c120;
+    margin-bottom: 0;
+    width: 86px;
+}

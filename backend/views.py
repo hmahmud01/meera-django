@@ -272,7 +272,7 @@ def simulator(request):
 
 def apphome(request):
     products = Product.objects.all()
-    return render(request, "home/home.html", {"products": products})
+    return render(request, "web/index.html", {"products": products})
 
 def retailer(request):
     return render(request, "home/homeretailer.html")
