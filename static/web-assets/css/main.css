@@ -5,8 +5,36 @@
 @import url('_header.css');
 @import url('_page.css');
 @import url('_home.css');
+@import url('_checkout.css');
 @import url('_contact.css');
 @import url('_footer.css');
+
+
+
+/* CART CSS */
+
+.cart-product-imitation {
+    text-align: center;
+    padding-top: 30px;
+    height: 80px;
+    width: 80px;
+    background-color: #f8f8f9;
+}
+
+table.shoping-cart-table {
+    margin-bottom: 0;
+  }
+  table.shoping-cart-table tr td {
+    border: none;
+    text-align: right;
+  }
+  table.shoping-cart-table tr td.desc,
+  table.shoping-cart-table tr td:first-child {
+    text-align: left;
+  }
+  table.shoping-cart-table tr td:last-child {
+    width: 80px;
+  }
 
 
 

@@ -24,6 +24,26 @@
     <link rel="stylesheet" type="text/css" href="/static/web-assets/css/responsive.css">
 
 
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+    </script>
+
 </head>
 
 <body>
@@ -52,6 +72,11 @@
                                         <li><a href="#">Tutorials</a></li>
                                         <li><a href="#">Solutions</a></li>
                                         <li><a href="#">News</a></li>
+                                        <li>
+                                            <a href="{% url 'appcart' %}">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -83,9 +108,86 @@
 
     {% endblock %}
 
+    <footer class="footer-wrp">
+        <div class="footer-tp">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="ftr-col-dsc">
+                            <div class="ftr-logo">
+                                <img src="/static/web-assets/images/logo.png" />
+                            </div>
+                            <div class="ftr-col-dsc-1">
+                                <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
+                                <ul class="clearfix reset-list">
+                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ftr-col-dsc ftr-menu-item">
+                            <h5>Important Link</h5>
+                            <ul class="clearfix reset-list">
+                                <li><a href="#">Why Rijk Zwaan</a></li>
+                                <li><a href="#">Grower Support</a></li>
+                                <li><a href="#">Tutorials</a></li>
+                                <li><a href="#">Solutions</a></li>
+                                <li><a href="#">News</a></li>
+                                <li>
+                                    <a href="{% url 'appcart' %}">Cart</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ftr-col-dsc ftr-menu-item">
+                            <h5>Important Link</h5>
+                            <ul class="clearfix reset-list">
+                                <li><a href="#">Address : Dhaka Bangladesh</a></li>
+                                <li><a href="#">Phone : 1234 5678 9123</a></li>
+                                <li><a href="#">Email : Stevan@Example.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="ftr-col-dsc ftr-gallery-item">
+                            <h5>INSTAGRAM FEED</h5>
+                            <ul class="clearfix reset-list">
+                                <li>
+                                    <img src="/static/web-assets/images/widget1.jpg">
+                                </li>
+                                <li>
+                                    <img src="/static/web-assets/images/widget2.jpg">
+                                </li>
+                                <li>
+                                    <img src="/static/web-assets/images/widget3.jpg">
+                                </li>
+                                <li>
+                                    <img src="/static/web-assets/images/widget4.jpg">
+                                </li>
+                                <li>
+                                    <img src="/static/web-assets/images/widget5.jpg">
+                                </li>
+                                <li>
+                                    <img src="/static/web-assets/images/widget6.jpg">
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-btm">
+            <p>Copyright © 2024 - All Right Reserved</p>
+        </div>
+    </footer>
 
-
-
+    <script src="/static/js/cart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const menuItems = document.querySelectorAll('.menu-item');

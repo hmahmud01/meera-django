@@ -7,13 +7,6 @@ from django.db.models.fields.related import OneToOneField
 
 # Create your models here.
 
-class Category(models.Model):
-    title = models.CharField(max_length=128, null=True, blank=True)
-    thumb_image = models.FileField('product_thumbnail', upload_to='thumbs', blank=True, null=True)
-
-    def __str__(self):
-        return self.title
-
 class Zone(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
 
@@ -35,6 +28,21 @@ class ProductBrand(models.Model):
 
     def __str__(self):
         return self.name
+
+class SubCategory(models.Model):
+    title = models.CharField(max_length=128, null=True, blank=True)
+    brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, related_name="product_category_brand")
+
+    def __str__(self):
+        return self.title
+
+class Category(models.Model):
+    title = models.CharField(max_length=128, null=True, blank=True)
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="product_sub_category")
+    thumb_image = models.FileField('product_thumbnail', upload_to='thumbs', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
 
 class Product(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)

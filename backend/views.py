@@ -192,7 +192,9 @@ def homeproductDetail(request, pid):
     zones = ProductZone.objects.filter(product_id=pid)
     images = ProductImage.objects.filter(product_id=pid)
     packs = ProductPackPrice.objects.filter(product_id=pid)
-    return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
+    print(images)
+    # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -275,15 +277,15 @@ def apphome(request):
     return render(request, "web/index.html", {"products": products})
 
 def retailer(request):
-    return render(request, "home/homeretailer.html")
+    return render(request, "web/retailer.html")
 
 def brands(request):
     brands = ProductBrand.objects.all()
-    return render(request, "home/homebrands.html", {"brands": brands})
+    return render(request, "web/brands.html", {"brands": brands})
 
 def brandProducts(request, bid):
     products = Product.objects.filter(brand_id=bid)
-    return render(request, "home/home.html", {"products": products})
+    return render(request, "web/index.html", {"products": products})
 
 def appcart(request):
     data = cartData(request)
@@ -291,7 +293,9 @@ def appcart(request):
     order = data['order']
     items = data['items']
     context = {'items':items, 'order':order, 'cartItems':cartItems}
-    return render(request, 'home/homecart.html', context)
+    print("====context====")
+    print(context)
+    return render(request, 'web/cart.html', context)
 
 def appcheckout(request):
     post_data = request.POST
@@ -307,7 +311,7 @@ def appcheckout(request):
     # print(order_comp)
     order.save()
     context = {'total': order.get_cart_total, 'order_id': order_id}
-    return render(request, 'home/homecheckout.html', context)
+    return render(request, 'web/checkout.html', context)
 
 def makepayment(request):
     post_data = request.POST

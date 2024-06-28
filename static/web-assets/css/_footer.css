@@ -1,0 +1,90 @@
+/*
+------------------
+ Footer Css
+------------------
+*/
+.footer-tp {
+    background: #f0f3ea;
+    padding: 50px 0;
+}
+.ftr-logo {
+    max-width: 140px;
+    width: 100%;
+    padding-bottom: 20px;
+}
+.ftr-col-dsc-1 p{
+	margin-bottom: 20px;
+}
+.ftr-col-dsc-1 ul{
+	margin: 0 -10px;
+}
+.ftr-col-dsc-1 ul li{
+	float: left;
+	padding: 0 10px;
+}
+.ftr-col-dsc-1 ul li a {
+    display: inline-block;
+    vertical-align: baseline;
+    text-decoration: none;
+    color: #94c11f;
+    width: 35px;
+    height: 35px;
+    border-radius: 20px;
+    border: 2px dotted #94c11f;
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px;
+}
+.ftr-col-dsc h5 {
+    font-size: 20px;
+    line-height: 1;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.ftr-col-dsc h5:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 2px;
+    background: #94c11f;
+}
+.ftr-menu-item{
+	padding-left: 40px;
+}
+.ftr-menu-item ul li{
+	padding: 5px 0;
+}
+.ftr-menu-item ul li a{
+	display: inline-block;
+	vertical-align: baseline;
+	text-decoration: none;
+	font-size: 16px;
+	line-height: 1;
+	color: #000;
+}
+.ftr-menu-item ul li a:hover{
+	color:#94c11f;
+}
+.ftr-gallery-item ul{
+	margin: 0 -5px;
+}
+.ftr-gallery-item ul li{
+	width: 33.3333%;
+	float: left;
+	padding: 5px 5px 5px;
+}
+.footer-btm{
+	padding: 20px 0;
+	background: #135e2c;
+}
+.footer-btm p{
+	margin-bottom: 0;
+	text-align: center;
+	color: #fff;
+}
