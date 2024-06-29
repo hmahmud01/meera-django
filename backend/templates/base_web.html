@@ -73,9 +73,13 @@
                                         <li><a href="#">Solutions</a></li>
                                         <li><a href="#">News</a></li>
                                         <li>
+                                            {% if request.user.is_authenticated %}
                                             <a href="{% url 'appcart' %}">
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
+                                            {% else %}
+                                            <a href="{% url 'login' %}">Login</a>
+                                            {% endif %}
                                         </li>
                                     </ul>
                                 </nav>
@@ -141,7 +145,11 @@
                                 <li><a href="#">Solutions</a></li>
                                 <li><a href="#">News</a></li>
                                 <li>
+                                    {% if request.user.is_authenticated %}
                                     <a href="{% url 'appcart' %}">Cart</a>
+                                    {% else %}
+                                    <a href="{% url 'login' %}">Login</a>
+                                    {% endif %}
                                 </li>
                             </ul>
                         </div>
