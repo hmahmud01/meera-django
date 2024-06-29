@@ -221,6 +221,7 @@ def orderList(request):
 def orderDetail(request, oid):
     order = Order.objects.get(id=oid)
     items = OrderItems.objects.filter(order_id=oid)
+    orderweb = OrderWeb.objects.get(order_id=oid)
     
     # order = OrderApp.objects.get(id=oid)
     
@@ -237,6 +238,10 @@ def orderDetail(request, oid):
         total += item.get_total
         data = {
             "product": item.product.name,
+            "price": item.product.price,
+            "brand": item.product.brand,
+            "category": item.product.category,
+            "pack_size": item.product.pack_size,
             "qty": item.quantity,
             "subtotal": item.get_total
         }
@@ -244,7 +249,7 @@ def orderDetail(request, oid):
 
     print(products)
 
-    return render(request, "orders/detail.html", {"order": order, "items": products, "total": total})
+    return render(request, "orders/detail.html", {"order": order, "items": products, "total": total, "web": orderweb})
 
 def updateStatus(request, oid):
     post_data = request.POST
@@ -371,6 +376,32 @@ def makepayment(request):
 
         msg = response['failedreason']
         return redirect('failedpage')
+
+def makeorder(request):
+    print("====INSIDE MAKE====")
+    post_data = request.POST
+    print(post_data)
+    order = Order.objects.get(id=post_data['order'])
+    order.complete = True
+    order.trx_id = "meera-"+str(order.id)
+    # order.save()
+
+    print(f"order stat: {order.complete} {order.trx_id}")
+    print(order)
+    # print(order_comp)
+    order.save()
+    print(order)
+    orderweb = OrderWeb(
+        order = order,
+        email = post_data['email'],
+        phone = post_data['phone'],
+        address = post_data['address'],
+        name = post_data['name']
+    )
+    orderweb.save()
+    print("====ORDER WEB====")
+    print(orderweb)
+    return redirect('successpage')
 
 def successpage(request):
     return render(request, 'home/homesuccess.html')

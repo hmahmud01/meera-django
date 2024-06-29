@@ -10,7 +10,7 @@ from backend import views
 from api import api_views
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('dashboard/', views.home, name='home'),
     path('blankpage/', views.blankpage, name="blankpage"),
     path('login/', views.login, name="login"),
     path('verifylogin', views.verifyLogin, name="verifylogin"),
@@ -33,7 +33,7 @@ urlpatterns = [
     path('userprofile/', views.userProfile, name="userprofile"),
     path('inventory/', views.inventory, name="inventory"),
     path('simulator/', views.simulator, name="simulator"),
-    path('apphome/',  views.apphome, name="apphome"),
+    path('',  views.apphome, name="apphome"),
     path('brands/', views.brands, name="brands"),
     path('seeds/<int:bid>', views.brandProducts, name="seeds"),
     path('retailer/', views.retailer, name="retailer"),
@@ -41,6 +41,7 @@ urlpatterns = [
     path('appcart/', views.appcart, name="appcart"),
     path('appcheckout/', views.appcheckout, name="appcheckout"),
     path('makepayment/', views.makepayment, name="makepayment"),
+    path('makeorder/', views.makeorder, name="makeorder"),
     path('success/', views.successpage, name="successpage"),
     path('failed/', views.failedpage, name="failedpage"),
     path('update_item/', views.updateItem, name='update_item'),

@@ -1,6 +1,25 @@
 {% extends 'base_web.html' %}
 {% load static %}
 
+{% block breadcrumb %}
+<section class="breadcrumb-sec-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-wrap">
+                    <ul class="clearfix reset-list">
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Rijk Zwaan</a></li>
+                        <li><a href="#">Cart</a></li>
+                        <li><a href="#">Checkout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
 {% block content %}
 
 <section class="page-banner-sec-wrap" style="background:url(/static/web-assets/images/page-banner-bg.jpg);">
@@ -14,66 +33,89 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="total">
-                    <strong>Total To pay </strong> <br/>
-                    <strong>Price:</strong>: <span class="text-navy">৳{{ total|floatformat:2 }}</span>
+                    
                 </div>
                 <div class="checkout-page-wrap">
-                    <h4>Shipping Address</h4>
-                    <form>
-                        <div class="checkout-form-filds clearfix">
-                            <div class="checkout-form-fild">
-                                <input type="text" name="first name" placeholder="First Name">
-                            </div>
-                            <div class="checkout-form-fild">
-                                <input type="text" name="first name" placeholder="Last Name">
-                            </div>
+                    <div class="row">
+                        <div class="col-md-9 px-5">
+                            <h4>Shipping Address</h4>
+                            <form method="POST" action="{% url 'makeorder' %}">{% csrf_token %}
+                                <input type="hidden" name="order" value="{{ order_id }}">
+                                <div class="checkout-form-fild-full">
+                                    <input type="text" name="name" placeholder="Name">
+                                </div>
+                                <div class="checkout-form-fild-full">
+                                    <input type="text" name="address" placeholder="Address">
+                                </div>
+                                <div class="checkout-form-fild-full">
+                                    <input type="text" name="phone" placeholder="Phone">
+                                </div>
+                                <div class="checkout-form-fild-full">
+                                    <input type="text" name="email" placeholder="Email">
+                                </div>
+
+                                <!-- <div class="checkout-form-filds clearfix">
+                                    <div class="checkout-form-fild">
+                                        <input type="text" name="first name" placeholder="First Name">
+                                    </div>
+                                    <div class="checkout-form-fild">
+                                        <input type="text" name="first name" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="checkout-form-filds clearfix">
+                                    <div class="checkout-form-fild">
+                                        <input type="email" name="email" placeholder="Email Address">
+                                    </div>
+                                    <div class="checkout-form-fild">
+                                        <input type="text" name="phone" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                                <div class="checkout-form-filds clearfix">
+                                    <div class="checkout-form-fild">
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>Country</option>
+                                            <option>Bangladesh</option>
+                                            <option>India</option>
+                                            <option>Japan</option>
+                                            <option>Usa</option>
+                                        </select>
+                                    </div>
+                                    <div class="checkout-form-fild">
+                                        <select class="form-control" id="exampleFormControlSelect1">
+                                            <option>State</option>
+                                            <option>Bangladesh</option>
+                                            <option>India</option>
+                                            <option>Japan</option>
+                                            <option>Usa</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="checkout-form-filds clearfix">
+                                    <div class="checkout-form-fild">
+                                        <input type="text" name="email" placeholder="City">
+                                    </div>
+                                    <div class="checkout-form-fild">
+                                        <input type="text" name="phone" placeholder="Zip or Postal Code">
+                                    </div>
+                                </div>
+                                <div class="checkout-form-fild-full">
+                                    <input type="text" name="address" placeholder="Address Line 1">
+                                </div>
+                                <div class="checkout-form-textarea">
+                                    <textarea placeholder="Additional Instruction"></textarea>
+                                </div> -->
+                                <div class="checkout-form-submit">
+                                    <button type="submit">Payment Now</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="checkout-form-filds clearfix">
-                            <div class="checkout-form-fild">
-                                <input type="email" name="email" placeholder="Email Address">
-                            </div>
-                            <div class="checkout-form-fild">
-                                <input type="text" name="phone" placeholder="Phone Number">
-                            </div>
+                        <div class="col-md-3 px-5">
+                            <h4>Summary</h4>
+                            <strong>Total To pay </strong> <br/>
+                            <strong>Price:</strong>: <span class="text-navy">৳{{ total|floatformat:2 }}</span>
                         </div>
-                        <div class="checkout-form-filds clearfix">
-                            <div class="checkout-form-fild">
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>Country</option>
-                                    <option>Bangladesh</option>
-                                    <option>India</option>
-                                    <option>Japan</option>
-                                    <option>Usa</option>
-                                </select>
-                            </div>
-                            <div class="checkout-form-fild">
-                                <select class="form-control" id="exampleFormControlSelect1">
-                                    <option>State</option>
-                                    <option>Bangladesh</option>
-                                    <option>India</option>
-                                    <option>Japan</option>
-                                    <option>Usa</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="checkout-form-filds clearfix">
-                            <div class="checkout-form-fild">
-                                <input type="text" name="email" placeholder="City">
-                            </div>
-                            <div class="checkout-form-fild">
-                                <input type="text" name="phone" placeholder="Zip or Postal Code">
-                            </div>
-                        </div>
-                        <div class="checkout-form-fild-full">
-                            <input type="text" name="address" placeholder="Address Line 1">
-                        </div>
-                        <div class="checkout-form-textarea">
-                            <textarea placeholder="Additional Instruction"></textarea>
-                        </div>
-                        <div class="checkout-form-submit">
-                            <button type="submit">Payment Now</button>
-                        </div>
-                    </form>
+                    </div>
+                    
                 </div>
             </div>
         </div>

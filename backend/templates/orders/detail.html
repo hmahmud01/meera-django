@@ -79,21 +79,22 @@
                                 <td class="desc">
                                     <h3>
                                     {% comment %} <a href="{% url 'productdetail' p.id %}" class="text-navy"> {% endcomment %}
-                                       {{ p }}
+                                       {{ item.product }}
                                     {% comment %} </a> {% endcomment %}
                                     </h3>
                                     <p class="small">
-                                        {{ p.description }}
+                                        {{ item.quantity }}
                                     </p>
                                     <dl class="small m-b-none">
                                         <dt>Description lists</dt>
-                                        <dd>Category: {{ p.category.title }}</dd>
-                                        <dd>Pack Size: {{ p.pack_size.size }}</dd>
+                                        <dd>Brand: {{ item.brand }}</dd>
+                                        <dd>Pack: {{ item.category }}</dd>
+                                        <dd>Pack: {{ item.pack_size }}</dd>
                                     </dl>
                                 </td>
 
                                 <td>
-                                    ৳{{ p.price }}
+                                    ৳{{ item.price }}
                                 </td>
                                 {% comment %} {% endfor %} {% endcomment %}
                                 
@@ -121,16 +122,19 @@
                 </div>
                 <div class="ibox-content">
                     <span> Total : </span> <Strong> ৳ {{ total }}  </Strong> <br>
-                    <span> Contact Phone : </span> <Strong> {{ order.phone }}  </Strong> <br>
-                    <span> Contact Person : </span> <Strong> {{ order.name }}  </Strong> <br>
-                    <span> Client Address : </span> <Strong> {{ order.address }}  </Strong> <br>
-                    {% if order.cart.isComplete is False %}
+                    <span> Contact Phone : </span> <Strong> {{ web.phone }}  </Strong> <br>
+                    <span> Contact Person : </span> <Strong> {{ web.name }}  </Strong> <br>
+                    <span> Client Address : </span> <Strong> {{ web.address }}  </Strong> <br>
+                    <span> Order Status : </span> <Strong> {{ web.status }}  </Strong> <br>
+                    <span> Payment Status : </span> <Strong> {{ web.payment_status }}  </Strong> <br>
+                    <span> Date : </span> <Strong> {{ web.date_added }}  </Strong> <br>
+                    {% comment %} {% if order.cart.isComplete is False %}
                         <span> Payment Status : </span> <span class="label label-danger">InComplete</span> <br>
                     {% else %}
                         <span> Payment Status : </span> <span class="label label-success">Complete</span> <br>
                     {% endif %}
                     <span> Order Status : </span> <span class="label label-info">{{ order.orderstatus.status }}</span> <br>
-                    <span> Order Customer Remark : </span> <span class="label label-success">{{ order.orderstatus.remark }}</span>
+                    <span> Order Customer Remark : </span> <span class="label label-success">{{ order.orderstatus.remark }}</span> {% endcomment %}
                     <hr/>
                 </div>
             </div>

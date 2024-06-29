@@ -173,7 +173,10 @@ class OrderWeb(models.Model):
     email = models.CharField(max_length=150, null=True, blank=True)
     phone = models.CharField(max_length=13)
     address = models.CharField(max_length=200)
+    status = models.CharField(max_length=128, null=True, blank=True, default="MADE")
+    payment_status = models.CharField(max_length=128, null=True, blank=True, default="NOT PAID")
     name= models.CharField(max_length=200, null=True, blank=True)
+    date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.order} - {self.phone} - {self.id}"
