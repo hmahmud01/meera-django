@@ -441,14 +441,18 @@ def payment(request):
 
 # CART FUNCTIONS
 def updateItem(request):
+
     data = json.loads(request.body)
     productId = data['productId']
     action = data['action']
 
     print(data)
-
-    # customer = "Some Customer"
-    customer = request.user.username
+    if request.user.is_authenticated:
+        customer = request.user.username
+        print(f"{customer}")
+    else:
+        customer = "guest"
+        print(f"{customer}")
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
