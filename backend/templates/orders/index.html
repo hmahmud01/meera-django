@@ -22,53 +22,6 @@
 </div>
 
 <div class="wrapper wrapper-content">
-    <!-- <div class="ibox-content m-b-sm border-bottom">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="order_id">Order ID</label>
-                    <input type="text" id="order_id" name="order_id" value="" placeholder="Order ID" class="form-control">
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="status">Order status</label>
-                    <input type="text" id="status" name="status" value="" placeholder="Status" class="form-control">
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="customer">Customer</label>
-                    <input type="text" id="customer" name="customer" value="" placeholder="Customer" class="form-control">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="date_added">Date added</label>
-                    <div class="input-group date">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_added" type="text" class="form-control" value="03/04/2014">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="date_modified">Date modified</label>
-                    <div class="input-group date">
-                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input id="date_modified" type="text" class="form-control" value="03/06/2014">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
-                    <label class="col-form-label" for="amount">Amount</label>
-                    <input type="text" id="amount" name="amount" value="" placeholder="Amount" class="form-control">
-                </div>
-            </div>
-        </div>
-
-    </div> -->
 
     <div class="row">
         
@@ -143,10 +96,12 @@
                         <tr>
 
                             <th>Order ID</th>
-                            <th data-hide="phone">Phone</th>
-                            <th data-hide="phone">Address</th>
-                            <th data-hide="phone">Total</th>
-
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Total</th>
+                            <th>Order Status</th>
+                            <th>Payment Status</th>
+                            <th>Date</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -156,6 +111,9 @@
                                 <td>{{ order.phone }}</td>
                                 <td>{{ order.address }}</td>
                                 <td>৳ {{ order.order.get_cart_total }}</td>
+                                <td>{{ order.status }}</td>
+                                <td>{{ order.payment_status }}</td>
+                                <td>{{ order.date_added }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

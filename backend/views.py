@@ -192,7 +192,9 @@ def homeproductDetail(request, pid):
     zones = ProductZone.objects.filter(product_id=pid)
     images = ProductImage.objects.filter(product_id=pid)
     packs = ProductPackPrice.objects.filter(product_id=pid)
-    return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
+    print(images)
+    # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -219,6 +221,7 @@ def orderList(request):
 def orderDetail(request, oid):
     order = Order.objects.get(id=oid)
     items = OrderItems.objects.filter(order_id=oid)
+    orderweb = OrderWeb.objects.get(order_id=oid)
     
     # order = OrderApp.objects.get(id=oid)
     
@@ -235,6 +238,10 @@ def orderDetail(request, oid):
         total += item.get_total
         data = {
             "product": item.product.name,
+            "price": item.product.price,
+            "brand": item.product.brand,
+            "category": item.product.category,
+            "pack_size": item.product.pack_size,
             "qty": item.quantity,
             "subtotal": item.get_total
         }
@@ -242,7 +249,7 @@ def orderDetail(request, oid):
 
     print(products)
 
-    return render(request, "orders/detail.html", {"order": order, "items": products, "total": total})
+    return render(request, "orders/detail.html", {"order": order, "items": products, "total": total, "web": orderweb})
 
 def updateStatus(request, oid):
     post_data = request.POST
@@ -275,15 +282,15 @@ def apphome(request):
     return render(request, "web/index.html", {"products": products})
 
 def retailer(request):
-    return render(request, "home/homeretailer.html")
+    return render(request, "web/retailer.html")
 
 def brands(request):
     brands = ProductBrand.objects.all()
-    return render(request, "home/homebrands.html", {"brands": brands})
+    return render(request, "web/brands.html", {"brands": brands})
 
 def brandProducts(request, bid):
     products = Product.objects.filter(brand_id=bid)
-    return render(request, "home/home.html", {"products": products})
+    return render(request, "web/index.html", {"products": products})
 
 def appcart(request):
     data = cartData(request)
@@ -291,7 +298,9 @@ def appcart(request):
     order = data['order']
     items = data['items']
     context = {'items':items, 'order':order, 'cartItems':cartItems}
-    return render(request, 'home/homecart.html', context)
+    print("====context====")
+    print(context)
+    return render(request, 'web/cart.html', context)
 
 def appcheckout(request):
     post_data = request.POST
@@ -307,7 +316,7 @@ def appcheckout(request):
     # print(order_comp)
     order.save()
     context = {'total': order.get_cart_total, 'order_id': order_id}
-    return render(request, 'home/homecheckout.html', context)
+    return render(request, 'web/checkout.html', context)
 
 def makepayment(request):
     post_data = request.POST
@@ -367,6 +376,32 @@ def makepayment(request):
 
         msg = response['failedreason']
         return redirect('failedpage')
+
+def makeorder(request):
+    print("====INSIDE MAKE====")
+    post_data = request.POST
+    print(post_data)
+    order = Order.objects.get(id=post_data['order'])
+    order.complete = True
+    order.trx_id = "meera-"+str(order.id)
+    # order.save()
+
+    print(f"order stat: {order.complete} {order.trx_id}")
+    print(order)
+    # print(order_comp)
+    order.save()
+    print(order)
+    orderweb = OrderWeb(
+        order = order,
+        email = post_data['email'],
+        phone = post_data['phone'],
+        address = post_data['address'],
+        name = post_data['name']
+    )
+    orderweb.save()
+    print("====ORDER WEB====")
+    print(orderweb)
+    return redirect('successpage')
 
 def successpage(request):
     return render(request, 'home/homesuccess.html')
