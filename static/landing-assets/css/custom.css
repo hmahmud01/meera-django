@@ -1,0 +1,74 @@
+.landing-page .navbar-default .navbar-brand {
+    background: #ed1c24;
+}
+
+.landing-page .navbar-default .navbar-brand:hover, .landing-page .navbar-default .navbar-brand:focus {
+    background: #e4191f;
+    color: #fff;
+}
+
+.landing-page .navbar-default .navbar-nav > li .nav-link.active, .landing-page .navbar-default .navbar-nav > li .nav-link.active:hover {
+    border-top: 6px solid #ed1c24;
+}
+
+
+.landing-page .btn-primary {
+    background-color: #ed1c24;
+    border-color: #e4191f;
+}
+
+.landing-page .btn-primary:hover, .landing-page .btn-primary:focus, .landing-page .btn-primary:active, .landing-page .btn-primary.active, .landing-page .open .dropdown-toggle.btn-primary {
+    background-color: #e4191f;
+    border-color: #e4191f;
+}
+
+.landing-page span.navy {
+    color: #ed1c24;
+}
+
+.landing-page .features-icon {
+    color: #ed1c24;
+}
+
+.landing-page .navy-line {
+    border-bottom: 2px solid #ed1c24;
+}
+
+.navy-bg, .bg-primary {
+    background-color: #ed1c24 !important;    
+}
+
+.landing-page .social-icon a {
+    background: #ed1c24;
+}
+
+.vertical-date small {
+    color: #ed1c24;
+}
+
+.landing-page .header-back.two {
+    background: url('../img/meera/seed_4.jpg') 50% 0 no-repeat;
+}
+
+.landing-page .contact {
+    background-image: url('');
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-top: 60px;
+}
+
+.landing-page .navbar-default .nav li a {
+    color: #676a6c;
+}
+
+.center-orientation .vertical-timeline-content .vertical-date{
+    top: 12px !important;
+}
+
+.list-text > li {
+    font-size: 18px;
+}
+
+#list-text > li {
+    font-size: 12px;
+}

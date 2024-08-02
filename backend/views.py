@@ -1,4 +1,4 @@
-from django.db.models.fields import CommaSeparatedIntegerField, PositiveBigIntegerField, json
+# from django.db.models.fields import CommaSeparatedIntegerField, PositiveBigIntegerField, json
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -279,7 +279,8 @@ def simulator(request):
 
 def apphome(request):
     products = Product.objects.all()
-    return render(request, "web/index.html", {"products": products})
+    # return render(request, "web/index.html", {"products": products})
+    return render(request, "landing/index.html")
 
 def retailer(request):
     return render(request, "web/retailer.html")
