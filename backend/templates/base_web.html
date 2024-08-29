@@ -62,7 +62,7 @@
                         </div>
                         <div class="hdr-btm clearfix">
                             <div class="hdr-lft">
-                                <a href="/">shop</a>
+                                <a href="{% url 'store' %}">shop</a>
                             </div>
                             <div class="hdr-rgt">
                                 <nav class="main-nav">
@@ -78,7 +78,7 @@
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
                                             {% else %}
-                                            <a href="{% url 'login' %}">Login</a>
+                                            <a href="{% url 'storelogin' %}">Login</a>
                                             {% endif %}
                                         </li>
                                     </ul>

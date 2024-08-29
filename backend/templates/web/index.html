@@ -12,52 +12,21 @@
                         <div class="sidebar-menu">
                             <ul class="clearfix reset-list">
                                 <li>
-                                    <a href="#" class="menu-item" data-submenu="submenu1">Rijk Zwaan</a>
+                                    {% for data in datas %}
+                                    <a href="#" class="menu-item" data-submenu="submenu1">{{ data.brand_name }}</a>
                                     <ul class="clearfix reset-list" id="submenu1">
                                         <li>
-                                            <a href="#" class="menu-item" data-submenu="indoor-submenu1">Indoor</a>
+                                            {% for sub in data.subcategories %}
+                                            <a href="#" class="menu-item" data-submenu="indoor-submenu1">{{ sub.subcategory_title }}</a>
                                             <ul class="clearfix reset-list active" id="indoor-submenu1">
-                                                <li><a href="#">Brinjal</a></li>
-                                                <li><a href="#">Cucumber</a></li>
-                                                <li><a href="#">Gerkhin</a></li>
-                                                <li><a href="#">Hot Pepper</a></li>
-                                                <li><a href="#">Melon</a></li>
-                                                <li><a href="#">Sweet Pepper</a></li>
-                                                <li><a href="#">Tomato</a></li>
-                                                <li><a href="#">Lettuce</a></li>
+                                                {% for category in sub.categories %}
+                                                <li><a href="{% url 'categoryproduct' category.id %}">{{ category.category_title }}</a></li>
+                                                {% endfor %}
                                             </ul>
+                                            {% endfor %}
                                         </li>
                                     </ul>
-                                    <ul class="clearfix reset-list" id="submenu2">
-                                        <li>
-                                            <a href="#" class="menu-item" data-submenu="indoor-submenu2">Indoor</a>
-                                            <ul class="clearfix reset-list" id="indoor-submenu2">
-                                                <li><a href="#">Brinjal</a></li>
-                                                <li><a href="#">Cucumber</a></li>
-                                                <li><a href="#">Gerkhin</a></li>
-                                                <li><a href="#">Hot Pepper</a></li>
-                                                <li><a href="#">Melon</a></li>
-                                                <li><a href="#">Sweet Pepper</a></li>
-                                                <li><a href="#">Tomato</a></li>
-                                                <li><a href="#">Lettuce</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                    <ul class="clearfix reset-list" id="submenu3">
-                                        <li>
-                                            <a href="#" class="menu-item" data-submenu="indoor-submenu3">Indoor</a>
-                                            <ul class="clearfix reset-list" id="indoor-submenu3">
-                                                <li><a href="#">Brinjal</a></li>
-                                                <li><a href="#">Cucumber</a></li>
-                                                <li><a href="#">Gerkhin</a></li>
-                                                <li><a href="#">Hot Pepper</a></li>
-                                                <li><a href="#">Melon</a></li>
-                                                <li><a href="#">Sweet Pepper</a></li>
-                                                <li><a href="#">Tomato</a></li>
-                                                <li><a href="#">Lettuce</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                    {% endfor %}
                                 </li>
                             </ul>
                         </div>
@@ -73,7 +42,9 @@
                                     <div class="hm-product-grid-btm">
                                         <div class="hm-product-grid-tp-dsc">
                                             <h3><a href="{% url 'appproductdetail' product.id %}">{{ product.name }}</a></h3>
-                                            <span>{{ product.price }} BDT</span>
+                                            {% if user.is_authenticated %}
+                                            <span>{{ product.price }} BDT</span>z
+                                            {% endif %}
                                             <span>{{ product.category }}</span>
                                         </div>
                                         <div class="hm-product-grid-bt-dsc">

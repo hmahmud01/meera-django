@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<section class="hm-product-sec-wrp">
+<section class="hm-product-sec-wrp mb-5">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -21,10 +21,16 @@
                             <small><strong>Category</strong>: {{ product.category.title }}</small><br>
                             <small><strong>Brand</strong>: {{ product.brand.name }}</small><br>
                             <small><strong>Pack Size</strong>: {{ product.pack_size.size }}</small>
+                            {% if user.is_authenticated %}
                             <div class="m-t-md">
-                                <h2 class="product-main-price">৳ {{ product.price }} <small class="text-muted"></small>
-                                </h2>
+                                <h2 class="product-main-price">৳ {{ product.price }} <small class="text-muted"></small></h2>
                             </div>
+                            {% else %}
+                            <div class="m-t-md">
+                                <h2 class="product-main-price">Please Login to see the price</h2>
+                            </div>
+                            {% endif %}
+                            
                             <hr>
 
                             <h4>Product description</h4>
@@ -54,13 +60,6 @@
                             <hr>
                             <div>
                                 <div class="btn-group">
-                                    <!-- <a data-toggle="modal" class="btn btn-primary btn-sm text-white" data-target="#update-stock"><i class="fa fa-sort-numeric-asc"></i> Update Stock</a>                                     -->
-                                    <!-- <button class="btn btn-warning btn-sm"><i class="fa fa-edit"></i> Edit </button>  -->
-                                    <!-- {% if product.status is True %}
-                                        <a href="{% url 'statusupdate' False product.id %}" class="btn btn-danger btn-sm text-white"><i class="fa fa-times"></i> Disable</a>                                    
-                                        {% else %}
-                                        <a href="{% url 'statusupdate' True product.id %}" class="btn btn-info btn-sm text-white"><i class="fa fa-check"></i> Enable</a>                                    
-                                        {% endif %} -->
                                     <button data-product="{{ product.id }}" data-action="add"
                                         class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i
                                             class="fa fa-long-arrow-right"></i></button>
