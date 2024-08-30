@@ -37,6 +37,7 @@ urlpatterns = [
     path('store/', views.appstore, name="store"),
     path('storelogin/', views.storelogin, name="storelogin"),
     path('storeregister/', views.storeregister, name="storeregister"),
+    path('userregistration/', views.userregistration, name="userregistration"),
     path('userorders/', views.userorders, name="userorders"),
     path('grower-support/', views.growersupport, name="growersupport"),
     path('tutorials/', views.tutorials, name="tutorials"),

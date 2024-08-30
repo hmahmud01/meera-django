@@ -9,7 +9,7 @@ import itertools
 
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile
 from backend.utils import cartData
 
 from sslcommerz_lib import SSLCOMMERZ 
@@ -28,28 +28,36 @@ def login(request):
 
 def verifyLogin(request):
     post_data = request.POST
-
-    if 'username' and 'pass':
+    print(post_data)
+    print(request.user)
+    if 'username' and 'pass' in post_data:
         user = authenticate(
             request,
             username = post_data['username'],
             password = post_data['pass']
         )
 
+        print(f"AUTHENTICATION {request.user.is_authenticated}")
+
+        print(user)
+
         if user is None:
+            print("NOT FOUND")
             return redirect('login')
         elif user.is_superuser:
             auth_login(request, user)
-            return redirect('/')
+            return redirect('home')
         else:
-            return redirect('login')
+            auth_login(request, user)
+            print(f"user is {user.username}")
+            return redirect('store')
 
     else:
         return redirect('login')
 
 def userLogout(request):
     logout(request)
-    return redirect('login')
+    return redirect('store')
 
 def productCreate(request):
     categories = Category.objects.all()
@@ -283,6 +291,7 @@ def apphome(request):
     return render(request, "landing/index.html")
 
 def appstore(request):
+    print(f"AUTHENTICATION USER {request.user.is_authenticated}")
     products = Product.objects.all()
     brands = ProductBrand.objects.all()
     combined_data = []
@@ -360,6 +369,39 @@ def storelogin(request):
 
 def storeregister(request):
     return render(request, "web/register.html")
+
+def userregistration(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['znoabhOC6asArZly6xI2LukPUp10Ch8GDHBhD3cCEQSaG5MmTGwdMacWVC0onVFu'], 
+    # 'name': ['atest'], 'phone': ['321561'], 'email': ['sadf@sdfe.com'], 
+    # 'password': ['321564'], 'address': ['asdfe'], 'city': ['32asefe'], 'zip': ['321fasef']}>
+    post_data = request.POST
+
+    username = post_data['phone']
+
+    if User.objects.filter(username=username).exists():
+        msg = f"USER ALREADY EXIST WITH THIS {username}"
+        return redirect('storeregister')
+    else:
+        print("USER DONT EXIST")
+        msg = f"REGISTERED SUCCESSFULLY. PLEASE LOGIN WITH YOUR PHONE NUMBER"
+        print(post_data['phone'])
+        print(post_data['email'])
+        print(post_data['password'])
+        user = User.objects.create_user(post_data['phone'], post_data['email'], post_data['password'])
+        print(user)
+        profile = Profile(
+            user = user,
+            name = post_data['name'],
+            phone = post_data['phone'],
+            email = post_data['email'],
+            address = post_data['address'],
+            city = post_data['city'],
+            zip = post_data['zip']
+        )
+
+        profile.save()
+        print(profile)
+        return redirect('storelogin')
 
 def userorders(request):
     return render(request, "web/userorder.html")

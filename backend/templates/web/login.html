@@ -8,18 +8,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="total">
-                    
+                    {% if msg %}
+                    <p>{{ msg }}</p>
+                    {% endif %}
                 </div>
                 <div class="checkout-page-wrap">
                     <div class="row">
                         <div class="col-md-12 px-5">
                             <h4>Login</h4>
-                            <form method="POST" action="">{% csrf_token %}
+                            <form method="POST" action="{% url 'verifylogin' %}">{% csrf_token %}
                                 <div class="checkout-form-fild-full">
                                     <input type="text" name="username" placeholder="Phone/Email">
                                 </div>
                                 <div class="checkout-form-fild-full">
-                                    <input type="password" name="password" placeholder="Password">
+                                    <input type="password" name="pass" placeholder="Password">
                                 </div>
                                 <div class="checkout-form-submit">
                                     <button type="submit">Login Now</button>
