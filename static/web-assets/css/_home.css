@@ -42,6 +42,9 @@
  Product Css
 --------------------
 */
+.hm-product-sec-wrp{
+	padding-bottom: 50px;
+}
 .hm-product-lft{
 	width:25%;
 	float: left;
@@ -128,4 +131,124 @@
     color: #94c120;
     margin-bottom: 0;
     width: 86px;
+}
+.hambar-icon{
+	display: none;
+}
+
+/*
+--------------------
+ Responsive Css
+--------------------
+*/
+@media(max-width:1199px){
+	.main-nav ul li {
+	    padding: 0 25px;
+	}
+	.hdr-tp-rgt a,
+	.hdr-tp-lft a {
+	    max-width: 160px;
+	    width: 100%;
+	}
+	.sidebar-menu > ul > li > ul > li > ul,
+	.sidebar-menu > ul > li > ul {
+	    padding-left: 30px;
+	}
+	.sidebar-menu {
+	    margin-right: 30px;
+	}
+	.hm-product-grid-tp-dsc h3 {
+	    font-size: 20px;
+	}
+}
+@media(max-width:991px){
+	.hm-product-grid-tp-dsc h3 {
+	    font-size: 19px;
+	}
+	.main-nav ul li {
+	    padding: 0 15px;
+	}
+	.hm-product-rgt ul{
+		margin: 0 -10px;
+	}
+	.hm-product-rgt ul li {
+	    padding: 0px 10px 20px;
+	}
+	.sidebar-menu > ul > li > ul > li > ul,
+	.sidebar-menu > ul > li > ul {
+	    padding-left: 20px;
+	}
+}
+@media(max-width:767px){
+		.hm-product-grid-tp-dsc h3 {
+		    font-size: 18px;
+		}
+		.hm-product-lft {
+	    width: 100%;
+	}
+	.hm-product-rgt {
+	    width: 100%;
+	}
+	.hm-product-rgt ul{
+		margin: 0 -10px;
+	}
+	.hm-product-rgt ul li {
+	    width: 50%;
+	    padding: 0 10px 20px;
+	}
+	.breadcrumb-sec-wrap {
+	    padding: 30px 0;
+	}
+	.hdr-btm {
+	    position: relative;
+	}
+	.main-nav{
+	    position: absolute;
+	    left: 0;
+	    right: 0;
+	    top: 100%;
+	    background: #94c120;
+	    z-index: 999;
+	    padding: 20px 20px;
+	    display: none;
+	}
+	.main-nav ul li {
+	    padding: 5px 0;
+	    float: none;
+	    text-align: center;
+	}
+	.hdr-btm {
+	    border-radius: 0;
+	}
+	.hdr-tp-rgt a,
+	.hdr-tp-lft a {
+	    max-width: 120px;
+	    width: 100%;
+	}
+	.hdr-tp {
+	    padding-top: 30px;
+	    padding-bottom: 30px;
+	}
+	.hambar-icon i{
+		font-size: 20px;
+	}
+	.hambar-icon{
+		display: block;
+	}
+	.sidebar-menu {
+	    margin-right: 0;
+	    display: none;
+	}
+}
+@media(max-width:575px){
+
+}
+@media(max-width:479px){
+			.hm-product-grid-tp-dsc h3 {
+			    font-size: 17px;
+			}
+		  .hm-product-rgt ul li {
+		    width: 100%;
+		    padding: 0 10px 20px;
+		}
 }
