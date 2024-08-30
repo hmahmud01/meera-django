@@ -541,10 +541,12 @@ def makeorder(request):
     return redirect('successpage')
 
 def successpage(request):
-    return render(request, 'home/homesuccess.html')
+    return render(request, 'web/success.html')
+    # return render(request, 'home/homesuccess.html')
 
 def failedpage(request):
-    return render(request, 'home/homefailed.html')
+    return render(request, 'web/failed.html')
+    # return render(request, 'home/homefailed.html')
 
 def payment(request):
     settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
