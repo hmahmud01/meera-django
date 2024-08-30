@@ -102,3 +102,28 @@ checkout-page-sec-wrap
 	background: transparent;
 	color:#94c11f;
 }
+
+@media(max-width:767px){
+	.checkout-page-wrap {
+	    padding: 40px 40px;
+	}
+}
+@media(max-width:575px){
+	.checkout-page-wrap {
+	    padding: 40px 20px;
+	}
+}
+@media(max-width:479px){
+	.checkout-form-fild {
+	    width: 100%;
+	    padding: 0 10px 15px;
+	}
+	.checkout-form-filds {
+	    margin: 0 -10px 0;
+	}
+	.page-banner-sec-wrap {
+	    height: 220px !important;
+	    margin-top: 30px;
+	}
+}
+
