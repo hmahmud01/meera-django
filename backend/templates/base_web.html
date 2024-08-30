@@ -2,7 +2,9 @@
 <html>
 
 <head>
-    <title>Home page</title>
+    <title>Meera Shop</title>
+
+    <link rel="icon" href="/static/landing-assets/img/meera/logo-sqr.png" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -54,10 +56,10 @@
                     <div class="header-inr clearfix">
                         <div class="hdr-tp clearfix">
                             <div class="hdr-tp-rgt">
-                                <a href="#"><img src="/static/web-assets/images/logo2.png"></a>
+                                <a href="/"><img src="/static/web-assets/images/logo2.png"></a>
                             </div>
                             <div class="hdr-tp-lft">
-                                <a href="#"><img src="/static/web-assets/images/logo.png"></a>
+                                <a href="{% url 'store' %}"><img src="/static/web-assets/images/logo.png"></a>
                             </div>
                         </div>
                         <div class="hdr-btm clearfix">
@@ -67,11 +69,11 @@
                             <div class="hdr-rgt">
                                 <nav class="main-nav">
                                     <ul class="clearfix reset-list">
-                                        <li><a href="#">Why Rijk Zwaan</a></li>
-                                        <li><a href="#">Grower Support</a></li>
-                                        <li><a href="#">Tutorials</a></li>
-                                        <li><a href="#">Solutions</a></li>
-                                        <li><a href="#">News</a></li>
+                                        <li><a href="https://www.rijkzwaan.in/page/why-rijk-zwaan" target="_blank">Why Rijk Zwaan</a></li>
+                                        <li><a href="{% url 'growersupport' %}">Grower Support</a></li>
+                                        <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                                        <li><a href="{% url 'solutions' %}">Solutions</a></li>
+                                        <li><a href="{% url 'news' %}">News</a></li>
                                         <li>
                                             {% if request.user.is_authenticated %}
                                             <a href="{% url 'appcart' %}">
@@ -94,7 +96,7 @@
     {% block breadcrumb %}
     <section class="breadcrumb-sec-wrap">
         <div class="container">
-            <div class="row">
+            {% comment %} <div class="row">
                 <div class="col-md-12">
                     <div class="breadcrumb-wrap">
                         <ul class="clearfix reset-list">
@@ -105,7 +107,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
     </section>
     {% endblock %}
@@ -125,13 +127,13 @@
                             </div>
                             <div class="ftr-col-dsc-1">
                                 <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
-                                <ul class="clearfix reset-list">
+                                {% comment %} <ul class="clearfix reset-list">
                                     <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                                     <li><a href="#"><i class="fab fa-youtube"></i></a></li>
                                     <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                                     <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
                                     <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                </ul>
+                                </ul> {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -139,16 +141,16 @@
                         <div class="ftr-col-dsc ftr-menu-item">
                             <h5>Important Link</h5>
                             <ul class="clearfix reset-list">
-                                <li><a href="#">Why Rijk Zwaan</a></li>
-                                <li><a href="#">Grower Support</a></li>
-                                <li><a href="#">Tutorials</a></li>
-                                <li><a href="#">Solutions</a></li>
-                                <li><a href="#">News</a></li>
+                                <li><a href="https://www.rijkzwaan.in/page/why-rijk-zwaan" target="_blank">Why Rijk Zwaan</a></li>
+                                <li><a href="{% url 'growersupport' %}">Grower Support</a></li>
+                                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
+                                <li><a href="{% url 'solutions' %}">Solutions</a></li>
+                                <li><a href="{% url 'news' %}">News</a></li>
                                 <li>
                                     {% if request.user.is_authenticated %}
                                     <a href="{% url 'appcart' %}">Cart</a>
                                     {% else %}
-                                    <a href="{% url 'login' %}">Login</a>
+                                    <a href="{% url 'storelogin' %}">Login</a>
                                     {% endif %}
                                 </li>
                             </ul>
@@ -156,11 +158,11 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="ftr-col-dsc ftr-menu-item">
-                            <h5>Important Link</h5>
+                            <h5>Contact Us</h5>
                             <ul class="clearfix reset-list">
-                                <li><a href="#">Address : Dhaka Bangladesh</a></li>
-                                <li><a href="#">Phone : 1234 5678 9123</a></li>
-                                <li><a href="#">Email : Stevan@Example.com</a></li>
+                                <li><a href="#">Address : 4th Floor, Building No.2, </br> 6 Natak Sarani, Ramna, Dhaka, Bangladesh</a></li>
+                                <li><a href="#">Phone : +880 (2) 4103 1883</a></li>
+                                <li><a href="#">Email : connect@meeraseed.com</a></li>
                             </ul>
                         </div>
                     </div>

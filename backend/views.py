@@ -364,6 +364,18 @@ def storeregister(request):
 def userorders(request):
     return render(request, "web/userorder.html")
 
+def growersupport(request):
+    return render(request, "web/basic_pages/grower_support.html")
+
+def tutorials(request):
+    return render(request, "web/basic_pages/tutorials.html")
+
+def solutions(request):
+    return render(request, "web/basic_pages/solutions.html")
+
+def news(request):
+    return render(request, "web/basic_pages/news.html")
+
 def retailer(request):
     return render(request, "web/retailer.html")
 
