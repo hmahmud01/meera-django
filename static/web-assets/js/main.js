@@ -38,13 +38,19 @@ Responsive on 767px
 */
 
 // if (windowWidth <= 767) {
-  $('.toggle-btn').on('click', function(){
-    $(this).toggleClass('menu-expend');
-    $('.toggle-bar ul').slideToggle(500);
-  });
+  // $('.toggle-btn').on('click', function(){
+  //   $(this).toggleClass('menu-expend');
+  //   $('.toggle-bar ul').slideToggle(500);
+  // });
 
 
 // }
+
+$(".hambar-icon").click(function() {
+  $(this).toggleClass("menu-expend");
+  $(".main-nav").slideToggle(500);
+});
+
 
 
 
