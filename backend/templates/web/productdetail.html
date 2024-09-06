@@ -2,8 +2,129 @@
 {% load static %}
 
 {% block content %}
+{% comment %} <section class="page-banner-sec-wrap" style="background:url(assets/images/page-banner-bg.jpg);">
+    <div class="page-banner-wrap">
+      <h3>Product Details</h3>
+    </div>
+</section> {% endcomment %}
 
-<section class="hm-product-sec-wrp mb-5">
+<section class="single-product-details-sec-wrp">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="vn-product-review-con clearfix">
+          <div class="vn-product-review-lft-con">
+            <div class="vn-product-zoom-img-cntlr">
+              <div class="vn-product-zoom-img" id="vnProductZoomImgSlider">
+                <div class="vnProductZoomImgSlideItem">
+                  <a href="#"><span><img src="/media/{{ product.thumb_image }}"></span></a>
+                </div>
+              </div>
+            </div>
+            {% comment %} <div class="ppp-thumb-slider-con">
+              <ul class="clearfix ppp-thumb-slider">
+                <li>
+                  <div>
+                    <span>
+                      <img src="/media/{{ product.thumb_image }}">
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div> {% endcomment %}
+          </div>
+
+          <div class="vn-product-review-rgt-con">
+           <div class="single-product-description clearfix">
+              <div class="product-name">
+                <h3 class="product-name-title">CAP-090</h3>
+                <span><strong>Category:</strong> {{ product.category.title }}</span>
+                <span><strong>Brand:</strong> {{ product.brand.name }}</span>
+                <span><strong>Pack Size:</strong> {{ product.pack_size.size }}</span>
+              </div>
+              <div class="price-block">
+                <div class="price-box">
+                  {% comment %} <p class="old-price"> <span class="price-label">Special Price</span> <span id="product-price-48" class="price"> Tk 309.99 </span> </p> {% endcomment %}
+                  {% if user.is_authenticated %}
+                  <p class="special-price"> <span class="price-label">Regular Price:</span> <span class="price"> ৳ {{ product.price }} </span> </p>
+                  {% else %}
+                  <p class="special-price"> <span class="price-label">Regular Price:</span> <span class="price">Please Login to see the price</span> </p>
+                  {% endif %}
+                  
+                  <p class="availability in-stock pull-right"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>In Stock</span></p>
+                </div>
+              </div>
+              <div class="short-description">
+                <h4 class="short-description-title">Quick Overview</h4>
+                <p>{{ product.description }}</p>
+              </div>
+              <div class="pp-add-to-cart-wrp clearfix">
+                {% comment %} <div class="pp-buy-now-btn">
+                  <button type="submit" value="submit">Buy Now</button>
+                </div>
+                <div class="qty-price qty clearfix">
+                  <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                  <input type="number"  class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" inputmode="numeric">
+                  <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                </div> {% endcomment %}
+                <div class="pp-add-to-cart-btn">
+                  {% comment %} <button type="submit" value="submit">Add to cart</button> {% endcomment %}
+                  <button data-product="{{ product.id }}" data-action="add" class="update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+                </div>
+              </div>
+              
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="tab-info-wrp">
+          <ul class="clearfix">
+            <li><a href="#tabs">DESCRIPTION</a></li>
+            <li><a href="#tabs">INFORMATION</a></li>
+            {% comment %} <li><a href="#tabs">TAGS</a></li> {% endcomment %}
+          </ul>
+          <div class="tabs tabs-content">
+            <p>{{ product.description }}</p>
+          </div>
+          <div class="tabs tabs-content">
+            <dl class="small m-t-md">
+                <dt>Zones Available in</dt>
+                {% for zone in zones %}
+                <dd>* {{ zone.zone.name }}</dd>
+                {% endfor %}
+                {% for pack in packs %}
+                <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
+                {% endfor %}
+                <dt>Stock Available</dt>
+                <dd>{{ product.inv_stock }}</dd>
+                <dt>Product Status</dt>
+                {% if product.status is True %}
+                <dd>Active</dd>
+                {% else %}
+                <dd>Inactive</dd>
+                {% endif %}
+                <dt>Brand</dt>
+            </dl>
+          </div>
+          {% comment %} <div class="tabs tabs-content">
+            <div class="tabs-frm">
+              <form>
+                <label>Add Tags:</label>
+                <input type="text" name="productTagName">
+                <button type="button" title="TAG ADD" value="TAG ADD">TAG ADD</button>
+              </form>
+            </div>
+          </div> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% comment %} <section class="hm-product-sec-wrp mb-5">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -36,7 +157,7 @@
                             <h4>Product description</h4>
 
                             <div class="small text-muted">
-                                {{ product.description }}
+                                
                             </div>
 
                             <dl class="small m-t-md">
@@ -73,6 +194,6 @@
 
             </div>
         </div>
-</section>
+</section> {% endcomment %}
 
 {% endblock %}
