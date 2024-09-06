@@ -51,6 +51,113 @@ $(".hambar-icon").click(function() {
   $(".main-nav").slideToggle(500);
 });
 
+/*
+----------------------
+ Tabs Js
+----------------------
+*/
+if( $('.tabs').length ){
+  $('.tabs:first').show();
+  $('.tab-info-wrp ul li:first').addClass('active');
+
+  $('.tab-info-wrp ul li').on('click',function(){
+    index = $(this).index();
+    $('.tab-info-wrp ul li').removeClass('active');
+    $(this).addClass('active');
+    $('.tabs').hide();
+    $('.tabs').eq(index).show();
+  });
+}
+
+
+//products counter
+if( $('.qty').length ){
+  $('.qty').each(function() {
+    var spinner = $(this),
+      input = spinner.find('input[type="number"]'),
+      btnUp = spinner.find('.plus'),
+      btnDown = spinner.find('.minus'),
+      min = 1,
+      max = input.attr('max');
+
+    btnUp.click(function() {
+      var oldValue = parseFloat(input.val());
+      if (oldValue <= max) {
+        var newVal = oldValue;
+      } else {
+        var newVal = oldValue + 1;
+      }
+      spinner.find("input").val(newVal);
+      spinner.find("input").trigger("change");
+    });
+
+    btnDown.click(function() {
+      var oldValue = parseFloat(input.val());
+      if (oldValue <= min) {
+        var newVal = oldValue;
+      } else {
+        var newVal = oldValue - 1;
+      }
+      spinner.find("input").val(newVal);
+      spinner.find("input").trigger("change");
+    });
+
+  });
+
+}
+
+if( $('.vn-product-zoom-img').length ){
+    $('.vn-product-zoom-img').slick({
+      pauseOnHover: false,
+      autoplay: false,
+      autoplaySpeed: 5000,
+      dots: false,
+      infinite: false,
+      arrows:false,
+      speed: 700,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      fade: true,
+      asNavFor: '.ppp-thumb-slider'
+    });
+}
+if( $('.ppp-thumb-slider').length ){
+    $('.ppp-thumb-slider').slick({
+      dots: false,
+      infinite: false,
+      speed: 300,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      arrows: true,
+      focusOnSelect: true,
+      asNavFor: '.vn-product-zoom-img',
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3
+          }
+        },
+        {
+          breakpoint: 575,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        }
+      ]
+    });
+}
+
 
 
 
