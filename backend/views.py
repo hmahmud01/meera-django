@@ -469,9 +469,9 @@ def makepayment(request):
     post_body['total_amount'] = order.get_cart_total
     post_body['currency'] = "BDT"
     post_body['tran_id'] = "12345"
-    post_body['success_url'] = "http://localhost/success/"
-    post_body['fail_url'] = "http://localhost/failed/"
-    post_body['cancel_url'] = "http://localhost/failed/"
+    post_body['success_url'] = "http://meeraseed.com/success/"
+    post_body['fail_url'] = "http://meeraseed.com/failed/"
+    post_body['cancel_url'] = "http://meeraseed.com/failed/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = order.customer
     post_body['cus_email'] = post_data['email']
