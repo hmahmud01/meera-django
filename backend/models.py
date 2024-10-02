@@ -36,6 +36,8 @@ class PackSize(models.Model):
 class ProductBrand(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
     image = models.FileField('brand_thumbnail', upload_to='brands', blank=True, null=True)
+    test = models.CharField(max_length=128, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
@@ -44,6 +46,7 @@ class ProductBrand(models.Model):
 class SubCategory(models.Model):
     title = models.CharField(max_length=128, null=True, blank=True)
     brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, related_name="product_category_brand")
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -72,7 +75,14 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+    
+class ProductText(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_text")
+    title = models.CharField(max_length=1024, null=True, blank=True)
 
+    def __str__(self):
+        return self.product.name
+    
 class ProductPackPrice(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product_name")
     packsize = models.ForeignKey(PackSize, on_delete=models.CASCADE, related_name="product_pack")

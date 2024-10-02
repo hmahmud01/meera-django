@@ -13,25 +13,29 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="vn-product-review-con clearfix">
-          <div class="vn-product-review-lft-con">
+          <div class="vn-product-review-lft-con"> 
             <div class="vn-product-zoom-img-cntlr">
               <div class="vn-product-zoom-img" id="vnProductZoomImgSlider">
+                {% for image in images %}
                 <div class="vnProductZoomImgSlideItem">
-                  <a href="#"><span><img src="/media/{{ product.thumb_image }}"></span></a>
+                  <a href="#"><span><img src="/media/{{ image.photo }}"></span></a>
                 </div>
+                {% endfor %}
               </div>
             </div>
-            {% comment %} <div class="ppp-thumb-slider-con">
+            <div class="ppp-thumb-slider-con">
               <ul class="clearfix ppp-thumb-slider">
+                {% for image in images %}
                 <li>
                   <div>
                     <span>
-                      <img src="/media/{{ product.thumb_image }}">
+                      <img src="/media/{{ image.photo }}">
                     </span>
                   </div>
                 </li>
+                {% endfor %}
               </ul>
-            </div> {% endcomment %}
+            </div>
           </div>
 
           <div class="vn-product-review-rgt-con">
@@ -88,6 +92,11 @@
           </ul>
           <div class="tabs tabs-content">
             <p>{{ product.description }}</p>
+            {% if texts %}
+            {% for text in texts %}
+            <dd>{{ text.title }}</dd>
+            {% endfor %}
+            {% endif %}
           </div>
           <div class="tabs tabs-content">
             <dl class="small m-t-md">
@@ -108,6 +117,7 @@
                 {% endif %}
                 <dt>Brand</dt>
             </dl>
+
           </div>
           {% comment %} <div class="tabs tabs-content">
             <div class="tabs-frm">

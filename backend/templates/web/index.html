@@ -36,10 +36,12 @@
                             {% for product in products %}
                             <li>
                                 <div class="hm-product-grid">
-                                    <div class="hm-product-grid-img inline-bg"
-                                        style='background:url("/media/{{ product.thumb_image }}");'>
-                                    </div>
-                                    <div class="hm-product-grid-btm">
+                                    <a href="{% url 'appproductdetail' product.id %}" rel="product.nme">
+                                        <div class="hm-product-grid-img inline-bg"
+                                            style='background:url("/media/{{ product.thumb_image }}");'>
+                                        </div>
+                                    </a>
+                                    <!-- <div class="hm-product-grid-btm">
                                         <div class="hm-product-grid-tp-dsc">
                                             <h3><a href="{% url 'appproductdetail' product.id %}">{{ product.name }}</a></h3>
                                             {% if user.is_authenticated %}
@@ -51,7 +53,7 @@
                                             <h5>Sharing a healthy future</h5>
                                             <img src="/static/web-assets/images/logo.png" alt="Logo 1" />
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </li>
                             {% endfor %}
