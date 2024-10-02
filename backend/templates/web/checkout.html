@@ -39,7 +39,7 @@
                     <div class="row">
                         <div class="col-md-9 px-5">
                             <h4>Shipping Address</h4>
-                            <form method="POST" action="{% url 'makeorder' %}">{% csrf_token %}
+                            <form method="POST" action="{% url 'makepayment' %}">{% csrf_token %}
                                 <input type="hidden" name="order" value="{{ order_id }}">
                                 <div class="checkout-form-fild-full">
                                     <input type="text" name="name" placeholder="Name">

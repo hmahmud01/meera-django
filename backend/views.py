@@ -4,12 +4,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 
 import itertools
 
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile, ProductText
 from backend.utils import cartData
 
 from sslcommerz_lib import SSLCOMMERZ 
@@ -200,9 +201,9 @@ def homeproductDetail(request, pid):
     zones = ProductZone.objects.filter(product_id=pid)
     images = ProductImage.objects.filter(product_id=pid)
     packs = ProductPackPrice.objects.filter(product_id=pid)
-    print(images)
+    texts = ProductText.objects.filter(product_id=pid)
     # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
-    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -458,47 +459,47 @@ def appcheckout(request):
 def makepayment(request):
     post_data = request.POST
     print(post_data)
+    order = Order.objects.get(id=post_data['order'])
 
     print("===========printing SSL RESPONSE ===================")
-    settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
+    # settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
+    settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '	6674FB98173C235445', 'issandbox': False }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
-    post_body['total_amount'] = 100.26
+    post_body['total_amount'] = order.get_cart_total
     post_body['currency'] = "BDT"
     post_body['tran_id'] = "12345"
-    post_body['success_url'] = "your success url"
-    post_body['fail_url'] = "your fail url"
-    post_body['cancel_url'] = "your cancel url"
+    post_body['success_url'] = "http://localhost/success/"
+    post_body['fail_url'] = "http://localhost/failed/"
+    post_body['cancel_url'] = "http://localhost/failed/"
     post_body['emi_option'] = 0
-    post_body['cus_name'] = "test"
-    post_body['cus_email'] = "test@test.com"
-    post_body['cus_phone'] = "01700000000"
-    post_body['cus_add1'] = "customer address"
+    post_body['cus_name'] = order.customer
+    post_body['cus_email'] = post_data['email']
+    post_body['cus_phone'] = post_data['phone']
+    post_body['cus_add1'] = post_data['address']
     post_body['cus_city'] = "Dhaka"
     post_body['cus_country'] = "Bangladesh"
     post_body['shipping_method'] = "NO"
     post_body['multi_card_name'] = ""
     post_body['num_of_item'] = 1
-    post_body['product_name'] = "Test"
-    post_body['product_category'] = "Test Category"
-    post_body['product_profile'] = "general"
+    post_body['product_name'] = "Meera Products"
+    post_body['product_category'] = "Seed"
+    post_body['product_profile'] = "agro products"
 
 
     response = sslcz.createSession(post_body)
     print(response)
     status = response['status']
-    if status == "SUCCESS":
-    # <QueryDict: {'csrfmiddlewaretoken': ['Z9lL7jP7kSUTfxVm6cV1YsxpXG9UiCJr5p0RbrjMN7fC1DRd80t2tImxWCGcaOmn'],
+        # <QueryDict: {'csrfmiddlewaretoken': ['Z9lL7jP7kSUTfxVm6cV1YsxpXG9UiCJr5p0RbrjMN7fC1DRd80t2tImxWCGcaOmn'],
     #              'bkash': ['07975686099'], 'pin': ['1234564'], 'order': [''], 'name': ['Hasan Mahmud'], 
     #              'address': ['shantinagar, dahat'], 'phone': ['01797568609'], 'email': ['hmahmud01@gmail.com']}>
+    if status == "SUCCESS":
         order = Order.objects.get(id=post_data['order'])
         order.complete = True
         order.trx_id = "meera-"+str(order.id)
-        # order.save()
 
         print(f"order stat: {order.complete} {order.trx_id}")
         print(order)
-        # print(order_comp)
         order.save()
         orderweb = OrderWeb(
             order = order,
@@ -507,10 +508,12 @@ def makepayment(request):
             address = post_data['address'],
             name = post_data['name']
         )
-        orderweb.save()
-        return redirect('successpage')
-    else:
 
+
+        # SEND AN EMAIL FROM HERE
+        orderweb.save()
+        return redirect(response['GatewayPageURL'])
+    else:
         msg = response['failedreason']
         return redirect('failedpage')
 
@@ -540,10 +543,12 @@ def makeorder(request):
     print(orderweb)
     return redirect('successpage')
 
+@csrf_exempt
 def successpage(request):
     return render(request, 'web/success.html')
     # return render(request, 'home/homesuccess.html')
 
+@csrf_exempt
 def failedpage(request):
     return render(request, 'web/failed.html')
     # return render(request, 'home/homefailed.html')

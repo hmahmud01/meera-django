@@ -95,7 +95,8 @@
 	padding: 0 20px 20px;
 }
 .hm-product-grid-img{
-	height: 200px !important;
+	/* height: 200px !important; */
+	height: 400px !important;
 	object-fit: cover;
 }
 .hm-product-grid-btm{
