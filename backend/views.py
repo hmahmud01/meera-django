@@ -10,7 +10,7 @@ import itertools
 
 import json
 
-from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile, ProductText
+from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile, ProductText, ShippingCharge
 from backend.utils import cartData
 
 from sslcommerz_lib import SSLCOMMERZ 
@@ -405,7 +405,39 @@ def userregistration(request):
         return redirect('storelogin')
 
 def userorders(request):
-    return render(request, "web/userorder.html")
+    all_orders = []
+    if request.user.is_authenticated:
+        customer = request.user.username
+        orders = Order.objects.filter(
+            customer=customer, complete=True)
+        print(orders)
+        
+        # items = order.orderitems_set.all()
+        # cartItems = order.get_cart_items
+
+    for order in orders:
+        # items = order.order_items_set.all()
+        items = OrderItems.objects.filter(order_id=order.id)
+        cartItems = order.get_cart_items
+        cart_total = order.get_cart_total
+
+        obj = {
+            'id': order.id,
+            'order': order,
+            'items': items,
+            'cartItems': cartItems,
+            'cart_total': cart_total
+        }
+
+        all_orders.append(obj)
+        
+    all_orders.reverse()
+
+    context = {'orders': all_orders }
+
+
+    print(context)
+    return render(request, "web/userorder.html", context)
 
 def growersupport(request):
     return render(request, "web/basic_pages/grower_support.html")
@@ -435,12 +467,24 @@ def appcart(request):
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-    context = {'items':items, 'order':order, 'cartItems':cartItems}
+    cart_total = order.get_cart_total
+    charge = ShippingCharge.objects.get(type="local")
+    print(charge)
+    total = cart_total + charge.charge
+    context = {'items':items, 'order':order, 'cartItems':cartItems, 'total': total, 'charge': charge}
     print("====context====")
     print(context)
     return render(request, 'web/cart.html', context)
 
 def appcheckout(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    orderdata = data['order']
+    items = data['items']
+
+    print(f"order data: {data}")
+
+
     post_data = request.POST
     order_id = post_data['order']
     order = Order.objects.get(id=order_id)
@@ -451,31 +495,39 @@ def appcheckout(request):
     print(order)
     print(order.get_cart_total)
 
+    cart_total = order.get_cart_total
+    charge = ShippingCharge.objects.get(type="local")
+    total = cart_total + charge.charge
+    print(charge)
+    total = cart_total + charge.charge
+
     # print(order_comp)
     order.save()
-    context = {'total': order.get_cart_total, 'order_id': order_id}
+    context = {'cart_total': order.get_cart_total, 'charge': charge, 'total': total, 'order_id': order_id, 'items': items}
     return render(request, 'web/checkout.html', context)
 
 def makepayment(request):
     post_data = request.POST
     print(post_data)
     order = Order.objects.get(id=post_data['order'])
+    charge = ShippingCharge.objects.get(type="local")
+    total = order.get_cart_total + charge.charge
 
     print("===========printing SSL RESPONSE ===================")
     # settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
     settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '	6674FB98173C235445', 'issandbox': False }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
-    post_body['total_amount'] = order.get_cart_total
+    post_body['total_amount'] = total
     post_body['currency'] = "BDT"
-    post_body['tran_id'] = "12345"
+    post_body['tran_id'] = order.trx_id
     post_body['success_url'] = "http://meeraseed.com/success/"
     post_body['fail_url'] = "http://meeraseed.com/failed/"
     post_body['cancel_url'] = "http://meeraseed.com/failed/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = order.customer
     post_body['cus_email'] = post_data['email']
-    post_body['cus_phone'] = post_data['phone']
+    post_body['cus_phone'] = ""
     post_body['cus_add1'] = post_data['address']
     post_body['cus_city'] = "Dhaka"
     post_body['cus_country'] = "Bangladesh"
