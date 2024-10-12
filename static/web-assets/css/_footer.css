@@ -40,7 +40,7 @@
     line-height: 1;
     color: #000;
     font-weight: 700;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     position: relative;
     padding-bottom: 10px;
     margin-bottom: 20px;

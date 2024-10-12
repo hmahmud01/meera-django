@@ -132,6 +132,13 @@ class Orderstatus(models.Model):
 
     def __str__(self):
         return self.status
+    
+class ShippingCharge(models.Model):
+    type = models.CharField(max_length=128, null=True, blank=True)
+    charge = models.FloatField()
+
+    def __str__(self):
+        return f"Shipping Charge =={self.charge}"
 
 class ProductZone(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product")
@@ -149,7 +156,7 @@ class ProductImage(models.Model):
         return self.product.name
 
 class Order(models.Model):
-    customer = models.CharField(max_length=128, blank=True, null=True)
+    customer = models.CharField(max_length=128, blank=True, null=True) 
     date_ordered = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     complete = models.BooleanField(default=False, null=True, blank=True)
     trx_id = models.CharField(max_length=128, null=True, blank=True)

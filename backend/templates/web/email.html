@@ -1,0 +1,16 @@
+{% extends 'base_web.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1>Order Confirmed</h1>
+
+<p>Order List</p>
+<ul>
+{% for product in products %}
+<li>{{ product.name }} - size - pack</li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}

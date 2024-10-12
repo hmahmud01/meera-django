@@ -72,15 +72,20 @@
                                 </div>
                                 <nav class="main-nav">
                                     <ul class="clearfix reset-list">
-                                        <li><a href="https://www.rijkzwaan.in/page/why-rijk-zwaan" target="_blank">Why Rijk Zwaan</a></li>
-                                        <li><a href="{% url 'growersupport' %}">Grower Support</a></li>
-                                        <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
-                                        <li><a href="{% url 'solutions' %}">Solutions</a></li>
-                                        <li><a href="{% url 'news' %}">News</a></li>
+                                        <li><a href="https://www.rijkzwaan.com/en/page/about-us" target="_blank">Why Rijk Zwaan</a></li>
+                                        <!-- <li><a href="{% url 'growersupport' %}">Grower Support</a></li> -->
+                                        <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
+                                        <li><a href="https://www.rijkzwaan.com/en/page/solutions" target="_blank">Solutions</a></li>
+                                        <li><a href="https://www.rijkzwaan.com/en/news">News</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li>
                                             <a href="{% url 'appcart' %}">
                                                 <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'userorders' %}">
+                                                <i class="fa fa-subscript"></i>
                                             </a>
                                         </li>
                                         <li>
@@ -111,7 +116,7 @@
                 <div class="col-md-12">
                     <div class="breadcrumb-wrap">
                         <ul class="clearfix reset-list">
-                            <li><a href="#">Shop</a></li>
+                            <li><a href="#">Rijk Zawan</a></li>
                             <!-- <li><a href="#">Rijk Zwaan</a></li>
                             <li><a href="#">Indoor</a></li>
                             <li><a href="#">Brinjal</a></li> -->
@@ -152,11 +157,11 @@
                         <div class="ftr-col-dsc ftr-menu-item">
                             <h5>Important Link</h5>
                             <ul class="clearfix reset-list">
-                                <li><a href="https://www.rijkzwaan.in/page/why-rijk-zwaan" target="_blank">Why Rijk Zwaan</a></li>
-                                <li><a href="{% url 'growersupport' %}">Grower Support</a></li>
-                                <li><a href="{% url 'tutorials' %}">Tutorials</a></li>
-                                <li><a href="{% url 'solutions' %}">Solutions</a></li>
-                                <li><a href="{% url 'news' %}">News</a></li>
+                                <li><a href="https://www.rijkzwaan.com/en/page/about-us" target="_blank">Why Rijk Zwaan</a></li>
+                                <!-- <li><a href="{% url 'growersupport' %}">Grower Support</a></li> -->
+                                <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
+                                <li><a href="https://www.rijkzwaan.com/en/page/solutions" target="_blank">Solutions</a></li>
+                                <li><a href="https://www.rijkzwaan.com/en/news">News</a></li>
                                 <li>
                                     {% if request.user.is_authenticated %}
                                     <a href="{% url 'appcart' %}">Cart</a>
@@ -179,7 +184,7 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="ftr-col-dsc ftr-gallery-item">
-                            <h5>INSTAGRAM FEED</h5>
+                            <h5>Facebook Feed</h5>
                             <ul class="clearfix reset-list">
                                 <li>
                                     <img src="/static/web-assets/images/widget1.jpg">

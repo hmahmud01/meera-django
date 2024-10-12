@@ -22,11 +22,11 @@
 
 {% block content %}
 
-<section class="page-banner-sec-wrap" style="background:url(/static/web-assets/images/page-banner-bg.jpg);">
+<!-- <section class="page-banner-sec-wrap" style="background:url(/static/web-assets/images/page-banner-bg.jpg);">
     <div class="page-banner-wrap">
         <h3>Checkout</h3>
     </div>
-</section>
+</section> -->
 
 <section class="checkout-page-sec-wrap">
     <div class="container">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="checkout-page-wrap">
                     <div class="row">
-                        <div class="col-md-9 px-5">
+                        <div class="col-md-7 px-5">
                             <h4>Shipping Address</h4>
                             <form method="POST" action="{% url 'makepayment' %}">{% csrf_token %}
                                 <input type="hidden" name="order" value="{{ order_id }}">
@@ -109,10 +109,34 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-3 px-5">
+                        <!-- <div class="col-md-3 px-5">
                             <h4>Summary</h4>
                             <strong>Total To pay </strong> <br/>
                             <strong>Price:</strong>: <span class="text-navy">৳{{ total|floatformat:2 }}</span>
+                        </div> -->
+
+                        <div class="col-md-5 px-5">
+                            <h5 class="mb-2">Cart Summary</h5>
+                            <div class="content">
+                                {% for item in items %}
+                                <h5>{{ item.product.name }}: <span class="font-bold float-right"> x{{ item.quantity }} = {{ item.get_total|floatformat:2 }}৳</span></h5>
+                                {% endfor %}                                
+                                <h5>Shipping Charge <span class="font-bold float-right"> {{ charge.charge|floatformat:2 }}৳ </span></h5>
+                                <hr />
+                                <h5>Total: <span class="font-bold float-right"> {{ total|floatformat:2 }}৳ </span></h5>
+                                <div class="m-t-sm">
+                                    <form action="{% url 'appcheckout' %}" method="POST">{% csrf_token %}
+                                        <input type="hidden" name="order" value="{{ order.id }}">
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-shopping-cart"></i> Checkout </button>
+                                            <button class="btn btn-white btn-sm">Cancel</button>
+                                        </div>
+                                    </form>
+    
+                                </div>
+    
+                            </div>
                         </div>
                     </div>
                     

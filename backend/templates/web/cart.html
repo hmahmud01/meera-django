@@ -98,18 +98,18 @@
                     <div class="col-md-3 px-5">
                         <h5>Cart Summary</h5>
                         <div class="content">
-                            <h5>Total: <span class="font-bold"> ৳{{ order.get_cart_total|floatformat:2 }} </span></h5>
+                            <h5>Price: <span class="font-bold float-right"> ৳{{ order.get_cart_total|floatformat:2 }} </span></h5>
+                            <h5>Shipping Charge <span class="font-bold float-right"> ৳{{ charge.charge|floatformat:2 }} </span></h5>
+                            <hr />
+                            <h5>Total: <span class="font-bold float-right"> ৳{{ total|floatformat:2 }} </span></h5>
                             <hr />
                             <div class="m-t-sm">
                                 <form action="{% url 'appcheckout' %}" method="POST">{% csrf_token %}
                                     <input type="hidden" name="order" value="{{ order.id }}">
                                     <div class="btn-group">
-                                        <!-- <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</button> -->
                                         <button type="submit" class="btn btn-primary btn-sm"><i
                                                 class="fa fa-shopping-cart"></i> Checkout </button>
                                         <button class="btn btn-white btn-sm">Cancel</button>
-                                        <!-- <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Checkout</a>
-                                            <a href="#" class="btn btn-white btn-sm"> Cancel</a> -->
                                     </div>
                                 </form>
 

@@ -13,12 +13,12 @@
                             <ul class="clearfix reset-list">
                                 <li>
                                     {% for data in datas %}
-                                    <a href="#" class="menu-item" data-submenu="submenu1">{{ data.brand_name }}</a>
-                                    <ul class="clearfix reset-list" id="submenu1">
+                                    <a href="#" class="menu-item" data-submenu="{{ data.brand_name }}">{{ data.brand_name }}</a>
+                                    <ul class="clearfix reset-list" id="{{ data.brand_name }}">
                                         <li>
                                             {% for sub in data.subcategories %}
-                                            <a href="#" class="menu-item" data-submenu="indoor-submenu1">{{ sub.subcategory_title }}</a>
-                                            <ul class="clearfix reset-list active" id="indoor-submenu1">
+                                            <a href="#" class="menu-item" data-submenu="{{ sub.subcategory_title }}">{{ sub.subcategory_title }}</a>
+                                            <ul class="clearfix reset-list active" id="{{ sub.subcategory_title }}">
                                                 {% for category in sub.categories %}
                                                 <li><a href="{% url 'categoryproduct' category.id %}">{{ category.category_title }}</a></li>
                                                 {% endfor %}
