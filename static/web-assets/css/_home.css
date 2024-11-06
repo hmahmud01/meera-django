@@ -138,6 +138,19 @@
 }
 
 /*
+-------------------
+ Sidebar Css
+-------------------
+*/
+.sidebar-hambar-icon{
+	display: none;
+}
+.sidebar-fliter{
+	display: none;
+}
+
+
+/*
 --------------------
  Responsive Css
 --------------------
@@ -237,8 +250,50 @@
 		display: block;
 	}
 	.sidebar-menu {
-	    margin-right: 0;
-	    display: none;
+		margin-right: 0;
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 50px;
+		background: #fbb81b;
+		height: auto;
+		padding: 20px;
+		border-right: 0;
+	}
+	.breadcrumb-wrap ul li a {
+		font-size: 12px;
+	}
+	.breadcrumb-wrap ul li:first-child{
+		padding-left: 0;
+	}
+	.hm-product-wrap{
+		position: relative;
+	}
+	.sidebar-hambar-icon {
+		float: right;
+		background: #fbb81b;
+		width: 30px;
+		height: 30px;
+		border-radius: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20px;
+		display: block;}
+	.sidebar-hambar-icon i {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		line-height: 29px;
+	}
+	.sidebar-fliter{
+		float: left;
+		display: block;
+	}
+	.sidebar-fliter h4{
+		margin-bottom: 0;
+		font-weight: 700;
 	}
 }
 @media(max-width:575px){
