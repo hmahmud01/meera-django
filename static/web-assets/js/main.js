@@ -51,6 +51,12 @@ $(".hambar-icon").click(function() {
   $(".main-nav").slideToggle(500);
 });
 
+$(".sidebar-hambar-icon").click(function() {
+  console.log("sideber");
+  $(this).toggleClass("menu-expend");
+  $(".sidebar-menu").slideToggle(500);
+});
+
 /*
 ----------------------
  Tabs Js
