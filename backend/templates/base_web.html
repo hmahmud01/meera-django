@@ -79,17 +79,17 @@
                                         <li><a href="https://www.rijkzwaan.com/en/news">News</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li>
-                                            <a href="{% url 'appcart' %}">
+                                            <a href="{% url 'appcart' %}"> Cart
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{% url 'userorders' %}">
+                                            <a href="{% url 'userorders' %}"> Orders
                                                 <i class="fa fa-subscript"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{% url 'userlogout' %}">
+                                            <a href="{% url 'userlogout' %}"> Logout
                                                 <i class="fa fa-sign-out-alt"></i>
                                             </a>
                                         </li>
