@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.base import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields.related import OneToOneField
+from django.utils.text import slugify
 
 # Create your models here.
 
@@ -61,6 +62,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
+    slug = models.SlugField(unique=True, max_length=255, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="product_category")
     brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, related_name="product_brand")
     pack_size = models.ForeignKey(PackSize, on_delete=models.CASCADE, related_name="product_pack_size", blank=True, null=True)
@@ -72,6 +74,11 @@ class Product(models.Model):
     status = models.BooleanField(default=True, null=True, blank=True)    
     thumb_image = models.FileField('product_thumbnail', upload_to='thumbs', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
     
     def __str__(self):
         return self.name
