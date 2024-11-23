@@ -42,7 +42,7 @@
                             {% for product in products %}
                             <li>
                                 <div class="hm-product-grid">
-                                    <a href="{% url 'appproductdetail' product.id %}" rel="product.nme">
+                                    <a href="{% url 'appproductdetail' product.slug %}" rel="product.nme">
                                         <div class="hm-product-grid-img inline-bg"
                                             style='background:url("/media/{{ product.thumb_image }}");'>
                                         </div>
