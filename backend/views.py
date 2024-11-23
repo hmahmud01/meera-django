@@ -196,12 +196,12 @@ def productDetail(request, pid):
     images = ProductImage.objects.filter(product_id=pid)
     return render(request, "products/detail.html", {"product": product, "zones": zones, "images": images})
 
-def homeproductDetail(request, pid):
-    product = Product.objects.get(id=pid)
-    zones = ProductZone.objects.filter(product_id=pid)
-    images = ProductImage.objects.filter(product_id=pid)
-    packs = ProductPackPrice.objects.filter(product_id=pid)
-    texts = ProductText.objects.filter(product_id=pid)
+def homeproductDetail(request, slug):
+    product = Product.objects.get(slug=slug)
+    zones = ProductZone.objects.filter(product_id=product.id)
+    images = ProductImage.objects.filter(product_id=product.id)
+    packs = ProductPackPrice.objects.filter(product_id=product.id)
+    texts = ProductText.objects.filter(product_id=product.id)
     # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
     return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts})
 
