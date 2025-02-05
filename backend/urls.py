@@ -35,6 +35,7 @@ urlpatterns = [
     path('simulator/', views.simulator, name="simulator"),
     path('meera/',  views.apphome, name="meera"),
     path('', views.appstore, name="store"),
+    path('meera-store', views.meera_store, name="meerastore"),
     path('storelogin/', views.storelogin, name="storelogin"),
     path('storeregister/', views.storeregister, name="storeregister"),
     path('userregistration/', views.userregistration, name="userregistration"),

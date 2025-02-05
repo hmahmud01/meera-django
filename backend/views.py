@@ -293,8 +293,8 @@ def apphome(request):
 
 def appstore(request):
     print(f"AUTHENTICATION USER {request.user.is_authenticated}")
-    products = Product.objects.all()
-    brands = ProductBrand.objects.all()
+    products = Product.objects.filter(brand__id=1)
+    brands = ProductBrand.objects.filter(id=1)
     combined_data = []
 
     for brand in brands:
@@ -328,11 +328,48 @@ def appstore(request):
 
     return render(request, "web/index.html", {"products": products, 'datas': combined_data})
 
+def meera_store(request):
+    print(f"AUTHENTICATION USER {request.user.is_authenticated}")
+    products = Product.objects.filter(brand__id=2)
+    brands = ProductBrand.objects.filter(id=2)
+    combined_data = []
+
+    for brand in brands:
+        # Fetch subcategories related to the current brand
+        subcategories = SubCategory.objects.filter(brand=brand)
+        brand_data = {
+            'brand_name': brand.name,
+            'subcategories': []
+        }
+
+        for subcategory in subcategories:
+            # Fetch categories related to the current subcategory
+            categories = Category.objects.filter(subcategory=subcategory)
+            subcategory_data = {
+                'subcategory_title': subcategory.title,
+                'categories': []
+            }
+
+            for category in categories:
+                subcategory_data['categories'].append({
+                    'id': category.id,
+                    'category_title': category.title
+                })
+
+            brand_data['subcategories'].append(subcategory_data)
+
+        combined_data.append(brand_data)
+
+    # [{'brand_name': 'Rijk-Zwaan', 'subcategories': [{'subcategory_title': 'Indoor', 'categories': [{'category_title': 'Tomato'}, {'category_title': 'Cucumber'}]}, {'subcategory_title': 'Outdoor', 'categories': [{'category_title': 'Capsicum'}]}]}, {'brand_name': 'Meera', 'subcategories': []}]
+    print(combined_data)
+
+    return render(request, "web/index_meera.html", {"products": products, 'datas': combined_data})
+
 def categoryProduct(request, pid):
     print(pid)
     # category = Category.objects.get()
     products = Product.objects.filter(category__id=pid)
-    brands = ProductBrand.objects.all()
+    brands = ProductBrand.objects.filter(id=1)
     combined_data = []
 
     for brand in brands:
