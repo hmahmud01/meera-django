@@ -202,8 +202,15 @@ def homeproductDetail(request, slug):
     images = ProductImage.objects.filter(product_id=product.id)
     packs = ProductPackPrice.objects.filter(product_id=product.id)
     texts = ProductText.objects.filter(product_id=product.id)
+    stock = product.inv_stock
+    available = True
+    if stock is None:
+        available = False
+
+    if stock == 0:
+        available = False
     # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
-    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts, "available": available})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -324,6 +331,7 @@ def appstore(request):
         combined_data.append(brand_data)
 
     # [{'brand_name': 'Rijk-Zwaan', 'subcategories': [{'subcategory_title': 'Indoor', 'categories': [{'category_title': 'Tomato'}, {'category_title': 'Cucumber'}]}, {'subcategory_title': 'Outdoor', 'categories': [{'category_title': 'Capsicum'}]}]}, {'brand_name': 'Meera', 'subcategories': []}]
+    print("PRINTING COMBINED DATA")
     print(combined_data)
 
     return render(request, "web/index.html", {"products": products, 'datas': combined_data})
@@ -361,6 +369,7 @@ def meera_store(request):
         combined_data.append(brand_data)
 
     # [{'brand_name': 'Rijk-Zwaan', 'subcategories': [{'subcategory_title': 'Indoor', 'categories': [{'category_title': 'Tomato'}, {'category_title': 'Cucumber'}]}, {'subcategory_title': 'Outdoor', 'categories': [{'category_title': 'Capsicum'}]}]}, {'brand_name': 'Meera', 'subcategories': []}]
+    print("PRINTING COMBINED DATA")
     print(combined_data)
 
     return render(request, "web/index_meera.html", {"products": products, 'datas': combined_data})

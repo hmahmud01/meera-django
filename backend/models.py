@@ -63,6 +63,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
     slug = models.SlugField(unique=True, max_length=255, null=True, blank=True)
+    variety = models.CharField(max_length=128, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="product_category")
     brand = models.ForeignKey(ProductBrand, on_delete=models.CASCADE, related_name="product_brand")
     pack_size = models.ForeignKey(PackSize, on_delete=models.CASCADE, related_name="product_pack_size", blank=True, null=True)

@@ -43,6 +43,9 @@
               <div class="product-name">
                 <h3 class="product-name-title">{{ product.name }}</h3>
                 <span><strong>Category:</strong> {{ product.category.title }}</span>
+                {%if product.variety %}
+                <span><strong>Variety:</strong> {{ product.variety }}</span>
+                {% endif %}
                 <span><strong>Brand:</strong> {{ product.brand.name }}</span>
                 <span><strong>Pack Size:</strong> {{ product.pack_size.size }}</span>
               </div>
@@ -54,14 +57,19 @@
                   {% else %}
                   <p class="special-price"> <span class="price-label">Regular Price:</span> <span class="price">Please Login to see the price</span> </p>
                   {% endif %}
-                  
+                  {% if available %} 
                   <p class="availability in-stock pull-right"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>In Stock</span></p>
+                  {% else %} 
+                  <p class="notavailability in-stock pull-right"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i>Out Of Stock</span></p>
+                  {% endif %} 
                 </div>
               </div>
               <div class="short-description">
                 <h4 class="short-description-title">Quick Overview</h4>
                 <p>{{ product.description }}</p>
               </div>
+
+              {% if available %}
               <div class="pp-add-to-cart-wrp clearfix">
                 <div class="pp-buy-now-btn">
                   {% comment %} <button value="submit">Buy Now</button> {% endcomment %}
@@ -72,6 +80,7 @@
                   <input type="number"  class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" inputmode="numeric">
                   <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                 </div> {% endcomment %}
+
                 <div class="qty-price qty clearfix">
                   <span class="minus">
                     <i data-product="{{ product.id }}" data-action="remove" class="fa fa-minus update-cart" aria-hidden="true"></i>
@@ -85,6 +94,7 @@
                   <button data-product="{{ product.id }}" data-action="add" class="update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
                 </div>
               </div>
+              {% endif %}
               
            </div>
           </div>
@@ -120,7 +130,11 @@
                 <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
                 {% endfor %}
                 <dt>Stock Available</dt>
+                {% if available %}
                 <dd>{{ product.inv_stock }}</dd>
+                {% else %}
+                <dd>Not Available</dd>
+                {% endif %}
                 <dt>Product Status</dt>
                 {% if product.status is True %}
                 <dd>Active</dd>
