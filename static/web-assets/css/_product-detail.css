@@ -265,6 +265,23 @@ ul.ppp-thumb-slider button.slick-prev.slick-disabled{
     padding: 5px 10px;
     border-radius: 999px;
 }
+
+.single-product-description .notavailability.in-stock {
+	padding: 3px 0px;
+	position: absolute;
+	top: 16px;
+	right: 0px;
+}
+.single-product-description .notavailability.in-stock span {
+    color: #fff;
+    font-size: 14px;
+    line-height: 16px;
+    display: block;
+    background: #B91C1C;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+}
 .single-product-description .availability.in-stock span i{
 	padding-right: 5px;
 }
