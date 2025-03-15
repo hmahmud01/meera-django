@@ -58,7 +58,7 @@
                     <div class="header-inr clearfix">
                         <div class="hdr-tp clearfix">
                             <div class="hdr-tp-rgt">
-                                <a href="{% url 'meerastore' %}"><img src="/static/web-assets/images/meera-logo.png" style="height: 65px; margin-top: 15px"></a>
+                                <a href="{% url 'meerastore' %}"><img src="/static/web-assets/images/meera-logo.png" style="height: 95px; margin-top: 15px"></a>
                             </div>
                             <div class="hdr-tp-lft">
                                 <a href="/"><img src="/static/web-assets/images/rijk-logo.png" style="height: 108px;"></a>
@@ -76,9 +76,9 @@
                                     <ul class="clearfix reset-list">
                                         <li><a href="https://www.rijkzwaan.com/en/page/about-us" target="_blank">Why Rijk Zwaan</a></li>
                                         <!-- <li><a href="{% url 'growersupport' %}">Grower Support</a></li> -->
-                                        <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
+                                        <!-- <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
                                         <li><a href="https://www.rijkzwaan.com/en/page/solutions" target="_blank">Solutions</a></li>
-                                        <li><a href="https://www.rijkzwaan.com/en/news">News</a></li>
+                                        <li><a href="https://www.rijkzwaan.com/en/news">News</a></li> -->
                                         {% if request.user.is_authenticated %}
                                         <li>
                                             <a href="{% url 'appcart' %}"> Cart
@@ -140,9 +140,9 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="ftr-col-dsc">
-                            <div class="ftr-logo">
+                            <!-- <div class="ftr-logo">
                                 <img src="/static/web-assets/images/rijk-logo.png" />
-                            </div>
+                            </div> -->
                             <div class="ftr-col-dsc-1">
                                 <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
                                 {% comment %} <ul class="clearfix reset-list">
@@ -162,9 +162,9 @@
                                 <li><a href="{% url 'meera' %}" target="_blank">About Meera</a></li>
                                 <li><a href="https://www.rijkzwaan.com/en/page/about-us" target="_blank">Why Rijk Zwaan</a></li>
                                 <!-- <li><a href="{% url 'growersupport' %}">Grower Support</a></li> -->
-                                <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
+                                <!-- <li><a href="https://learning.rijkzwaan.in/" target="_blank">Tutorials</a></li>
                                 <li><a href="https://www.rijkzwaan.com/en/page/solutions" target="_blank">Solutions</a></li>
-                                <li><a href="https://www.rijkzwaan.com/en/news">News</a></li>
+                                <li><a href="https://www.rijkzwaan.com/en/news">News</a></li> -->
                                 <li>
                                     {% if request.user.is_authenticated %}
                                     <a href="{% url 'appcart' %}">Cart</a>
@@ -180,7 +180,7 @@
                             <h5>Contact Us</h5>
                             <ul class="clearfix reset-list">
                                 <li><a href="#">Address : 4th Floor, Building No.2, </br> 6 Natak Sarani, Ramna, Dhaka, Bangladesh</a></li>
-                                <li><a href="#">Phone : +880 (2) 4103 1883</a></li>
+                                <li><a href="#">Phone : +880 (2) 4103 1883, +880 1711 256106, +880 1711 256107</a></li>
                                 <li><a href="#">Email : connect@meeraseed.com</a></li>
                             </ul>
                         </div>
