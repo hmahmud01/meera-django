@@ -301,7 +301,7 @@ def apphome(request):
 
 def appstore(request):
     print(f"AUTHENTICATION USER {request.user.is_authenticated}")
-    products = Product.objects.filter(brand__id=1)
+    products = Product.objects.filter(brand__id=1, status=True)
     brands = ProductBrand.objects.filter(id=1)
     combined_data = []
 
@@ -339,7 +339,7 @@ def appstore(request):
 
 def meera_store(request):
     print(f"AUTHENTICATION USER {request.user.is_authenticated}")
-    products = Product.objects.filter(brand__id=3)
+    products = Product.objects.filter(brand__id=3, status=True)
     brands = ProductBrand.objects.filter(id=3)
     combined_data = []
 
