@@ -51,7 +51,7 @@ def verifyLogin(request):
         else:
             auth_login(request, user)
             print(f"user is {user.username}")
-            return redirect('store')
+            return redirect('/')
 
     else:
         return redirect('login')
@@ -253,6 +253,7 @@ def orderDetail(request, oid):
         print(item.product)
         total += item.get_total
         data = {
+            "thumb_image": item.product.thumb_image,
             "product": item.product.name,
             "price": item.product.price,
             "brand": item.product.brand,
