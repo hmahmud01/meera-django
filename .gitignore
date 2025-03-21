@@ -132,3 +132,5 @@ dmypy.json
 # docker data
 data/
 media/
+docker-compose.yml
+.Dockerfile
