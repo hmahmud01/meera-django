@@ -63,6 +63,11 @@
                                                     <dt>Description lists</dt>
                                                     <dd>Category: {{ item.product.category.title }}</dd>
                                                     <dd>Pack Size: {{ item.product.pack_size.size }}</dd>
+                                                    {% if item.product.delivery_time %}
+                                                    <dd>Delivery Time: {{ item.product.delivery_time }}</dd>
+                                                    {% else %}
+                                                    <dd>Delivery Time: এই প্রোডাক্ট টি ১ মাস পরে ডেলিভার করা হবে</dd>
+                                                    {% endif %}
                                                 </dl>
 
                                                 <div class="m-t-sm">
