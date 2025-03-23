@@ -48,6 +48,11 @@
                 {% endif %}
                 <span><strong>Brand:</strong> {{ product.brand.name }}</span>
                 <span><strong>Pack Size:</strong> {{ product.pack_size.size }}</span>
+                {% if product.delivery_time %}
+                <span><strong>Delivery Time:</strong> {{ product.delivery_time }}</span>
+                {% else %}
+                <span><strong>Delivery Time:</strong> এই প্রোডাক্ট টি ১ মাস পরে ডেলিভার করা হবে</span>
+                {% endif %}
               </div>
               <div class="price-block">
                 <div class="price-box">
