@@ -74,10 +74,13 @@
                                                     <!-- <a href="#" class="text-muted"><i class="fa fa-trash"></i> Remove item</a> -->
                                                     <button data-product="{{ item.product.id }}" data-action="add"
                                                         class="btn btn-xs btn-outline btn-primary update-cart">Add More
-                                                        <i class="fa fa-long-arrow-right"></i></button>
+                                                        <i class="fa fa-plus"></i></button>
                                                     <button data-product="{{ item.product.id }}" data-action="remove"
-                                                        class="btn btn-xs btn-outline btn-danger update-cart">Delete
-                                                        from cart <i class="fa fa-trash"></i></button>
+                                                        class="btn btn-xs btn-outline btn-danger update-cart">Reduce Qty
+                                                        <i class="fa fa-minus"></i></button>
+                                                    <button data-product="{{ item.product.id }}" data-action="remove-complete"
+                                                        class="btn btn-xs btn-outline btn-warning update-cart">Delete
+                                                        Completely <i class="fa fa-trash"></i></button>
                                                 </div>
                                             </td>
 

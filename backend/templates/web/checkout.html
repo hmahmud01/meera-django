@@ -42,16 +42,16 @@
                             <form method="POST" action="{% url 'makepayment' %}">{% csrf_token %}
                                 <input type="hidden" name="order" value="{{ order_id }}">
                                 <div class="checkout-form-fild-full">
-                                    <input type="text" name="name" placeholder="Name">
+                                    <input type="text" name="name" placeholder="Name" required>
                                 </div>
                                 <div class="checkout-form-fild-full">
-                                    <input type="text" name="address" placeholder="Address">
+                                    <input type="text" name="address" placeholder="Address" required>
                                 </div>
                                 <div class="checkout-form-fild-full">
-                                    <input type="text" name="phone" placeholder="Phone">
+                                    <input type="number" name="phone" placeholder="Phone" required>
                                 </div>
                                 <div class="checkout-form-fild-full">
-                                    <input type="text" name="email" placeholder="Email">
+                                    <input type="text" name="email" placeholder="Email" required>
                                 </div>
 
                                 <!-- <div class="checkout-form-filds clearfix">
@@ -125,11 +125,11 @@
                                 <hr />
                                 <h5>Total: <span class="font-bold float-right"> {{ total|floatformat:2 }}৳ </span></h5>
                                 <div class="m-t-sm">
-                                    <form action="{% url 'appcheckout' %}" method="POST">{% csrf_token %}
-                                        <input type="hidden" name="order" value="{{ order.id }}">
+                                    <form action="{% url 'makepayment' %}" method="POST">{% csrf_token %}
+                                        <input type="hidden" name="order" value="{{ order_id }}">
                                         <div class="btn-group">
-                                            <button type="submit" class="btn btn-primary btn-sm"><i
-                                                    class="fa fa-shopping-cart"></i> Checkout </button>
+                                            <!-- <button type="submit" class="btn btn-primary btn-sm"><i
+                                                    class="fa fa-shopping-cart"></i> Order </button> -->
                                             <button class="btn btn-white btn-sm">Cancel</button>
                                         </div>
                                     </form>
