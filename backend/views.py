@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 
 import itertools
 
@@ -19,7 +20,10 @@ from sslcommerz_lib import SSLCOMMERZ
 
 @login_required(login_url="/login/")
 def home(request):
-    return render(request, "index.html")
+    data = cartData(request)
+    order = data['order']
+    context = {'order':order}
+    return render(request, "index.html", context)
 
 def blankpage(request):
     return render(request, "sample.html")
@@ -44,7 +48,7 @@ def verifyLogin(request):
 
         if user is None:
             print("NOT FOUND")
-            return redirect('login')
+            return redirect('storelogin')
         elif user.is_superuser:
             auth_login(request, user)
             return redirect('home')
@@ -54,7 +58,7 @@ def verifyLogin(request):
             return redirect('/')
 
     else:
-        return redirect('login')
+        return redirect('storelogin')
 
 def userLogout(request):
     logout(request)
@@ -197,6 +201,8 @@ def productDetail(request, pid):
     return render(request, "products/detail.html", {"product": product, "zones": zones, "images": images})
 
 def homeproductDetail(request, slug):
+    data = cartData(request)
+    order = data['order']
     product = Product.objects.get(slug=slug)
     zones = ProductZone.objects.filter(product_id=product.id)
     images = ProductImage.objects.filter(product_id=product.id)
@@ -210,7 +216,7 @@ def homeproductDetail(request, slug):
     if stock == 0:
         available = False
     # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
-    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts, "available": available})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts, "available": available, 'order': order})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)
@@ -296,11 +302,17 @@ def simulator(request):
 
 def apphome(request):
     products = Product.objects.all()
+    data = cartData(request)
+    order = data['order']
+    context = {'order':order}
     # return render(request, "web/index.html", {"products": products})
     return render(request, "landing/index.html")
 
 def appstore(request):
     print(f"AUTHENTICATION USER {request.user.is_authenticated}")
+    data = cartData(request)
+    order = data['order']
+    context = {'order':order}
     products = Product.objects.filter(brand__id=1, status=True)
     brands = ProductBrand.objects.filter(id=1)
     combined_data = []
@@ -335,10 +347,12 @@ def appstore(request):
     print("PRINTING COMBINED DATA")
     print(combined_data)
 
-    return render(request, "web/index.html", {"products": products, 'datas': combined_data})
+    return render(request, "web/index.html", {"products": products, 'datas': combined_data, 'order': order})
 
 def meera_store(request):
     print(f"AUTHENTICATION USER {request.user.is_authenticated}")
+    data = cartData(request)
+    order = data['order']
     products = Product.objects.filter(brand__id=3, status=True)
     brands = ProductBrand.objects.filter(id=3)
     combined_data = []
@@ -373,11 +387,13 @@ def meera_store(request):
     print("PRINTING COMBINED DATA")
     print(combined_data)
 
-    return render(request, "web/index_meera.html", {"products": products, 'datas': combined_data})
+    return render(request, "web/index_meera.html", {"products": products, 'datas': combined_data, 'order': order})
 
 def categoryProduct(request, pid):
     print(pid)
     # category = Category.objects.get()
+    data = cartData(request)
+    order = data['order']
     products = Product.objects.filter(category__id=pid)
     brands = ProductBrand.objects.filter(id=1)
     combined_data = []
@@ -410,7 +426,7 @@ def categoryProduct(request, pid):
 
     # [{'brand_name': 'Rijk-Zwaan', 'subcategories': [{'subcategory_title': 'Indoor', 'categories': [{'category_title': 'Tomato'}, {'category_title': 'Cucumber'}]}, {'subcategory_title': 'Outdoor', 'categories': [{'category_title': 'Capsicum'}]}]}, {'brand_name': 'Meera', 'subcategories': []}]
     print(combined_data)
-    return render(request, "web/index.html", {"products": products, 'datas': combined_data})
+    return render(request, "web/index.html", {"products": products, 'datas': combined_data, 'order': order})
 
 def storelogin(request):
     return render(request, "web/login.html")
@@ -452,6 +468,8 @@ def userregistration(request):
         return redirect('storelogin')
 
 def userorders(request):
+    data = cartData(request)
+    order = data['order']
     all_orders = []
     if request.user.is_authenticated:
         customer = request.user.username
@@ -464,6 +482,7 @@ def userorders(request):
 
     for order in orders:
         # items = order.order_items_set.all()
+        orderweb = OrderWeb.objects.get(order_id=order.id)
         items = OrderItems.objects.filter(order_id=order.id)
         cartItems = order.get_cart_items
         cart_total = order.get_cart_total
@@ -473,14 +492,16 @@ def userorders(request):
             'order': order,
             'items': items,
             'cartItems': cartItems,
-            'cart_total': cart_total
+            'cart_total': cart_total,
+            'status': orderweb.status,
+            'payment_status': orderweb.payment_status
         }
 
         all_orders.append(obj)
         
     all_orders.reverse()
 
-    context = {'orders': all_orders }
+    context = {'orders': all_orders, 'order': order }
 
 
     print(context)
@@ -530,10 +551,12 @@ def appcheckout(request):
     items = data['items']
 
     print(f"order data: {data}")
-
+    print(f"order : {orderdata}")
 
     post_data = request.POST
+    print(f"post data : {post_data}")
     order_id = post_data['order']
+    print(f"ORDER ID : {order_id}")
     order = Order.objects.get(id=order_id)
     # order.complete = True
     # order.trx_id = "meera-"+str(order.id)
@@ -555,26 +578,29 @@ def appcheckout(request):
 
 def makepayment(request):
     post_data = request.POST
-    print(post_data)
+    print(f"POST : {post_data}")
+    today_date = datetime.today().strftime('%Y%m%d')
     order = Order.objects.get(id=post_data['order'])
+    order_trx_id = "meera-0"+str(order.id)+today_date
     charge = ShippingCharge.objects.get(type="local")
     total = order.get_cart_total + charge.charge
+    print(f"TRX ID : {order_trx_id}")
 
     print("===========printing SSL RESPONSE ===================")
     # settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
-    settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '	6674FB98173C235445', 'issandbox': False }
+    settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '6674FB98173C235445', 'issandbox': False }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
     post_body['total_amount'] = total
     post_body['currency'] = "BDT"
-    post_body['tran_id'] = order.trx_id
+    post_body['tran_id'] = order_trx_id
     post_body['success_url'] = "http://meeraseed.com/success/"
     post_body['fail_url'] = "http://meeraseed.com/failed/"
     post_body['cancel_url'] = "http://meeraseed.com/failed/"
     post_body['emi_option'] = 0
     post_body['cus_name'] = order.customer
     post_body['cus_email'] = post_data['email']
-    post_body['cus_phone'] = ""
+    post_body['cus_phone'] = post_data['phone']
     post_body['cus_add1'] = post_data['address']
     post_body['cus_city'] = "Dhaka"
     post_body['cus_country'] = "Bangladesh"
@@ -592,10 +618,11 @@ def makepayment(request):
         # <QueryDict: {'csrfmiddlewaretoken': ['Z9lL7jP7kSUTfxVm6cV1YsxpXG9UiCJr5p0RbrjMN7fC1DRd80t2tImxWCGcaOmn'],
     #              'bkash': ['07975686099'], 'pin': ['1234564'], 'order': [''], 'name': ['Hasan Mahmud'], 
     #              'address': ['shantinagar, dahat'], 'phone': ['01797568609'], 'email': ['hmahmud01@gmail.com']}>
+    print(f"STATUS : {status}")
     if status == "SUCCESS":
         order = Order.objects.get(id=post_data['order'])
         order.complete = True
-        order.trx_id = "meera-"+str(order.id)
+        order.trx_id = order_trx_id
 
         print(f"order stat: {order.complete} {order.trx_id}")
         print(order)
@@ -605,6 +632,7 @@ def makepayment(request):
             email = post_data['email'],
             phone = post_data['phone'],
             address = post_data['address'],
+            payment_status = "PAID",
             name = post_data['name']
         )
 
@@ -614,6 +642,29 @@ def makepayment(request):
         return redirect(response['GatewayPageURL'])
     else:
         msg = response['failedreason']
+        print(msg)
+        order = Order.objects.get(id=post_data['order'])
+        order.complete = False
+        order.trx_id = order_trx_id
+
+        print(f"order stat: {order.complete} {order.trx_id}")
+        print(order)
+        order.save()
+        orderweb = OrderWeb.objects.get(order_id=order.id)
+        orderweb.status = "FAILED",
+        orderweb.payment_status = "UNABLE TO PAID: SSL ISSUE",
+        # orderweb = OrderWeb(
+        #     order = order,
+        #     email = post_data['email'],
+        #     phone = post_data['phone'],
+        #     address = post_data['address'],
+        #     status = "FAILED",
+        #     payment_status = "UNABLE TO PAID: SSL ISSUE",
+        #     name = post_data['name']
+        # )
+
+        # SEND AN EMAIL FROM HERE
+        orderweb.save()
         return redirect('failedpage')
 
 def makeorder(request):
@@ -705,6 +756,8 @@ def updateItem(request):
         orderItem.quantity = (orderItem.quantity + 1)
     elif action == 'remove':
         orderItem.quantity = (orderItem.quantity - 1)
+    elif action == 'remove-complete':
+        orderItem.quantity = 0
     
     orderItem.save()
 

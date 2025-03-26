@@ -27,6 +27,14 @@
                             <div id="ord-{{ order.id }}" class="collapse" aria-labelledby="headingTwo"
                                 data-parent="#accordionExample">
                                 <div class="card-body">
+                                    <span>
+                                        <p>TRX ID: <strong>{{ order.order.trx_id }}</strong></p>
+                                        <p>ORDER DATE: <strong>{{ order.order.date_ordered }}</strong></p>
+                                        <p>TOTAL: <strong>{{ order.order.get_cart_total }} ৳</strong></p>
+                                        <p>STATUS: <span class="label label-primary">{{ order.status }}</span></p>
+                                        <p>PAYMENT STATUS: <span class="label label-primary">{{ order.payment_status }}</span></p>
+                                    </span>
+                                    <h3>PRODUCTS ORDERED</h3>
                                     <table class="table">
                                         <thead class="thead-dark">
                                             <tr>
