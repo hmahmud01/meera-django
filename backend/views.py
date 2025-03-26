@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from urllib.parse import urlencode
+from django.http import HttpResponse
 
 import itertools
 
@@ -546,6 +548,8 @@ def appcart(request):
 
 def appcheckout(request):
     data = cartData(request)
+    print(f"USERNAME : {request.user.username}")
+    print(f"passwd : {request.user.password}")
     cartItems = data['cartItems']
     orderdata = data['order']
     items = data['items']
@@ -579,6 +583,8 @@ def appcheckout(request):
 def makepayment(request):
     post_data = request.POST
     print(f"POST : {post_data}")
+    print(f"USERNAME : {request.user.username}")
+    print(f"passwd : {request.user.password}")
     today_date = datetime.today().strftime('%Y%m%d')
     order = Order.objects.get(id=post_data['order'])
     order_trx_id = "meera-0"+str(order.id)+today_date
@@ -586,17 +592,31 @@ def makepayment(request):
     total = order.get_cart_total + charge.charge
     print(f"TRX ID : {order_trx_id}")
 
+    query_params = {
+        "order_id": post_data['order'],
+        "email": post_data['email'],
+        "phone": post_data['phone'],
+        "address": post_data['address'],
+        "name": order.customer,
+    }
+
     print("===========printing SSL RESPONSE ===================")
-    # settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
-    settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '6674FB98173C235445', 'issandbox': False }
+    settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
+    # settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '6674FB98173C235445', 'issandbox': False }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
     post_body['total_amount'] = total
     post_body['currency'] = "BDT"
     post_body['tran_id'] = order_trx_id
-    post_body['success_url'] = "http://meeraseed.com/success/"
-    post_body['fail_url'] = "http://meeraseed.com/failed/"
-    post_body['cancel_url'] = "http://meeraseed.com/failed/"
+    # post_body['success_url'] = "http://meeraseed.com/success/"
+    # post_body['fail_url'] = "http://meeraseed.com/failed/"
+    # post_body['cancel_url'] = "http://meeraseed.com/failed/"
+    # post_body['success_url'] = f"http://localhost/success/?{urlencode(query_params)}"
+    # post_body['fail_url'] = f"http://localhost/failed/?{urlencode(query_params)}"
+    # post_body['cancel_url'] = f"http://localhost/failed/?{urlencode(query_params)}"
+    post_body['success_url'] = f"https://meeraseed.com/success/?{urlencode(query_params)}"
+    post_body['fail_url'] = f"https://meeraseed.com/failed/?{urlencode(query_params)}"
+    post_body['cancel_url'] = f"https://meeraseed.com/failed/?{urlencode(query_params)}"
     post_body['emi_option'] = 0
     post_body['cus_name'] = order.customer
     post_body['cus_email'] = post_data['email']
@@ -619,53 +639,54 @@ def makepayment(request):
     #              'bkash': ['07975686099'], 'pin': ['1234564'], 'order': [''], 'name': ['Hasan Mahmud'], 
     #              'address': ['shantinagar, dahat'], 'phone': ['01797568609'], 'email': ['hmahmud01@gmail.com']}>
     print(f"STATUS : {status}")
-    if status == "SUCCESS":
-        order = Order.objects.get(id=post_data['order'])
-        order.complete = True
-        order.trx_id = order_trx_id
+    # if status == "SUCCESS":
+    #     order = Order.objects.get(id=post_data['order'])
+    #     order.complete = True
+    #     order.trx_id = order_trx_id
 
-        print(f"order stat: {order.complete} {order.trx_id}")
-        print(order)
-        order.save()
-        orderweb = OrderWeb(
-            order = order,
-            email = post_data['email'],
-            phone = post_data['phone'],
-            address = post_data['address'],
-            payment_status = "PAID",
-            name = post_data['name']
-        )
+    #     print(f"order stat: {order.complete} {order.trx_id}")
+    #     print(order)
+    #     order.save()
+    #     orderweb = OrderWeb(
+    #         order = order,
+    #         email = post_data['email'],
+    #         phone = post_data['phone'],
+    #         address = post_data['address'],
+    #         payment_status = "PAID",
+    #         name = post_data['name']
+    #     )
 
 
-        # SEND AN EMAIL FROM HERE
-        orderweb.save()
-        return redirect(response['GatewayPageURL'])
-    else:
-        msg = response['failedreason']
-        print(msg)
-        order = Order.objects.get(id=post_data['order'])
-        order.complete = False
-        order.trx_id = order_trx_id
+    #     # SEND AN EMAIL FROM HERE
+    #     orderweb.save()
+    #     return redirect(response['GatewayPageURL'])
+    # else:
+    #     msg = response['failedreason']
+    #     print(msg)
+    #     order = Order.objects.get(id=post_data['order'])
+    #     order.complete = False
+    #     order.trx_id = order_trx_id
 
-        print(f"order stat: {order.complete} {order.trx_id}")
-        print(order)
-        order.save()
-        orderweb = OrderWeb.objects.get(order_id=order.id)
-        orderweb.status = "FAILED",
-        orderweb.payment_status = "UNABLE TO PAID: SSL ISSUE",
-        # orderweb = OrderWeb(
-        #     order = order,
-        #     email = post_data['email'],
-        #     phone = post_data['phone'],
-        #     address = post_data['address'],
-        #     status = "FAILED",
-        #     payment_status = "UNABLE TO PAID: SSL ISSUE",
-        #     name = post_data['name']
-        # )
+    #     print(f"order stat: {order.complete} {order.trx_id}")
+    #     print(order)
+    #     order.save()
+    #     orderweb = OrderWeb.objects.get(order_id=order.id)
+    #     orderweb.status = "FAILED",
+    #     orderweb.payment_status = "UNABLE TO PAID: SSL ISSUE",
+    #     # orderweb = OrderWeb(
+    #     #     order = order,
+    #     #     email = post_data['email'],
+    #     #     phone = post_data['phone'],
+    #     #     address = post_data['address'],
+    #     #     status = "FAILED",
+    #     #     payment_status = "UNABLE TO PAID: SSL ISSUE",
+    #     #     name = post_data['name']
+    #     # )
 
-        # SEND AN EMAIL FROM HERE
-        orderweb.save()
-        return redirect('failedpage')
+    #     # SEND AN EMAIL FROM HERE
+    #     orderweb.save()
+    #     return redirect('failedpage')
+    return redirect(response['GatewayPageURL'])
 
 def makeorder(request):
     print("====INSIDE MAKE====")
@@ -695,11 +716,62 @@ def makeorder(request):
 
 @csrf_exempt
 def successpage(request):
+    order_id = request.GET.get('order_id')
+    email = request.GET.get('email')
+    phone = request.GET.get('phone')
+    address = request.GET.get('address')
+    name = request.GET.get('name')
+    order = Order.objects.get(id=order_id)
+    today_date = datetime.today().strftime('%Y%m%d')
+    order_trx_id = "meera-0"+str(order.id)+today_date
+    order.complete = True
+    order.trx_id = order_trx_id
+
+    print(f"order stat: {order.complete} {order.trx_id}")
+    print(order)
+    order.save()
+    orderweb = OrderWeb(
+        order = order,
+        email = email,
+        phone = phone,
+        address = address,
+        payment_status = "PAID",
+        name = name
+    )
+
+    # SEND AN EMAIL FROM HERE
+    orderweb.save()
     return render(request, 'web/success.html')
     # return render(request, 'home/homesuccess.html')
 
 @csrf_exempt
 def failedpage(request):
+    order_id = request.GET.get('order_id')
+    email = request.GET.get('email')
+    phone = request.GET.get('phone')
+    address = request.GET.get('address')
+    name = request.GET.get('name')
+    order = Order.objects.get(id=order_id)
+    today_date = datetime.today().strftime('%Y%m%d')
+    order_trx_id = "meera-0"+str(order.id)+today_date
+    order.complete = True
+    order.trx_id = order_trx_id
+
+    print(f"order stat: {order.complete} {order.trx_id}")
+    print(order)
+    order.save()
+    orderweb = OrderWeb(
+        order = order,
+        email = email,
+        phone = phone,
+        address = address,
+        status = "FAILED",
+        payment_status = "UNABLE TO PAID: SSL ISSUE",
+        name = name
+    )
+
+    # SEND AN EMAIL FROM HERE
+    orderweb.save()
     return render(request, 'web/failed.html')
     # return render(request, 'home/homefailed.html')
 
