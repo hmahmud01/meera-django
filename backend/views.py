@@ -601,8 +601,8 @@ def makepayment(request):
     }
 
     print("===========printing SSL RESPONSE ===================")
-    settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
-    # settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '6674FB98173C235445', 'issandbox': False }
+    # settings = { 'store_id': 'maise6244d4efe620f', 'store_pass': 'maise6244d4efe620f@ssl', 'issandbox': True }
+    settings = { 'store_id': '	meeraseedcomloginnext0live', 'store_pass': '6674FB98173C235445', 'issandbox': False }
     sslcz = SSLCOMMERZ(settings)
     post_body = {}
     post_body['total_amount'] = total
