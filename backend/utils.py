@@ -1,5 +1,10 @@
 import json
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.conf import settings
+
 from .models import *
+
 
 
 def cookieCart(request):
@@ -57,3 +62,24 @@ def cartData(request):
         cartItems = order.get_cart_items
 
     return {'cartItems': cartItems, 'order': order, 'items': items}
+
+def send_order_email(order, customer_email):
+    print(f"ORDER : {order.trx_id}")
+    print(f"EMAIL: {customer_email}")
+    subject = f"Order Confirmation - #{order.trx_id}"
+    charge = ShippingCharge.objects.get(type="local")
+    total = order.get_cart_total + charge.charge
+    # Load email content from a template
+    context = {
+        "order": order,
+        "customer_email": customer_email,
+        "total": total
+    }
+    message = render_to_string("emails/order_confirmation.html", context)
+
+    # Send email to both store owner and customer
+    recipients = ["retail.meeraseed@gmail.com", customer_email]
+
+    email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, recipients)
+    email.content_subtype = "html"  # Ensure HTML rendering
+    email.send()

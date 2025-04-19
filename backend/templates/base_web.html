@@ -81,12 +81,12 @@
                                         <li><a href="https://www.rijkzwaan.com/en/news">News</a></li> -->
                                         {% if request.user.is_authenticated %}
                                         <li>
-                                            <a href="{% url 'appcart' %}"> Cart
+                                            <a href="{% url 'appcart' %}"> Cart (<strong>{{ order.get_cart_items }}</strong>)
                                                 <i class="fa fa-shopping-cart"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{% url 'userorders' %}"> Orders (<strong>{{ order.get_cart_items }}</strong>)
+                                            <a href="{% url 'userorders' %}"> Orders 
                                                 <i class="fa fa-subscript"></i>
                                             </a>
                                         </li>
@@ -172,6 +172,7 @@
                                     <a href="{% url 'storelogin' %}">Login</a>
                                     {% endif %}
                                 </li>
+                                <li><a href="https://www.facebook.com/meeraseedlimited" target="_blank">Facebook</a></li>
                             </ul>
                         </div>
                     </div>

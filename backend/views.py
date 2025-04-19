@@ -7,11 +7,19 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from urllib.parse import urlencode
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.core.mail import send_mail, EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+import requests
 import itertools
-
+import urllib.parse
 import json
+import smtplib
 
 from backend.models import Category, Order, OrderItems, PackSize, Product, ProductImage, ProductZone, Zone, OrderApp, Cart, CartProduct, Orderstatus, OrderWeb, ProductBrand, ProductPackPrice, SubCategory, Profile, ProductText, ShippingCharge
 from backend.utils import cartData
@@ -246,12 +254,6 @@ def orderDetail(request, oid):
     order = Order.objects.get(id=oid)
     items = OrderItems.objects.filter(order_id=oid)
     orderweb = OrderWeb.objects.get(order_id=oid)
-    
-    # order = OrderApp.objects.get(id=oid)
-    
-    # items = CartProduct.objects.filter(cart__id=order.cart.id)
-    # TODO
-    # make the product item working 
     print(order)
     print(items)
     products = []
@@ -562,8 +564,6 @@ def appcheckout(request):
     order_id = post_data['order']
     print(f"ORDER ID : {order_id}")
     order = Order.objects.get(id=order_id)
-    # order.complete = True
-    # order.trx_id = "meera-"+str(order.id)
 
     print(f"order stat: {order.complete} {order.trx_id}")
     print(order)
@@ -579,6 +579,171 @@ def appcheckout(request):
     order.save()
     context = {'cart_total': order.get_cart_total, 'charge': charge, 'total': total, 'order_id': order_id, 'items': items}
     return render(request, 'web/checkout.html', context)
+
+def zoho_login(request):
+    """Redirects to Zoho OAuth for authentication"""
+    auth_url = f"{settings.ZOHO_AUTH_URL}?" + urllib.parse.urlencode({
+        "response_type": "code",
+        "client_id": settings.ZOHO_CLIENT_ID,
+        "redirect_uri": settings.ZOHO_REDIRECT_URI,
+        "scope": "ZohoMail.messages.ALL",
+        "access_type": "offline",
+    })
+    return redirect(auth_url)
+
+def zoho_callback(request):
+    code = request.GET.get("code")
+    if not code:
+        return JsonResponse({"error": "Authorization code not provided"}, status=400)
+
+    token_url = settings.ZOHO_TOKEN_URL
+    data = {
+        "client_id": settings.ZOHO_CLIENT_ID,
+        "client_secret": settings.ZOHO_CLIENT_SECRET,
+        "grant_type": "authorization_code",
+        "redirect_uri": settings.ZOHO_REDIRECT_URI,
+        "code": code,
+    }
+
+    response = requests.post(token_url, data=data)
+    if response.status_code == 200:
+        tokens = response.json()
+        # Store refresh_token securely (database or Django cache)
+        request.session["zoho_access_token"] = tokens["access_token"]
+        return JsonResponse(tokens)
+    else:
+        return JsonResponse(response.json(), status=400)
+    
+# def send_order_email(request):
+#     """Sends an order confirmation email to customer & store owner"""
+#     print(f"ORDER : {order.trx_id}")
+#     print(f"EMAIL: {customer_email}")
+#     subject = f"Order Confirmation - #{order.trx_id}"
+#     charge = ShippingCharge.objects.get(type="local")
+#     total = order.get_cart_total + charge.charge
+#     # Load email content from a template
+#     context = {
+#         "order": order,
+#         "customer_email": customer_email,
+#         "total": total
+#     }
+#     message = render_to_string("emails/order_confirmation.html", context)
+
+#     # Send email to both store owner and customer
+#     recipients = ["retail.meeraseed@gmail.com", customer_email]
+
+#     email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, recipients)
+#     email.content_subtype = "html"  # Ensure HTML rendering
+#     email.send()
+
+# def sendemail(request):
+#     post_data = request.POST
+#     order = Order.objects.get(id=post_data['order'])
+#     send_order_email(order, "hmahmud01@gmail.com")
+#     print(order)
+
+def send_email_smtp(request):
+    server = smtplib.SMTP_SSL("smtp.zoho.com", 465)  # No 'keyfile' argument!
+    server.login("cs@meeraseed.com", "yZ9Eh4mbg1dg")
+    print("server LOGGED IN")
+    recipients = ["retail.meeraseed@gmail.com", "storeowner@meeraseed.com"]
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = "Test Email"
+    msg["From"] = "cs@meeraseed.com"
+    msg["To"] = "hmahmud01@gmail.com"
+    # msg["To"] = ", ".join(recipients)  # Join for display
+
+    html_content = render_to_string("emails/order_email.html", {
+        "customer_name": "Alice",
+        "order_id": "ORD12345",
+        "total_price": "$49.99"
+    })
+
+    # Attach plain and HTML versions
+    msg.attach(MIMEText(html_content, "html"))
+
+    # server.sendmail("cs@meeraseed.com", "hmahmud01@gmail.com", msg.as_string())
+    server.send_message(msg)
+    # server.sendmail(msg["From"], recipients, msg.as_string())
+    server.quit()
+    print("EMAIL SENT")
+
+    return redirect("/")
+
+def send_email_from_payment(data):
+    print("INSIDE SEND EMAIL FROM PAYMENT")
+    print(data["status"])
+    print(data)
+    trx_id = data["trx_id"]
+    name = data["name"]
+    server = smtplib.SMTP_SSL("smtp.zoho.com", 465)
+    server.login("cs@meeraseed.com", "yZ9Eh4mbg1dg")
+    print("server LOGGED IN")
+    recipients = ["retail.meeraseed@gmail.com", data["email"]]
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"Order Confirmed for ORDER ID # {trx_id}"
+    msg["From"] = "cs@meeraseed.com"
+    msg["To"] = ", ".join(recipients)
+
+    order = Order.objects.get(id=data["oid"])
+    charge = ShippingCharge.objects.get(type="local")
+    total = order.get_cart_total + charge.charge
+
+    items = OrderItems.objects.filter(order_id=data["oid"])
+    products = []
+    for item in items:
+        data = {
+            "thumb_image": item.product.thumb_image,
+            "product": item.product.name,
+            "price": item.product.price,
+            "brand": item.product.brand,
+            "category": item.product.category,
+            "pack_size": item.product.pack_size,
+            "qty": item.quantity,
+            "subtotal": item.get_total
+        }
+        products.append(data)
+
+    html_content = render_to_string("emails/order_email.html", {
+        "customer_name": name,
+        "order_id": trx_id,
+        "total_price": total,
+        "charge": charge.charge,
+        "products": products
+    })
+
+    # Attach plain and HTML versions
+    msg.attach(MIMEText(html_content, "html"))
+
+    # server.sendmail("cs@meeraseed.com", "hmahmud01@gmail.com", msg.as_string())
+    # server.send_message(msg)
+    server.sendmail(msg["From"], recipients, msg.as_string())
+    server.quit()
+    print("EMAIL SENT")
+
+def send_order_email(request):
+    """Sends an order confirmation email to customer & store owner"""
+    print("INSIDE SEND ORDER")
+    access_token = request.session.get("zoho_access_token")  # Get saved access token
+    if not access_token:
+        print("NO ACCESS TOKEN")
+        return JsonResponse({"error": "Zoho OAuth required"}, status=401)
+
+    print(f"ACCESS TOEKN : {access_token}")
+    # Email details
+    subject = "Order Confirmation"
+    customer_email = "hmahmud01@gmail.com"
+    owner_email = "hmahmud01@outlook.com"
+
+    # Load email template
+    context = {"customer_name": "John Doe", "order_id": "12345", "order_total": "$99"}
+    html_message = render_to_string("emails/order_email.html", context)
+    plain_message = strip_tags(html_message)  # Convert HTML to plain text
+
+    # Send email to both customer & owner
+    send_mail(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [customer_email, owner_email])
+
+    return JsonResponse({"message": "Email sent successfully"})
 
 def makepayment(request):
     post_data = request.POST
@@ -740,6 +905,20 @@ def successpage(request):
     )
 
     # SEND AN EMAIL FROM HERE
+
+    email_data = {
+        "status": "SUCCESS",
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "address": address,
+        "oid": order_id,
+        "trx_id": order_trx_id
+    }
+
+    send_email_from_payment(email_data)
+    print("SEND EMAIL FROM PAYMENT EXECUTED")
+
     orderweb.save()
     return render(request, 'web/success.html')
     # return render(request, 'home/homesuccess.html')
