@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .email-container { font-family: Arial, sans-serif; padding: 20px; }
+        .order-summary { border: 1px solid #ddd; padding: 10px; }
+        .footer { margin-top: 20px; font-size: 12px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h2>Thank you for your order, {{ customer_name }}!</h2>
+        <p>Your order ID is <strong>{{ order_id }}</strong> and the total amount is <strong> ৳ {{ total_price }}</strong>.</p>
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            {% for product in products %}
+            <p>{{ product.product }} - {{ product.pack_size }} * {{ product.qty }} - ৳ {{ product.subtotal }} </p>
+            {% endfor %}
+            <p>Shipping charge - ৳ {{charge}} </p>
+            <p>Total - ৳ {{ total_price }} </p>
+        </div>
+        <p>We will notify you once your order is shipped.</p>
+        <div class="footer">
+            <p>meeraseed.com | Customer Support: cs@meeraseed.com</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -22,10 +22,55 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-knr1mok6-qm^d52-3um-5-))8p!1%o_lroc9d5i3592z3a22ar'
 
+ZOHO_CLIENT_ID = "1000.V9SQW6XYM2RO5Q2DIXCO8AWM2IT54V"
+ZOHO_CLIENT_SECRET = "f8eec0bcf96aaea5ca980fd78cb1f42bf4c34d291d"
+ZOHO_REDIRECT_URI = "http://localhost/oauth/callback/"
+ZOHO_AUTH_URL = "https://accounts.zoho.com/oauth/v2/auth"
+ZOHO_TOKEN_URL = "https://accounts.zoho.com/oauth/v2/token"
+
+APP_PASSWORD = "yZ9Eh4mbg1dg"
+APP_NAME = "Meeraseed.com"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.zoho.com"
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True  # Zoho requires SSL for port 465
+EMAIL_PORT = 587  # Use 587 for TLS
+EMAIL_USE_TLS = True  # Use TLS instead of SSL
+EMAIL_USE_SSL = False  # Must be False
+EMAIL_HOST_USER = "cs@meeraseed.com"  # Replace with your Zoho email
+EMAIL_HOST_PASSWORD = "meera@Cs2025"  # Use an app password if enabled
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Enable Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "email_debug.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+# Session expires in 2 minutes (120 seconds)
+# SESSION_COOKIE_AGE = 120
+# Session expires when browser is closed (optional)
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 # Application definition
@@ -51,7 +96,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'backend.middleware.auto_logout.AutoLogoutMiddleware',
 ]
+
+# Set logout delay in seconds (2 minutes = 120 seconds)
+AUTO_LOGOUT_DELAY = 120
 
 ROOT_URLCONF = 'meera.urls'
 

@@ -1,0 +1,13 @@
+curl --request POST \
+  --url 'https://accounts.zoho.com/oauth/v2/token' \
+  --data 'client_id=1000.BIZLLH8J1U8IJBB1AYQZE8X44JXU7I' \
+  --data 'client_secret=392a54ec93361461158882be2d93cf71e9e2d8f8b1' \
+  --data 'grant_type=authorization_code' \
+  --data 'redirect_uri=https://meeraseed.com/'
+
+mail info:
+email: cs@meeraseed.com
+pass:  meera@Cs2025
+
+client_id = '1000.BIZLLH8J1U8IJBB1AYQZE8X44JXU7I'
+client_secret = '392a54ec93361461158882be2d93cf71e9e2d8f8b1'

@@ -52,6 +52,12 @@ urlpatterns = [
     path('appproductdetail/<slug:slug>', views.homeproductDetail, name="appproductdetail"),
     path('appcart/', views.appcart, name="appcart"),
     path('appcheckout/', views.appcheckout, name="appcheckout"),
+    # path('sendemail/', views.sendemail, name="sendemail"),
+    path("sendsmtp/", views.send_email_smtp, name="send_email_smtp"),
+    path("zoho/login/", views.zoho_login, name="zoho_login"),
+    path("oauth/callback/", views.zoho_callback, name="zoho_callback"),
+    path("sendemail/", views.send_order_email, name="send_order_email"),
+
     path('makepayment/', views.makepayment, name="makepayment"),
     path('makeorder/', views.makeorder, name="makeorder"),
     path('success/', views.successpage, name="successpage"),
