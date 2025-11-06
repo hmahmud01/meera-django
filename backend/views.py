@@ -317,8 +317,9 @@ def appstore(request):
     data = cartData(request)
     order = data['order']
     context = {'order':order}
-    products = Product.objects.filter(brand__id=1, status=True)
-    brands = ProductBrand.objects.filter(id=1)
+    products = Product.objects.filter(status=True)
+    # brands = ProductBrand.objects.filter(id=1)
+    brands = ProductBrand.objects.all()
     combined_data = []
 
     for brand in brands:
