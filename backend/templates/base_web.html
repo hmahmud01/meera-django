@@ -58,7 +58,8 @@
                     <div class="header-inr clearfix">
                         <div class="hdr-tp clearfix">
                             <div class="hdr-tp-rgt">
-                                <a href="{% url 'meerastore' %}"><img src="/static/web-assets/images/meera-logo.png" style="height: 95px; margin-top: 15px"></a>
+                                <!-- <a href="{% url 'meerastore' %}"><img src="/static/web-assets/images/meera-logo.png" style="height: 95px; margin-top: 15px"></a> -->
+                                <img src="/static/web-assets/images/meera-logo.png" style="height: 95px; margin-top: 15px">
                             </div>
                             <div class="hdr-tp-lft">
                                 <a href="/"><img src="/static/web-assets/images/rijk-logo.png" style="height: 108px;"></a>
@@ -111,25 +112,6 @@
         </div>
     </header>
 
-    {% block breadcrumb %}
-    <section class="breadcrumb-sec-wrap">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="breadcrumb-wrap">
-                        <ul class="clearfix reset-list">
-                            <!-- <li><a href="#">Rijk Zawan</a></li> -->
-                            <!-- <li><a href="#">Rijk Zwaan</a></li>
-                            <li><a href="#">Indoor</a></li>
-                            <li><a href="#">Brinjal</a></li> -->
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endblock %}
-
     {% block content %}
 
     {% endblock %}
@@ -140,9 +122,9 @@
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="ftr-col-dsc">
-                            <!-- <div class="ftr-logo">
+                            <div class="ftr-logo">
                                 <img src="/static/web-assets/images/rijk-logo.png" />
-                            </div> -->
+                            </div>
                             <div class="ftr-col-dsc-1">
                                 <!-- <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> -->
                                 {% comment %} <ul class="clearfix reset-list">

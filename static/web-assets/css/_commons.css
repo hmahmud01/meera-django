@@ -25,6 +25,10 @@ body {
 p{
 	line-height: 1.2;
 }
+
+.card-text {
+  margin-bottom: 0px;
+}
 /*-- app gap use pattern --*/
 /*data-xxs = 575
 data-xs = 767
