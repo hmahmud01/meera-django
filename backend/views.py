@@ -218,6 +218,7 @@ def homeproductDetail(request, slug):
     images = ProductImage.objects.filter(product_id=product.id)
     packs = ProductPackPrice.objects.filter(product_id=product.id)
     texts = ProductText.objects.filter(product_id=product.id)
+    related_products = Product.objects.all().exclude(id=product.id)[:10]
     stock = product.inv_stock
     available = True
     if stock is None:
@@ -226,7 +227,7 @@ def homeproductDetail(request, slug):
     if stock == 0:
         available = False
     # return render(request, "home/homeproductdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs})
-    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts, "available": available, 'order': order})
+    return render(request, "web/productdetail.html", {"product": product, "zones": zones, "images": images, "packs": packs, "texts": texts, "available": available, 'order': order, 'related_products': related_products})
 
 def statusUpdate(request, state, pid):
     product = Product.objects.get(id=pid)

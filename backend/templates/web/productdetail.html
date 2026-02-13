@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block content %}
-{% comment %} <section class="page-banner-sec-wrap" style="background:url(assets/images/page-banner-bg.jpg);">
+<!-- <section class="page-banner-sec-wrap" style="background:url(assets/images/page-banner-bg.jpg);">
     <div class="page-banner-wrap">
       <h3>Product Details</h3>
     </div>
-</section> {% endcomment %}
+</section>  -->
 
 <section class="single-product-details-sec-wrp">
   <div class="container">
@@ -39,6 +39,7 @@
           </div>
 
           <div class="vn-product-review-rgt-con">
+
            <div class="single-product-description clearfix">
               <div class="product-name">
                 <h3 class="product-name-title">{{ product.name }}</h3>
@@ -69,48 +70,44 @@
                   {% endif %} 
                 </div>
               </div>
-              <div class="short-description">
-                <h4 class="short-description-title">Quick Overview</h4>
-                <p>{{ product.description }}</p>
-              </div>
-
-              {% if available %}
-              <div class="pp-add-to-cart-wrp clearfix">
-                <!-- <div class="pp-buy-now-btn">
-                  <a class="btn btn-success update-cart" data-product="{{ product.id }}" data-action="add" href="{% url 'appcart' %}">Buy Now</a>
-                </div> -->
-                <!-- <div class="pp-buy-now-btn">
-                  <a class="btn btn-success" data-product="{{ product.id }}" data-action="add" href="{% url 'appcart' %}">Buy Now</a>
-                </div> -->
-                {% comment %} <div class="qty-price qty clearfix">
-                  <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                  <input type="number"  class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" inputmode="numeric">
-                  <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                </div> {% endcomment %}
-
-                <!-- <div class="qty-price qty clearfix">
-                  <span class="minus">
-                    <i data-product="{{ product.id }}" data-action="remove" class="fa fa-minus update-cart" aria-hidden="true"></i>
-                  </span>
-                  <input type="number" class="input-text qty text" step="1" min="0" max="" name="quantity" value="0" title="Qty" size="4" inputmode="numeric">
-                  <span class="plus">
-                    <i data-product="{{ product.id }}" data-action="add" class="fa fa-plus update-cart" aria-hidden="true"></i>
-                  </span>
-                </div> -->
-                <div class="pp-add-to-cart-btn">
-                  <button data-product="{{ product.id }}" data-action="add" class="update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="short-description">
+                  <h4 class="short-description-title">Quick Overview</h4>
+                  <p>{{ product.description }}</p>
                 </div>
+
+                {% if available %}
+                <div class="pp-add-to-cart-wrp clearfix">
+                  <!-- <div class="pp-buy-now-btn">
+                    <a class="btn btn-success update-cart" data-product="{{ product.id }}" data-action="add" href="{% url 'appcart' %}">Buy Now</a>
+                  </div> -->
+                  <!-- <div class="pp-buy-now-btn">
+                    <a class="btn btn-success" data-product="{{ product.id }}" data-action="add" href="{% url 'appcart' %}">Buy Now</a>
+                  </div> -->
+                  {% comment %} <div class="qty-price qty clearfix">
+                    <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                    <input type="number"  class="input-text qty text" step="1" min="1" max="" name="quantity" value="1" title="Qty" size="4" inputmode="numeric">
+                    <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                  </div> {% endcomment %}
+
+                  <!-- <div class="qty-price qty clearfix">
+                    <span class="minus">
+                      <i data-product="{{ product.id }}" data-action="remove" class="fa fa-minus update-cart" aria-hidden="true"></i>
+                    </span>
+                    <input type="number" class="input-text qty text" step="1" min="0" max="" name="quantity" value="0" title="Qty" size="4" inputmode="numeric">
+                    <span class="plus">
+                      <i data-product="{{ product.id }}" data-action="add" class="fa fa-plus update-cart" aria-hidden="true"></i>
+                    </span>
+                  </div> -->
+                  <div class="pp-add-to-cart-btn">
+                    <button data-product="{{ product.id }}" data-action="add" class="update-cart">Add To Cart <i class="fa fa-long-arrow-right"></i></button>
+                  </div>
+                </div>
+                {% endif %}
               </div>
-              {% endif %}
-              
            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="tab-info-wrp">
+
+           <div class="tab-info-wrp">
           <ul class="clearfix">
             <li><a href="#tabs">Description</a></li>
             <li><a href="#tabs">Information</a></li>
@@ -129,114 +126,160 @@
           </div>
           <div class="tabs tabs-content">
             <dl class="small m-t-md">
-                <dt>Zones Available in</dt>
-                {% for zone in zones %}
+                <!-- <dt>Zones Available in</dt> -->
+                <!-- {% for zone in zones %}
                 <dd>* {{ zone.zone.name }}</dd>
-                {% endfor %}
-                {% for pack in packs %}
+                {% endfor %} -->
+                <!-- {% for pack in packs %}
                 <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
-                {% endfor %}
-                <dt>Stock Available</dt>
+                {% endfor %} -->
                 {% if available %}
-                <dd>{{ product.inv_stock }}</dd>
+                <dd>Stock Available : <strong>{{ product.inv_stock }}</strong> packs</dd>
                 {% else %}
-                <dd>Not Available</dd>
+                <dd>Stock Available : <strong>Not Available</strong></dd>
                 {% endif %}
-                <dt>Product Status</dt>
                 {% if product.status is True %}
-                <dd>Active</dd>
+                <dd>Product Status: <strong>Active</strong></dd>
                 {% else %}
-                <dd>Inactive</dd>
+                <dd>Product Status: <strong>Inactive</strong></dd>
                 {% endif %}
-                <dt>Brand</dt>
+                <dd>Brand : <strong>{{ product.brand.name }}</strong></dd>
             </dl>
+          </div>
+        </div>
 
           </div>
-          {% comment %} <div class="tabs tabs-content">
-            <div class="tabs-frm">
-              <form>
-                <label>Add Tags:</label>
-                <input type="text" name="productTagName">
-                <button type="button" title="TAG ADD" value="TAG ADD">TAG ADD</button>
-              </form>
-            </div>
-          </div> {% endcomment %}
         </div>
       </div>
     </div>
   </div>
 </section>
 
-{% comment %} <section class="hm-product-sec-wrp mb-5">
+
+<!-- Scrollable Product List -->
+<section class="hm-product-sec-wrp related-products-section">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="product-detail">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <img src="/media/{{ product.thumb_image }}" class="img-fluid" alt="Responsive image">
-                        </div>
-
-                        <div class="col-md-7">
-
-                            <h2 class="font-bold m-b-xs">
-                                {{ product.name }}
-                            </h2>
-                            <small><strong>Category</strong>: {{ product.category.title }}</small><br>
-                            <small><strong>Brand</strong>: {{ product.brand.name }}</small><br>
-                            <small><strong>Pack Size</strong>: {{ product.pack_size.size }}</small>
-                            {% if user.is_authenticated %}
-                            <div class="m-t-md">
-                                <h2 class="product-main-price">৳ {{ product.price }} <small class="text-muted"></small></h2>
-                            </div>
-                            {% else %}
-                            <div class="m-t-md">
-                                <h2 class="product-main-price">Please Login to see the price</h2>
-                            </div>
-                            {% endif %}
-                            
-                            <hr>
-
-                            <h4>Product description</h4>
-
-                            <div class="small text-muted">
-                                
-                            </div>
-
-                            <dl class="small m-t-md">
-                                <dt>Zones Available in</dt>
-                                {% for zone in zones %}
-                                <dd>* {{ zone.zone.name }}</dd>
-                                {% endfor %}
-                                {% for pack in packs %}
-                                <dd>* {{ pack.packsize.size }} - {{ pack.price }}</dd>
-                                {% endfor %}
-                                <dt>Stock Available</dt>
-                                <dd>{{ product.inv_stock }}</dd>
-                                <dt>Product Status</dt>
-                                {% if product.status is True %}
-                                <dd>Active</dd>
-                                {% else %}
-                                <dd>Inactive</dd>
-                                {% endif %}
-                                <dt>Brand</dt>
-                            </dl>
-                            <hr>
-                            <div>
-                                <div class="btn-group">
-                                    <button data-product="{{ product.id }}" data-action="add"
-                                        class="btn btn-xs btn-outline btn-primary update-cart">Add To Cart <i
-                                            class="fa fa-long-arrow-right"></i></button>
-                                    <a href="{% url 'apphome' %}" class="btn btn-danger btn-sm text-white">Back</a>
-
+                <h3 class="section-title">Related Products</h3>
+                <div class="scrollable-product-list">
+                    <ul class="clearfix reset-list scrollable-products">
+                        {% for product_item in related_products %}
+                        <li class="scrollable-product-item">
+                            <div class="hm-product-grid hm-product-grid-border">
+                                <a href="{% url 'appproductdetail' product_item.slug %}" rel="product.name">
+                                    <div class="hm-product-grid-img inline-bg"
+                                        style='background:url("/media/{{ product_item.thumb_image }}");'>
+                                    </div>
+                                </a>
+                                <div class="hm-product-grid-btm">
+                                    <div class="hm-product-grid-tp-dsc">
+                                        {% if user.is_authenticated %}
+                                        <span>৳ {{ product_item.price }} BDT</span>
+                                        {% else %}
+                                        <span>Login to see Price</span>
+                                        {% endif %}
+                                        <h3><a href="{% url 'appproductdetail' product_item.slug %}">{{ product_item.name }}</a></h3>
+                                        <span>{{ product_item.category }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                        {% empty %}
+                        <li style="text-align: center; padding: 20px; width: 100%;">
+                            <p>No related products found</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-
             </div>
         </div>
-</section> {% endcomment %}
+    </div>
+</section>
+
+<style>
+    .related-products-section {
+        /* margin: 40px 0; */
+        padding: 30px 0;
+        background-color: #f9f9f9;
+    }
+
+    .section-title {
+        /* text-align: center; */
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .scrollable-product-list {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px 0;
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scrollable-product-list::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .scrollable-product-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .scrollable-product-list::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+
+    .scrollable-product-list::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .scrollable-products {
+        display: flex;
+        gap: 20px;
+        padding: 10px;
+        min-width: min-content;
+    }
+
+    .scrollable-product-item {
+        flex: 0 0 250px;
+        min-width: 250px;
+    }
+
+    .scrollable-product-item .hm-product-grid {
+        height: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .scrollable-product-item {
+            flex: 0 0 200px;
+            min-width: 200px;
+        }
+
+        .section-title {
+            font-size: 22px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .scrollable-product-item {
+            flex: 0 0 150px;
+            min-width: 150px;
+        }
+
+        .scrollable-products {
+            gap: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+        }
+    }
+</style>
 
 {% endblock %}
