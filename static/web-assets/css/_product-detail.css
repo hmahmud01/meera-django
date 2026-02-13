@@ -188,7 +188,7 @@ ul.ppp-thumb-slider button.slick-prev.slick-disabled{
 
 
 .product-name-title{
-	font-size: 36px;
+	/* font-size: 36px; */
 	line-height: 1;
 	color: #000;
 	margin: 0;
@@ -389,7 +389,7 @@ ul.ppp-thumb-slider button.slick-prev.slick-disabled{
 	padding-bottom: 5px;
 }
 .short-description-title{
-	font-weight: 600;
+	/* font-weight: 600; */
 }
 
 
@@ -609,24 +609,25 @@ tab-info-wrp
 	display: inline-block;
 	vertical-align: baseline;
 	text-decoration: none;
-	font-size: 20px;
+	/* font-size: 20px; */
 	line-height: 22px;
 	color: #000;
 	/* text-transform: uppercase; */
-	padding:20px 20px;
+	padding:12px 12px;
 }
 .tab-info-wrp ul li.ui-tabs-active a,
 .tab-info-wrp ul li a:hover {
     color: #fff;
-    background: #B91C1C;
+    /* background: #B91C1C; */
+	background: #fbb81b;
 }
 .tabs-content{
-	padding: 30px 20px;
+	padding: 14px 14px;
 	border: 2px solid #ddd;
 	border-top: 0;
 }
 .tabs-content p{
-	font-size: 18px;
+	font-size: 12px;
 	line-height: 24px;
 	margin: 0;
 }
