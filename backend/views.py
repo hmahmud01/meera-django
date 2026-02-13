@@ -218,7 +218,7 @@ def homeproductDetail(request, slug):
     images = ProductImage.objects.filter(product_id=product.id)
     packs = ProductPackPrice.objects.filter(product_id=product.id)
     texts = ProductText.objects.filter(product_id=product.id)
-    related_products = Product.objects.all().exclude(id=product.id)[:10]
+    related_products = Product.objects.filter(brand_id=product.brand.id, status=True).exclude(id=product.id)[:10]
     stock = product.inv_stock
     available = True
     if stock is None:
